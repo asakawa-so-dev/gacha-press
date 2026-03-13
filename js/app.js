@@ -413,8 +413,8 @@ function startCapsuleAnimation() {
   if (starEl) starEl.classList.remove("visible");
   if (burstEl) burstEl.innerHTML = "";
   if (progressBar) progressBar.style.width = "0%";
-  if (statusText) statusText.textContent = "LOADING...";
-  if (ambientGlow) ambientGlow.style.opacity = "0.4";
+  if (statusText) statusText.textContent = "読み込み中";
+  if (ambientGlow) ambientGlow.style.opacity = "0";
 
   requestAnimationFrame(() => {
     capsuleWrap.classList.add("shake");
@@ -424,14 +424,14 @@ function startCapsuleAnimation() {
       capsuleWrap.classList.remove("shake");
       capsuleWrap.classList.add("open");
       if (glowSeam) glowSeam.classList.add("visible");
-      if (statusText) statusText.textContent = "OPENING...";
+      if (statusText) statusText.textContent = "開封中…";
       animateProgress(progressBar, 60, 80, 600);
     }, 900);
 
     setTimeout(() => {
       if (starEl) starEl.classList.add("visible");
       if (ambientGlow) ambientGlow.style.opacity = "1";
-      if (statusText) statusText.textContent = "COMPLETE!";
+      if (statusText) statusText.textContent = "";
       generateBurst(burstEl);
       generateSparkles(burstEl);
       animateProgress(progressBar, 80, 100, 300);
@@ -452,29 +452,29 @@ function animateProgress(el, from, to, duration) {
 
 function generateBurst(container) {
   if (!container) return;
-  const colors = ["#FF6B9D", "#FFD93D", "#6BCB77", "#4D96FF", "#FF922B", "#CC5DE8"];
-  for (let i = 0; i < 24; i++) {
-    const angle = (i / 24) * 360 + Math.random() * 15;
+  const colors = ["#3d3b8e", "#6864c0", "#e05c44", "#9b9bab"];
+  for (let i = 0; i < 16; i++) {
+    const angle = (i / 16) * 360 + Math.random() * 20;
     const rad = angle * Math.PI / 180;
-    const dist = 50 + Math.random() * 100;
+    const dist = 40 + Math.random() * 60;
     const tx = Math.cos(rad) * dist;
     const ty = Math.sin(rad) * dist;
-    const size = 4 + Math.random() * 8;
+    const size = 3 + Math.random() * 5;
     const dot = document.createElement("div");
     dot.className = "burst-dot";
-    dot.style.cssText = `width:${size}px;height:${size}px;border-radius:${size > 10 ? "50%" : "2px"};background:${colors[i % 6]};box-shadow:0 0 ${size}px ${colors[i % 6]};--tx:${tx}px;--ty:${ty}px;animation-delay:${Math.random() * 0.3}s;`;
+    dot.style.cssText = `width:${size}px;height:${size}px;border-radius:50%;background:${colors[i % 4]};--tx:${tx}px;--ty:${ty}px;animation-delay:${Math.random() * 0.2}s;`;
     container.appendChild(dot);
   }
 }
 
 function generateSparkles(container) {
   if (!container) return;
-  const colors = ["#FFD93D", "#FF6B9D", "#6BCB77", "#4D96FF"];
-  for (let i = 0; i < 12; i++) {
+  const colors = ["#3d3b8e", "#e05c44", "#6864c0", "#9b9bab"];
+  for (let i = 0; i < 6; i++) {
     const sp = document.createElement("div");
     sp.className = "sparkle-dot";
-    sp.textContent = "✦";
-    sp.style.cssText = `left:${-70 + Math.random() * 140}px;top:${-100 + Math.random() * 120}px;font-size:${8 + Math.random() * 16}px;color:${colors[i % 4]};animation-delay:${Math.random() * 0.8}s;`;
+    sp.textContent = "·";
+    sp.style.cssText = `left:${-50 + Math.random() * 100}px;top:${-70 + Math.random() * 80}px;font-size:${12 + Math.random() * 12}px;color:${colors[i % 4]};animation-delay:${Math.random() * 0.5}s;`;
     container.appendChild(sp);
   }
 }
