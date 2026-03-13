@@ -24,7 +24,23 @@ const MONTH_LABELS = {
   "2026-01": "2026年 1月",
   "2026-02": "2026年 2月",
   "2026-03": "2026年 3月",
+  "2026-04": "2026年 4月",
+  "2026-05": "2026年 5月",
+  "2026-06": "2026年 6月",
 };
+
+const GENRE_PLACEHOLDERS = {
+  キャラクター: "images/placeholder_character.svg",
+  ミニチュア: "images/placeholder_miniature.svg",
+  動物: "images/placeholder_animal.svg",
+  フィギュア: "images/placeholder_figure.svg",
+  おもしろ: "images/placeholder_fun.svg",
+  推し活: "images/placeholder_oshi.svg",
+};
+
+function getProductImage(item) {
+  return item.image || GENRE_PLACEHOLDERS[item.genre] || "images/placeholder_character.svg";
+}
 
 // ── State ──
 const state = {
@@ -218,9 +234,8 @@ function renderGroupedByMonth(container, data) {
 
 function renderCard(item) {
   const emoji = CARD_EMOJIS[item.genre] || "📦";
-  const imageHtml = item.image
-    ? `<div class="card-image"><img src="${item.image}" alt="${item.name}" loading="lazy"><span class="card-image-emoji">${emoji}</span></div>`
-    : `<div class="card-image"><span class="card-image-emoji-only">${emoji}</span></div>`;
+  const imgSrc = getProductImage(item);
+  const imageHtml = `<div class="card-image"><img src="${imgSrc}" alt="${item.name}" loading="lazy"><span class="card-image-emoji">${emoji}</span></div>`;
   return `
     <a href="detail.html?id=${item.id}" class="gacha-card">
       ${item.isNew ? '<div class="card-new-badge">NEW</div>' : ""}
@@ -255,9 +270,8 @@ function renderCarousel() {
     const product = GACHA_DATA.find((g) => g.id === entry.id);
     if (!product) return "";
     const emoji = CARD_EMOJIS[product.genre] || "📦";
-    const imageHtml = product.image
-      ? `<img src="${product.image}" alt="${product.name}" class="carousel-img">`
-      : `<div class="carousel-placeholder">${emoji}</div>`;
+    const imgSrc = getProductImage(product);
+    const imageHtml = `<img src="${imgSrc}" alt="${product.name}" class="carousel-img">`;
     return `
       <a href="detail.html?id=${product.id}" class="carousel-slide">
         <div class="carousel-rank">${i + 1}</div>

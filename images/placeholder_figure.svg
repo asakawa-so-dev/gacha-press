@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <linearGradient id="figGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4A4A8A"/>
+      <stop offset="100%" style="stop-color:#8B8BC7"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" rx="12" fill="url(#figGrad)"/>
+  <rect x="85" y="50" width="30" height="50" rx="4" fill="rgba(255,255,255,0.5)"/>
+  <ellipse cx="100" cy="45" rx="22" ry="18" fill="rgba(255,255,255,0.5)"/>
+  <rect x="75" y="100" width="20" height="60" rx="4" fill="rgba(255,255,255,0.4)"/>
+  <rect x="105" y="100" width="20" height="60" rx="4" fill="rgba(255,255,255,0.4)"/>
+  <rect x="70" y="155" width="60" height="15" rx="4" fill="rgba(255,255,255,0.4)"/>
+  <text x="100" y="195" font-family="sans-serif" font-size="14" fill="rgba(255,255,255,0.9)" text-anchor="middle">╒гохв</text>
+</svg>

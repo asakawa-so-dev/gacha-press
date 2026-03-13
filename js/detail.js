@@ -2,10 +2,26 @@
    ガチャプレス - 商品詳細ページ
    ======================================== */
 
+const GENRE_PLACEHOLDERS = {
+  キャラクター: "images/placeholder_character.svg",
+  ミニチュア: "images/placeholder_miniature.svg",
+  動物: "images/placeholder_animal.svg",
+  フィギュア: "images/placeholder_figure.svg",
+  おもしろ: "images/placeholder_fun.svg",
+  推し活: "images/placeholder_oshi.svg",
+};
+
+function getProductImage(product) {
+  return product.image || GENRE_PLACEHOLDERS[product.genre] || "images/placeholder_character.svg";
+}
+
 const MONTH_LABELS = {
   "2026-01": "2026年1月",
   "2026-02": "2026年2月",
   "2026-03": "2026年3月",
+  "2026-04": "2026年4月",
+  "2026-05": "2026年5月",
+  "2026-06": "2026年6月",
 };
 
 const GENRE_ICONS = { キャラクター: "🎭", ミニチュア: "🏠", 動物: "🐾", フィギュア: "🎨", おもしろ: "🤣", 推し活: "💖" };
@@ -57,9 +73,8 @@ function renderDetail(product) {
   }
 
   const interested = isInterested(product.id);
-  const imageHtml = product.image
-    ? `<img src="${product.image}" alt="${product.name}">`
-    : `<div class="detail-noimg">${GENRE_ICONS[product.genre] || "📦"}</div>`;
+  const imgSrc = getProductImage(product);
+  const imageHtml = `<img src="${imgSrc}" alt="${product.name}">`;
 
   document.getElementById("detailContent").innerHTML = `
     <div class="detail-layout">
