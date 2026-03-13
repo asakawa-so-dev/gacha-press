@@ -2,18 +2,22 @@
   publish = "."
   command = "echo 'Static site - no build needed'"
 
-# 静的ファイルのキャッシュ
 [[headers]]
-  for = "/*.js"
+  for = "/*.html"
   [headers.values]
-    Cache-Control = "public, max-age=31536000"
+    Cache-Control = "public, max-age=0, must-revalidate"
 
 [[headers]]
-  for = "/*.css"
+  for = "/js/*"
   [headers.values]
-    Cache-Control = "public, max-age=31536000"
+    Cache-Control = "public, max-age=300"
+
+[[headers]]
+  for = "/css/*"
+  [headers.values]
+    Cache-Control = "public, max-age=300"
 
 [[headers]]
   for = "/images/*"
   [headers.values]
-    Cache-Control = "public, max-age=31536000"
+    Cache-Control = "public, max-age=86400"
