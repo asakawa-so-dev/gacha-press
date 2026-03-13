@@ -43,6 +43,14 @@ document.addEventListener("DOMContentLoaded", () => {
   setupFilterModal();
 });
 
+window.addEventListener("pageshow", (e) => {
+  if (e.persisted) {
+    const overlay = document.getElementById("gachaLoading");
+    if (overlay) overlay.classList.remove("active");
+    gachaNavigating = false;
+  }
+});
+
 // ── Stats ──
 function renderStats() {
   const el = document.getElementById("heroStats");
