@@ -3,43 +3,35 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ガチャプレス - ガチャ活ユーザーのための発売カレンダー</title>
-  <meta name="description" content="ガチャガチャの新商品発売情報をチェック！発売月別・ジャンル別・価格別・メーカー別で簡単検索。ガチャ活を楽しもう！">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎰</text></svg>">
+  <title>ガチャプレス - ガチャ発売カレンダー</title>
+  <meta name="description" content="ガチャガチャの新商品発売情報をチェック。発売月・ジャンル・価格・メーカーで絞り込み。">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>&#x25CB;</text></svg>">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-  <!-- Header -->
   <header class="header">
     <div class="header-inner">
       <a href="index.html" class="logo">
-        <div class="logo-icon">🎰</div>
-        <div>
-          <div class="logo-text">ガチャプレス</div>
-          <div class="logo-sub">Gacha Press</div>
-        </div>
+        <div class="logo-mark">G</div>
+        <div class="logo-text">ガチャプレス</div>
       </a>
       <nav class="nav">
-        <a href="index.html" class="nav-link active">📅 カレンダー</a>
-        <a href="ranking.html" class="nav-link">🔥 人気</a>
-        <a href="#" class="nav-link">📝 レビュー</a>
+        <a href="index.html" class="nav-link active">カレンダー</a>
+        <a href="ranking.html" class="nav-link">ランキング</a>
       </nav>
     </div>
   </header>
 
-  <!-- Hero -->
-  <section class="hero">
-    <h1 class="hero-title">ガチャ発売カレンダー</h1>
-    <p class="hero-subtitle">最新のガチャガチャ発売情報をいち早くチェック！</p>
-    <div class="hero-stats" id="heroStats"></div>
-  </section>
+  <div class="page-summary">
+    <h1 class="page-title">発売カレンダー</h1>
+    <div class="page-stats" id="heroStats"></div>
+  </div>
 
-  <!-- Ranking Carousel -->
   <section class="carousel-section">
     <div class="carousel-header">
-      <h2 class="carousel-title">🔥 みんなが気になるガチャ TOP5</h2>
-      <a href="ranking.html" class="carousel-more">ランキングをもっと見る →</a>
+      <h2 class="carousel-title">注目ランキング</h2>
+      <a href="ranking.html" class="carousel-more">すべて見る</a>
     </div>
     <div class="carousel-wrapper">
       <div class="carousel-track" id="carouselTrack"></div>
@@ -47,45 +39,38 @@
     <div class="carousel-dots" id="carouselDots"></div>
   </section>
 
-  <!-- Filter overlay (mobile modal backdrop) -->
   <div class="filter-overlay" id="filterOverlay"></div>
+  <button class="filter-toggle-btn" id="filterToggleBtn">絞り込み</button>
 
-  <!-- Mobile filter toggle button -->
-  <button class="filter-toggle-btn" id="filterToggleBtn">🔎 しぼりこみ</button>
-
-  <!-- Main Content -->
   <main class="main">
 
-    <!-- Filter Section (Desktop: sticky sidebar / Mobile: bottom modal) -->
     <div class="filter-section" id="filterSection">
-      <button class="filter-close-btn" id="filterCloseBtn">✕</button>
+      <button class="filter-close-btn" id="filterCloseBtn">&times;</button>
       <div class="filter-header">
-        <div class="filter-title">🔎 しぼりこみ</div>
-        <button class="filter-clear" onclick="clearFilters()">✕ クリア</button>
+        <div class="filter-title">絞り込み</div>
+        <button class="filter-clear" onclick="clearFilters()">クリア</button>
       </div>
       <div class="filter-groups">
         <div class="filter-group">
-          <div class="filter-label">📅 発売月</div>
+          <div class="filter-label">発売月</div>
           <div class="filter-pills" id="monthPills"></div>
         </div>
         <div class="filter-group">
-          <div class="filter-label">🏷️ ジャンル</div>
+          <div class="filter-label">ジャンル</div>
           <div class="filter-pills" id="genrePills"></div>
         </div>
         <div class="filter-group">
-          <div class="filter-label">💰 価格</div>
+          <div class="filter-label">価格帯</div>
           <div class="filter-pills" id="pricePills"></div>
         </div>
         <div class="filter-group">
-          <div class="filter-label">🏭 メーカー</div>
+          <div class="filter-label">メーカー</div>
           <div class="filter-pills" id="makerPills"></div>
         </div>
       </div>
     </div>
 
-    <!-- Main content area -->
     <div class="main-content">
-      <!-- Results -->
       <div class="results-info">
         <div class="results-count" id="resultsCount"></div>
         <select class="sort-select" id="sortSelect">
@@ -96,54 +81,42 @@
           <option value="name">名前順</option>
         </select>
       </div>
-
-      <!-- Card Container -->
       <div id="cardContainer"></div>
     </div>
 
   </main>
 
-  <!-- Footer -->
   <footer class="footer">
     <div class="footer-inner">
-      <div class="footer-logo">🎰 ガチャプレス</div>
-      <div class="footer-text">ガチャ活ユーザーのための情報メディア</div>
+      <div class="footer-logo">ガチャプレス</div>
+      <div class="footer-text">ガチャ発売情報メディア</div>
       <div class="footer-links">
-        <a href="index.html" class="footer-link">発売カレンダー</a>
-        <a href="ranking.html" class="footer-link">人気ランキング</a>
-        <a href="#" class="footer-link">レビュー</a>
-        <a href="#" class="footer-link">お問い合わせ</a>
-        <a href="#" class="footer-link">プライバシーポリシー</a>
+        <a href="index.html" class="footer-link">カレンダー</a>
+        <a href="ranking.html" class="footer-link">ランキング</a>
       </div>
-      <div class="footer-copy">&copy; 2026 ガチャプレス All Rights Reserved.</div>
+      <div class="footer-copy">&copy; 2026 ガチャプレス</div>
     </div>
   </footer>
 
-  <!-- Scroll to Top -->
-  <button class="scroll-top" id="scrollTopBtn">↑</button>
+  <button class="scroll-top" id="scrollTopBtn">&uarr;</button>
 
-  <!-- Gacha Loading Overlay -->
   <div class="gacha-loading-overlay" id="gachaLoading">
     <div class="gacha-scene">
       <div class="gacha-machine2">
-        <!-- Globe with capsules -->
         <div class="gm-globe">
-          <div class="gm-cap" style="--c:#ff6b9d; --x:15px; --y:18px; --d:0s"></div>
-          <div class="gm-cap" style="--c:#67b8f5; --x:52px; --y:12px; --d:.15s"></div>
-          <div class="gm-cap" style="--c:#ffd166; --x:32px; --y:42px; --d:.3s"></div>
-          <div class="gm-cap" style="--c:#6ee7b7; --x:62px; --y:50px; --d:.45s"></div>
-          <div class="gm-cap" style="--c:#c084fc; --x:20px; --y:58px; --d:.6s"></div>
+          <div class="gm-cap" style="--c:#e05c44; --x:15px; --y:18px; --d:0s"></div>
+          <div class="gm-cap" style="--c:#3d3b8e; --x:52px; --y:12px; --d:.15s"></div>
+          <div class="gm-cap" style="--c:#e4a832; --x:32px; --y:42px; --d:.3s"></div>
+          <div class="gm-cap" style="--c:#4a9e7e; --x:62px; --y:50px; --d:.45s"></div>
+          <div class="gm-cap" style="--c:#7b6fb2; --x:20px; --y:58px; --d:.6s"></div>
         </div>
-        <!-- Body -->
         <div class="gm-body">
           <div class="gm-slot"></div>
         </div>
-        <!-- Handle -->
         <div class="gm-handle-arm">
           <div class="gm-handle-knob"></div>
         </div>
       </div>
-      <!-- Dispensed capsule -->
       <div class="gm-output">
         <div class="gm-output-capsule"></div>
       </div>

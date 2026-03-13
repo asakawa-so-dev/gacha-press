@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>人気ランキング - ガチャプレス</title>
-  <meta name="description" content="みんなが注目しているガチャのランキング！気になる・買ったの人気ランキングをチェック。">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎰</text></svg>">
+  <title>ランキング - ガチャプレス</title>
+  <meta name="description" content="みんなが注目しているガチャのランキング。">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>&#x25CB;</text></svg>">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -13,47 +13,42 @@
   <header class="header">
     <div class="header-inner">
       <a href="index.html" class="logo">
-        <div class="logo-icon">🎰</div>
-        <div>
-          <div class="logo-text">ガチャプレス</div>
-          <div class="logo-sub">Gacha Press</div>
-        </div>
+        <div class="logo-mark">G</div>
+        <div class="logo-text">ガチャプレス</div>
       </a>
       <nav class="nav">
-        <a href="index.html" class="nav-link">📅 カレンダー</a>
-        <a href="ranking.html" class="nav-link active">🔥 人気</a>
-        <a href="#" class="nav-link">📝 レビュー</a>
+        <a href="index.html" class="nav-link">カレンダー</a>
+        <a href="ranking.html" class="nav-link active">ランキング</a>
       </nav>
     </div>
   </header>
 
   <section class="ranking-hero">
-    <h1 class="ranking-hero-title">🔥 人気ランキング</h1>
-    <p class="ranking-hero-sub">みんなの「気になる！」と「買った！」で決まるリアルタイムランキング</p>
+    <h1 class="ranking-hero-title">ランキング</h1>
+    <p class="ranking-hero-sub">「気になる」「買った」の集計に基づくランキング</p>
   </section>
 
   <main class="ranking-main">
     <div class="ranking-tabs">
-      <button class="ranking-tab active" data-tab="interest">🤍 気になるランキング</button>
-      <button class="ranking-tab" data-tab="purchased">✅ 買ったランキング</button>
+      <button class="ranking-tab active" data-tab="interest">気になる</button>
+      <button class="ranking-tab" data-tab="purchased">買った</button>
     </div>
     <div id="rankingList"></div>
   </main>
 
   <footer class="footer">
     <div class="footer-inner">
-      <div class="footer-logo">🎰 ガチャプレス</div>
-      <div class="footer-text">ガチャ活ユーザーのための情報メディア</div>
+      <div class="footer-logo">ガチャプレス</div>
+      <div class="footer-text">ガチャ発売情報メディア</div>
       <div class="footer-links">
-        <a href="index.html" class="footer-link">発売カレンダー</a>
-        <a href="ranking.html" class="footer-link">人気ランキング</a>
-        <a href="#" class="footer-link">レビュー</a>
+        <a href="index.html" class="footer-link">カレンダー</a>
+        <a href="ranking.html" class="footer-link">ランキング</a>
       </div>
-      <div class="footer-copy">&copy; 2026 ガチャプレス All Rights Reserved.</div>
+      <div class="footer-copy">&copy; 2026 ガチャプレス</div>
     </div>
   </footer>
 
-  <button class="scroll-top" id="scrollTopBtn">↑</button>
+  <button class="scroll-top" id="scrollTopBtn">&uarr;</button>
 
   <script src="js/data.js"></script>
   <script src="js/track.js"></script>

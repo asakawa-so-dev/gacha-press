@@ -2,25 +2,16 @@
    ガチャプレス - メインアプリケーション
    ======================================== */
 
-const GENRE_ICONS = {
-  キャラクター: "🎭",
-  ミニチュア: "🏠",
-  動物: "🐾",
-  フィギュア: "🎨",
-  おもしろ: "🤣",
-  推し活: "💖",
-};
-
-const CARD_EMOJIS = {
-  キャラクター: "✨",
-  ミニチュア: "🔍",
-  動物: "🐱",
-  フィギュア: "🗿",
-  おもしろ: "🎉",
-  推し活: "💗",
-};
-
 const MONTH_LABELS = {
+  "2026-01": "1月",
+  "2026-02": "2月",
+  "2026-03": "3月",
+  "2026-04": "4月",
+  "2026-05": "5月",
+  "2026-06": "6月",
+};
+
+const MONTH_LABELS_LONG = {
   "2026-01": "2026年 1月",
   "2026-02": "2026年 2月",
   "2026-03": "2026年 3月",
@@ -29,20 +20,10 @@ const MONTH_LABELS = {
   "2026-06": "2026年 6月",
 };
 
-const GENRE_PLACEHOLDERS = {
-  キャラクター: "images/placeholder_character.svg",
-  ミニチュア: "images/placeholder_miniature.svg",
-  動物: "images/placeholder_animal.svg",
-  フィギュア: "images/placeholder_figure.svg",
-  おもしろ: "images/placeholder_fun.svg",
-  推し活: "images/placeholder_oshi.svg",
-};
-
 function getProductImage(item) {
-  return item.image || GENRE_PLACEHOLDERS[item.genre] || "images/placeholder_character.svg";
+  return item.image || "";
 }
 
-// ── State ──
 const state = {
   selectedMonth: null,
   selectedGenre: null,
@@ -51,7 +32,6 @@ const state = {
   sortBy: "month-asc",
 };
 
-// ── Initialize ──
 document.addEventListener("DOMContentLoaded", () => {
   if (typeof ensureDemoRanking === "function") ensureDemoRanking();
   renderStats();
@@ -66,42 +46,26 @@ document.addEventListener("DOMContentLoaded", () => {
 // ── Stats ──
 function renderStats() {
   const el = document.getElementById("heroStats");
+  if (!el) return;
   const thisMonth = GACHA_DATA.filter((g) => g.releaseMonth === "2026-03").length;
   el.innerHTML = `
-    <div class="hero-stat">
-      <span class="hero-stat-icon">🎯</span>
-      <div>
-        <div class="hero-stat-num">${GACHA_DATA.length}</div>
-        <div class="hero-stat-label">登録商品数</div>
-      </div>
-    </div>
-    <div class="hero-stat">
-      <span class="hero-stat-icon">🆕</span>
-      <div>
-        <div class="hero-stat-num">${thisMonth}</div>
-        <div class="hero-stat-label">今月の新商品</div>
-      </div>
-    </div>
-    <div class="hero-stat">
-      <span class="hero-stat-icon">🏭</span>
-      <div>
-        <div class="hero-stat-num">${MAKERS.length}</div>
-        <div class="hero-stat-label">メーカー</div>
-      </div>
-    </div>
+    <span class="page-stat"><strong>${GACHA_DATA.length}</strong>件</span>
+    <span class="page-stat">今月 <strong>${thisMonth}</strong>件</span>
+    <span class="page-stat"><strong>${MAKERS.length}</strong>メーカー</span>
   `;
 }
 
 // ── Filters ──
 function renderFilters() {
   renderFilterPills("monthPills", MONTHS, "month", (v) => MONTH_LABELS[v] || v);
-  renderFilterPills("genrePills", GENRES, "genre", (v) => `${GENRE_ICONS[v] || "📦"} ${v}`);
+  renderFilterPills("genrePills", GENRES, "genre");
   renderFilterPills("pricePills", PRICES, "price", (v) => `¥${v}`);
   renderFilterPills("makerPills", MAKERS, "maker");
 }
 
 function renderFilterPills(containerId, items, group, labelFn) {
   const container = document.getElementById(containerId);
+  if (!container) return;
   container.innerHTML = items
     .map((item) => {
       const label = labelFn ? labelFn(item) : item;
@@ -135,7 +99,6 @@ function clearFilters() {
   state.selectedGenre = null;
   state.selectedPrice = null;
   state.selectedMaker = null;
-
   document.querySelectorAll(".filter-pill.active").forEach((p) => p.classList.remove("active"));
   renderCards();
 }
@@ -182,17 +145,19 @@ function getFilteredData() {
 // ── Render Cards ──
 function renderCards() {
   const container = document.getElementById("cardContainer");
+  if (!container) return;
   const filtered = getFilteredData();
   const sorted = sortData(filtered);
 
-  document.getElementById("resultsCount").innerHTML = `<strong>${sorted.length}</strong> 件の商品`;
+  const countEl = document.getElementById("resultsCount");
+  if (countEl) countEl.innerHTML = `<strong>${sorted.length}</strong> 件`;
 
   if (sorted.length === 0) {
     container.innerHTML = `
       <div class="empty-state">
-        <div class="empty-icon">🔍</div>
+        <div class="empty-icon">-</div>
         <div class="empty-title">該当する商品がありません</div>
-        <div class="empty-text">フィルター条件を変更してお試しください</div>
+        <div class="empty-text">条件を変更してお試しください</div>
       </div>
     `;
     return;
@@ -221,7 +186,7 @@ function renderGroupedByMonth(container, data) {
       (month) => `
       <div class="month-group">
         <div class="month-header">
-          <span class="month-badge">📅 ${MONTH_LABELS[month] || month}</span>
+          <span class="month-badge">${MONTH_LABELS_LONG[month] || month}</span>
           <span class="month-count">${groups[month].length}件</span>
         </div>
         <div class="card-grid">
@@ -234,23 +199,24 @@ function renderGroupedByMonth(container, data) {
 }
 
 function renderCard(item) {
-  const emoji = CARD_EMOJIS[item.genre] || "📦";
   const imgSrc = getProductImage(item);
-  const imageHtml = `<div class="card-image"><img src="${imgSrc}" alt="${item.name}" loading="lazy"><span class="card-image-emoji">${emoji}</span></div>`;
+  const hasImage = !!imgSrc;
+  const imageHtml = hasImage
+    ? `<div class="card-image"><img src="${imgSrc}" alt="${item.name}" loading="lazy"></div>`
+    : `<div class="card-image"><div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--ink-muted);">No Image</div></div>`;
+
   return `
     <a href="detail.html?id=${item.id}" class="gacha-card">
       ${item.isNew ? '<div class="card-new-badge">NEW</div>' : ""}
       ${imageHtml}
       <div class="card-body">
         <div class="card-tags">
-          <span class="card-tag tag-genre">${GENRE_ICONS[item.genre] || ""} ${item.genre}</span>
-          <span class="card-tag tag-maker">${item.maker}</span>
-          <span class="card-tag tag-lineup">全${item.lineup}種</span>
+          <span class="card-tag">${item.genre}</span>
+          <span class="card-tag">${item.maker}</span>
         </div>
         <div class="card-title">${item.name}</div>
-        <div class="card-description">${item.description}</div>
         <div class="card-footer">
-          <div class="card-price">¥${item.price}<small> /回</small></div>
+          <div class="card-price">&yen;${item.price}<small> /回</small></div>
           <div class="card-release">${MONTH_LABELS[item.releaseMonth] || item.releaseMonth}</div>
         </div>
       </div>
@@ -270,20 +236,22 @@ function renderCarousel() {
   const items = top.map((entry, i) => {
     const product = GACHA_DATA.find((g) => g.id === entry.id);
     if (!product) return "";
-    const emoji = CARD_EMOJIS[product.genre] || "📦";
     const imgSrc = getProductImage(product);
-    const imageHtml = `<img src="${imgSrc}" alt="${product.name}" class="carousel-img">`;
+    const imageHtml = imgSrc
+      ? `<img src="${imgSrc}" alt="${product.name}" class="carousel-img">`
+      : `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:var(--ink-muted);font-size:11px;">No Image</div>`;
+    const purchased = typeof getRankingCount === "function" ? getRankingCount(product.id, "purchased") : 0;
+
     return `
       <a href="detail.html?id=${product.id}" class="carousel-slide">
-        <div class="carousel-rank">${i + 1}</div>
         <div class="carousel-slide-img">${imageHtml}</div>
         <div class="carousel-slide-info">
           <div class="carousel-slide-name">${product.name}</div>
           <div class="carousel-slide-meta">
-            <span class="carousel-stat">🤍 ${entry.count}</span>
-            <span class="carousel-stat">✅ ${typeof getRankingCount === "function" ? getRankingCount(product.id, "purchased") : 0}</span>
+            <span class="carousel-stat">気になる ${entry.count}</span>
+            <span class="carousel-stat">買った ${purchased}</span>
           </div>
-          <div class="carousel-slide-price">¥${product.price}</div>
+          <div class="carousel-slide-price">&yen;${product.price}</div>
         </div>
       </a>
     `;
@@ -304,7 +272,7 @@ function renderCarousel() {
 
   function goTo(idx) {
     current = ((idx % count) + count) % count;
-    const slideWidth = slides[0].offsetWidth + 16;
+    const slideWidth = slides[0].offsetWidth + 12;
     track.style.transform = `translateX(-${current * slideWidth}px)`;
     dotsEl.querySelectorAll(".carousel-dot").forEach((d, i) =>
       d.classList.toggle("active", i === current)
@@ -327,8 +295,11 @@ function renderCarousel() {
     startAuto();
   });
 
-  track.closest(".carousel-wrapper").addEventListener("mouseenter", stopAuto);
-  track.closest(".carousel-wrapper").addEventListener("mouseleave", startAuto);
+  const wrapper = track.closest(".carousel-wrapper");
+  if (wrapper) {
+    wrapper.addEventListener("mouseenter", stopAuto);
+    wrapper.addEventListener("mouseleave", startAuto);
+  }
 
   let touchStartX = 0;
   track.addEventListener("touchstart", (e) => {
@@ -353,21 +324,19 @@ function setupFilterModal() {
   if (!toggleBtn || !section) return;
 
   function openFilter() {
-    overlay.classList.add("active");
-    overlay.style.display = "block";
-    requestAnimationFrame(() => {
-      section.classList.add("modal-open");
-    });
+    if (overlay) {
+      overlay.style.display = "block";
+      requestAnimationFrame(() => overlay.classList.add("active"));
+    }
+    requestAnimationFrame(() => section.classList.add("modal-open"));
     document.body.style.overflow = "hidden";
   }
 
   function closeFilter() {
     section.classList.remove("modal-open");
-    overlay.classList.remove("active");
+    if (overlay) overlay.classList.remove("active");
     document.body.style.overflow = "";
-    setTimeout(() => {
-      overlay.style.display = "none";
-    }, 350);
+    setTimeout(() => { if (overlay) overlay.style.display = "none"; }, 350);
   }
 
   toggleBtn.addEventListener("click", openFilter);
@@ -376,22 +345,17 @@ function setupFilterModal() {
 }
 
 // ── Gacha Loading Transition ──
-function setupGachaTransition() {
-  document.addEventListener("click", handleGachaClick, true);
-  document.addEventListener("touchend", handleGachaTouch, { passive: false });
-}
-
 let gachaNavigating = false;
 
 function handleGachaTouch(e) {
-  const card = e.target.closest("a.gacha-card");
+  const card = e.target.closest("a.gacha-card") || e.target.closest("a.carousel-slide");
   if (!card || gachaNavigating) return;
   e.preventDefault();
   triggerGachaTransition(card);
 }
 
 function handleGachaClick(e) {
-  const card = e.target.closest("a.gacha-card");
+  const card = e.target.closest("a.gacha-card") || e.target.closest("a.carousel-slide");
   if (!card || gachaNavigating) return;
   e.preventDefault();
   e.stopPropagation();
@@ -408,22 +372,19 @@ function triggerGachaTransition(card) {
     return;
   }
   overlay.classList.add("active");
-  setTimeout(() => {
-    window.location.href = href;
-  }, 2000);
+  setTimeout(() => { window.location.href = href; }, 2000);
 }
 
-setupGachaTransition();
+document.addEventListener("click", handleGachaClick, true);
+document.addEventListener("touchend", handleGachaTouch, { passive: false });
 
 // ── Scroll to Top ──
 function setupScrollTop() {
   const btn = document.getElementById("scrollTopBtn");
   if (!btn) return;
-
   window.addEventListener("scroll", () => {
     btn.classList.toggle("visible", window.scrollY > 300);
   });
-
   btn.addEventListener("click", () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   });
