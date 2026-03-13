@@ -376,10 +376,31 @@ function setupFilterModal() {
 }
 
 // ── Gacha Loading Transition ──
-document.addEventListener("click", (e) => {
+function setupGachaTransition() {
+  document.addEventListener("click", handleGachaClick, true);
+  document.addEventListener("touchend", handleGachaTouch, { passive: false });
+}
+
+let gachaNavigating = false;
+
+function handleGachaTouch(e) {
   const card = e.target.closest("a.gacha-card");
-  if (!card) return;
+  if (!card || gachaNavigating) return;
   e.preventDefault();
+  triggerGachaTransition(card);
+}
+
+function handleGachaClick(e) {
+  const card = e.target.closest("a.gacha-card");
+  if (!card || gachaNavigating) return;
+  e.preventDefault();
+  e.stopPropagation();
+  triggerGachaTransition(card);
+}
+
+function triggerGachaTransition(card) {
+  if (gachaNavigating) return;
+  gachaNavigating = true;
   const href = card.getAttribute("href");
   const overlay = document.getElementById("gachaLoading");
   if (!overlay) {
@@ -390,7 +411,9 @@ document.addEventListener("click", (e) => {
   setTimeout(() => {
     window.location.href = href;
   }, 2000);
-});
+}
+
+setupGachaTransition();
 
 // ── Scroll to Top ──
 function setupScrollTop() {
