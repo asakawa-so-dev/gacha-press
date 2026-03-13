@@ -1219,19 +1219,7 @@ a.gacha-card:hover .card-image img { transform: scale(1.03); }
 
 .capsule-wrap.open .capsule-shadow { opacity: 0.4; width: 100px; }
 
-.capsule-wrap::after {
-  content: "";
-  position: absolute;
-  top: 50%; left: -2px; right: -2px;
-  height: 2px;
-  background: var(--border);
-  border-radius: 1px;
-  transform: translateY(-50%);
-  z-index: 3;
-  transition: opacity 0.25s;
-}
-
-.capsule-wrap.open::after { opacity: 0; }
+.capsule-wrap::after { display: none; }
 
 .capsule-top {
   position: absolute;
