@@ -47,11 +47,18 @@
     <div class="carousel-dots" id="carouselDots"></div>
   </section>
 
+  <!-- Filter overlay (mobile modal backdrop) -->
+  <div class="filter-overlay" id="filterOverlay"></div>
+
+  <!-- Mobile filter toggle button -->
+  <button class="filter-toggle-btn" id="filterToggleBtn">🔎 しぼりこみ</button>
+
   <!-- Main Content -->
   <main class="main">
 
-    <!-- Filter Section -->
-    <div class="filter-section">
+    <!-- Filter Section (Desktop: sticky sidebar / Mobile: bottom modal) -->
+    <div class="filter-section" id="filterSection">
+      <button class="filter-close-btn" id="filterCloseBtn">✕</button>
       <div class="filter-header">
         <div class="filter-title">🔎 しぼりこみ</div>
         <button class="filter-clear" onclick="clearFilters()">✕ クリア</button>
@@ -76,20 +83,23 @@
       </div>
     </div>
 
-    <!-- Results -->
-    <div class="results-info">
-      <div class="results-count" id="resultsCount"></div>
-      <select class="sort-select" id="sortSelect">
-        <option value="month-asc">発売月（古い順）</option>
-        <option value="month-desc">発売月（新しい順）</option>
-        <option value="price-asc">価格（安い順）</option>
-        <option value="price-desc">価格（高い順）</option>
-        <option value="name">名前順</option>
-      </select>
-    </div>
+    <!-- Main content area -->
+    <div class="main-content">
+      <!-- Results -->
+      <div class="results-info">
+        <div class="results-count" id="resultsCount"></div>
+        <select class="sort-select" id="sortSelect">
+          <option value="month-asc">発売月（古い順）</option>
+          <option value="month-desc">発売月（新しい順）</option>
+          <option value="price-asc">価格（安い順）</option>
+          <option value="price-desc">価格（高い順）</option>
+          <option value="name">名前順</option>
+        </select>
+      </div>
 
-    <!-- Card Container -->
-    <div id="cardContainer"></div>
+      <!-- Card Container -->
+      <div id="cardContainer"></div>
+    </div>
 
   </main>
 
@@ -111,6 +121,23 @@
 
   <!-- Scroll to Top -->
   <button class="scroll-top" id="scrollTopBtn">↑</button>
+
+  <!-- Gacha Loading Overlay -->
+  <div class="gacha-loading-overlay" id="gachaLoading">
+    <div class="gacha-machine">
+      <div class="gacha-machine-globe">
+        <div class="gacha-capsule"></div>
+        <div class="gacha-capsule"></div>
+        <div class="gacha-capsule"></div>
+        <div class="gacha-capsule"></div>
+        <div class="gacha-capsule"></div>
+      </div>
+      <div class="gacha-machine-body"></div>
+      <div class="gacha-handle"></div>
+      <div class="gacha-dispensed-capsule"></div>
+    </div>
+    <div class="gacha-loading-text">ガチャ回し中...</div>
+  </div>
 
   <script src="js/data.js"></script>
   <script src="js/track.js"></script>

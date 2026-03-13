@@ -60,6 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
   renderCards();
   setupScrollTop();
   setupSortSelect();
+  setupFilterModal();
 });
 
 // ── Stats ──
@@ -342,6 +343,54 @@ function renderCarousel() {
 
   startAuto();
 }
+
+// ── Filter Modal (Mobile) ──
+function setupFilterModal() {
+  const toggleBtn = document.getElementById("filterToggleBtn");
+  const closeBtn = document.getElementById("filterCloseBtn");
+  const overlay = document.getElementById("filterOverlay");
+  const section = document.getElementById("filterSection");
+  if (!toggleBtn || !section) return;
+
+  function openFilter() {
+    overlay.classList.add("active");
+    overlay.style.display = "block";
+    requestAnimationFrame(() => {
+      section.classList.add("modal-open");
+    });
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeFilter() {
+    section.classList.remove("modal-open");
+    overlay.classList.remove("active");
+    document.body.style.overflow = "";
+    setTimeout(() => {
+      overlay.style.display = "none";
+    }, 350);
+  }
+
+  toggleBtn.addEventListener("click", openFilter);
+  if (closeBtn) closeBtn.addEventListener("click", closeFilter);
+  if (overlay) overlay.addEventListener("click", closeFilter);
+}
+
+// ── Gacha Loading Transition ──
+document.addEventListener("click", (e) => {
+  const card = e.target.closest("a.gacha-card");
+  if (!card) return;
+  e.preventDefault();
+  const href = card.getAttribute("href");
+  const overlay = document.getElementById("gachaLoading");
+  if (!overlay) {
+    window.location.href = href;
+    return;
+  }
+  overlay.classList.add("active");
+  setTimeout(() => {
+    window.location.href = href;
+  }, 1500);
+});
 
 // ── Scroll to Top ──
 function setupScrollTop() {
