@@ -124,17 +124,29 @@
 
   <!-- Gacha Loading Overlay -->
   <div class="gacha-loading-overlay" id="gachaLoading">
-    <div class="gacha-machine">
-      <div class="gacha-machine-globe">
-        <div class="gacha-capsule"></div>
-        <div class="gacha-capsule"></div>
-        <div class="gacha-capsule"></div>
-        <div class="gacha-capsule"></div>
-        <div class="gacha-capsule"></div>
+    <div class="gacha-scene">
+      <div class="gacha-machine2">
+        <!-- Globe with capsules -->
+        <div class="gm-globe">
+          <div class="gm-cap" style="--c:#ff6b9d; --x:15px; --y:18px; --d:0s"></div>
+          <div class="gm-cap" style="--c:#67b8f5; --x:52px; --y:12px; --d:.15s"></div>
+          <div class="gm-cap" style="--c:#ffd166; --x:32px; --y:42px; --d:.3s"></div>
+          <div class="gm-cap" style="--c:#6ee7b7; --x:62px; --y:50px; --d:.45s"></div>
+          <div class="gm-cap" style="--c:#c084fc; --x:20px; --y:58px; --d:.6s"></div>
+        </div>
+        <!-- Body -->
+        <div class="gm-body">
+          <div class="gm-slot"></div>
+        </div>
+        <!-- Handle -->
+        <div class="gm-handle-arm">
+          <div class="gm-handle-knob"></div>
+        </div>
       </div>
-      <div class="gacha-machine-body"></div>
-      <div class="gacha-handle"></div>
-      <div class="gacha-dispensed-capsule"></div>
+      <!-- Dispensed capsule -->
+      <div class="gm-output">
+        <div class="gm-output-capsule"></div>
+      </div>
     </div>
     <div class="gacha-loading-text">ローディング中...</div>
   </div>

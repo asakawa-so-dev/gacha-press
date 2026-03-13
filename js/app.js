@@ -389,7 +389,7 @@ document.addEventListener("click", (e) => {
   overlay.classList.add("active");
   setTimeout(() => {
     window.location.href = href;
-  }, 1500);
+  }, 2000);
 });
 
 // ── Scroll to Top ──
