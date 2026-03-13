@@ -101,27 +101,28 @@
   <button class="scroll-top" id="scrollTopBtn">&uarr;</button>
 
   <div class="gacha-loading-overlay" id="gachaLoading">
-    <div class="gacha-scene">
-      <div class="gacha-machine2">
-        <div class="gm-globe">
-          <div class="gm-cap" style="--c:#e05c44; --x:15px; --y:18px; --d:0s"></div>
-          <div class="gm-cap" style="--c:#3d3b8e; --x:52px; --y:12px; --d:.15s"></div>
-          <div class="gm-cap" style="--c:#e4a832; --x:32px; --y:42px; --d:.3s"></div>
-          <div class="gm-cap" style="--c:#4a9e7e; --x:62px; --y:50px; --d:.45s"></div>
-          <div class="gm-cap" style="--c:#7b6fb2; --x:20px; --y:58px; --d:.6s"></div>
+    <div class="capsule-bg-grid"></div>
+    <div class="capsule-ambient"></div>
+    <div class="capsule-stage">
+      <div class="capsule-shadow"></div>
+      <div class="capsule-wrap">
+        <div class="capsule-top">
+          <div class="capsule-top-shine"></div>
         </div>
-        <div class="gm-body">
-          <div class="gm-slot"></div>
+        <div class="capsule-glow-seam"></div>
+        <div class="capsule-bottom">
+          <div class="capsule-bottom-shine"></div>
         </div>
-        <div class="gm-handle-arm">
-          <div class="gm-handle-knob"></div>
+        <div class="capsule-star">
+          <div class="capsule-star-orb">✦</div>
         </div>
       </div>
-      <div class="gm-output">
-        <div class="gm-output-capsule"></div>
-      </div>
+      <div class="capsule-burst"></div>
     </div>
-    <div class="gacha-loading-text">ローディング中...</div>
+    <div class="capsule-progress">
+      <div class="capsule-progress-fill"></div>
+    </div>
+    <div class="capsule-status">LOADING...</div>
   </div>
 
   <script src="js/data.js"></script>

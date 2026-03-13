@@ -346,15 +346,31 @@ function setupFilterModal() {
 
 // ── Gacha Loading Transition ──
 let gachaNavigating = false;
+let touchStartPos = null;
+const TAP_THRESHOLD = 12;
+
+document.addEventListener("touchstart", (e) => {
+  const t = e.touches[0];
+  touchStartPos = { x: t.clientX, y: t.clientY };
+}, { passive: true });
 
 function handleGachaTouch(e) {
   const card = e.target.closest("a.gacha-card") || e.target.closest("a.carousel-slide");
   if (!card || gachaNavigating) return;
+
+  if (touchStartPos) {
+    const t = e.changedTouches[0];
+    const dx = Math.abs(t.clientX - touchStartPos.x);
+    const dy = Math.abs(t.clientY - touchStartPos.y);
+    if (dx > TAP_THRESHOLD || dy > TAP_THRESHOLD) return;
+  }
+
   e.preventDefault();
   triggerGachaTransition(card);
 }
 
 function handleGachaClick(e) {
+  if ("ontouchend" in document) return;
   const card = e.target.closest("a.gacha-card") || e.target.closest("a.carousel-slide");
   if (!card || gachaNavigating) return;
   e.preventDefault();
@@ -372,11 +388,96 @@ function triggerGachaTransition(card) {
     return;
   }
   overlay.classList.add("active");
-  setTimeout(() => { window.location.href = href; }, 2000);
+  startCapsuleAnimation();
+  setTimeout(() => { window.location.href = href; }, 3200);
 }
 
 document.addEventListener("click", handleGachaClick, true);
 document.addEventListener("touchend", handleGachaTouch, { passive: false });
+
+// ── Capsule Loading Animation ──
+function startCapsuleAnimation() {
+  const overlay = document.getElementById("gachaLoading");
+  if (!overlay) return;
+  const capsuleWrap = overlay.querySelector(".capsule-wrap");
+  const topHalf = overlay.querySelector(".capsule-top");
+  const glowSeam = overlay.querySelector(".capsule-glow-seam");
+  const starEl = overlay.querySelector(".capsule-star");
+  const burstEl = overlay.querySelector(".capsule-burst");
+  const progressBar = overlay.querySelector(".capsule-progress-fill");
+  const statusText = overlay.querySelector(".capsule-status");
+  const ambientGlow = overlay.querySelector(".capsule-ambient");
+
+  capsuleWrap.classList.remove("shake", "open");
+  if (glowSeam) glowSeam.classList.remove("visible");
+  if (starEl) starEl.classList.remove("visible");
+  if (burstEl) burstEl.innerHTML = "";
+  if (progressBar) progressBar.style.width = "0%";
+  if (statusText) statusText.textContent = "LOADING...";
+  if (ambientGlow) ambientGlow.style.opacity = "0.4";
+
+  requestAnimationFrame(() => {
+    capsuleWrap.classList.add("shake");
+    animateProgress(progressBar, 0, 60, 1200);
+
+    setTimeout(() => {
+      capsuleWrap.classList.remove("shake");
+      capsuleWrap.classList.add("open");
+      if (glowSeam) glowSeam.classList.add("visible");
+      if (statusText) statusText.textContent = "OPENING...";
+      animateProgress(progressBar, 60, 80, 800);
+    }, 1200);
+
+    setTimeout(() => {
+      if (starEl) starEl.classList.add("visible");
+      if (ambientGlow) ambientGlow.style.opacity = "1";
+      if (statusText) statusText.textContent = "COMPLETE!";
+      generateBurst(burstEl);
+      generateSparkles(burstEl);
+      animateProgress(progressBar, 80, 100, 400);
+    }, 2000);
+  });
+}
+
+function animateProgress(el, from, to, duration) {
+  if (!el) return;
+  const start = performance.now();
+  function tick(now) {
+    const t = Math.min((now - start) / duration, 1);
+    el.style.width = (from + (to - from) * t) + "%";
+    if (t < 1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+
+function generateBurst(container) {
+  if (!container) return;
+  const colors = ["#FF6B9D", "#FFD93D", "#6BCB77", "#4D96FF", "#FF922B", "#CC5DE8"];
+  for (let i = 0; i < 24; i++) {
+    const angle = (i / 24) * 360 + Math.random() * 15;
+    const rad = angle * Math.PI / 180;
+    const dist = 50 + Math.random() * 100;
+    const tx = Math.cos(rad) * dist;
+    const ty = Math.sin(rad) * dist;
+    const size = 4 + Math.random() * 8;
+    const dot = document.createElement("div");
+    dot.className = "burst-dot";
+    dot.style.cssText = `width:${size}px;height:${size}px;border-radius:${size > 10 ? "50%" : "2px"};background:${colors[i % 6]};box-shadow:0 0 ${size}px ${colors[i % 6]};--tx:${tx}px;--ty:${ty}px;animation-delay:${Math.random() * 0.3}s;`;
+    container.appendChild(dot);
+  }
+}
+
+function generateSparkles(container) {
+  if (!container) return;
+  const colors = ["#FFD93D", "#FF6B9D", "#6BCB77", "#4D96FF"];
+  for (let i = 0; i < 12; i++) {
+    const sp = document.createElement("div");
+    sp.className = "sparkle-dot";
+    sp.textContent = "✦";
+    sp.style.cssText = `left:${-70 + Math.random() * 140}px;top:${-100 + Math.random() * 120}px;font-size:${8 + Math.random() * 16}px;color:${colors[i % 4]};animation-delay:${Math.random() * 0.8}s;`;
+    container.appendChild(sp);
+  }
+}
 
 // ── Scroll to Top ──
 function setupScrollTop() {
