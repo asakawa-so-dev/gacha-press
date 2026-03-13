@@ -34,7 +34,9 @@ const state = {
 
 // ── Initialize ──
 document.addEventListener("DOMContentLoaded", () => {
+  if (typeof ensureDemoRanking === "function") ensureDemoRanking();
   renderStats();
+  renderCarousel();
   renderFilters();
   renderCards();
   setupScrollTop();
@@ -235,6 +237,93 @@ function renderCard(item) {
       </div>
     </a>
   `;
+}
+
+// ── Carousel ──
+function renderCarousel() {
+  const track = document.getElementById("carouselTrack");
+  const dotsEl = document.getElementById("carouselDots");
+  if (!track || typeof getTopRanked !== "function") return;
+
+  const top = getTopRanked("interest", 5);
+  if (top.length === 0) return;
+
+  const items = top.map((entry, i) => {
+    const product = GACHA_DATA.find((g) => g.id === entry.id);
+    if (!product) return "";
+    const emoji = CARD_EMOJIS[product.genre] || "📦";
+    const imageHtml = product.image
+      ? `<img src="${product.image}" alt="${product.name}" class="carousel-img">`
+      : `<div class="carousel-placeholder">${emoji}</div>`;
+    return `
+      <a href="detail.html?id=${product.id}" class="carousel-slide">
+        <div class="carousel-rank">${i + 1}</div>
+        <div class="carousel-slide-img">${imageHtml}</div>
+        <div class="carousel-slide-info">
+          <div class="carousel-slide-name">${product.name}</div>
+          <div class="carousel-slide-meta">
+            <span class="carousel-stat">🤍 ${entry.count}</span>
+            <span class="carousel-stat">✅ ${typeof getRankingCount === "function" ? getRankingCount(product.id, "purchased") : 0}</span>
+          </div>
+          <div class="carousel-slide-price">¥${product.price}</div>
+        </div>
+      </a>
+    `;
+  });
+
+  track.innerHTML = items.join("");
+
+  const slides = track.querySelectorAll(".carousel-slide");
+  const count = slides.length;
+  if (count === 0) return;
+
+  dotsEl.innerHTML = Array.from({ length: count }, (_, i) =>
+    `<button class="carousel-dot ${i === 0 ? "active" : ""}" data-idx="${i}"></button>`
+  ).join("");
+
+  let current = 0;
+  let autoTimer;
+
+  function goTo(idx) {
+    current = ((idx % count) + count) % count;
+    const slideWidth = slides[0].offsetWidth + 16;
+    track.style.transform = `translateX(-${current * slideWidth}px)`;
+    dotsEl.querySelectorAll(".carousel-dot").forEach((d, i) =>
+      d.classList.toggle("active", i === current)
+    );
+  }
+
+  function startAuto() {
+    stopAuto();
+    autoTimer = setInterval(() => goTo(current + 1), 3500);
+  }
+
+  function stopAuto() {
+    if (autoTimer) clearInterval(autoTimer);
+  }
+
+  dotsEl.addEventListener("click", (e) => {
+    const dot = e.target.closest(".carousel-dot");
+    if (!dot) return;
+    goTo(parseInt(dot.dataset.idx, 10));
+    startAuto();
+  });
+
+  track.closest(".carousel-wrapper").addEventListener("mouseenter", stopAuto);
+  track.closest(".carousel-wrapper").addEventListener("mouseleave", startAuto);
+
+  let touchStartX = 0;
+  track.addEventListener("touchstart", (e) => {
+    touchStartX = e.touches[0].clientX;
+    stopAuto();
+  }, { passive: true });
+  track.addEventListener("touchend", (e) => {
+    const diff = touchStartX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 50) goTo(current + (diff > 0 ? 1 : -1));
+    startAuto();
+  }, { passive: true });
+
+  startAuto();
 }
 
 // ── Scroll to Top ──

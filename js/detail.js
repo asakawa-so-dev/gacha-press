@@ -88,6 +88,7 @@ function renderDetail(product) {
             data-track="interest" data-product-id="${product.id}" data-product-name="${product.name}">
             <span class="detail-btn-icon">${interested ? "❤️" : "🤍"}</span>
             <span class="detail-btn-text">${interested ? "気になる済み" : "気になる"}</span>
+            <span class="detail-btn-count">${typeof getRankingCount === "function" ? getRankingCount(product.id, "interest") : ""}</span>
           </button>
           <button type="button" class="detail-btn detail-btn-remind" 
             data-track="remind" data-product-id="${product.id}" data-product-name="${product.name}">
@@ -103,6 +104,7 @@ function renderDetail(product) {
             data-track="purchased" data-product-id="${product.id}" data-product-name="${product.name}">
             <span class="detail-btn-icon">✅</span>
             <span class="detail-btn-text">買った</span>
+            <span class="detail-btn-count">${typeof getRankingCount === "function" ? getRankingCount(product.id, "purchased") : ""}</span>
           </button>
         </div>
       </div>
@@ -135,6 +137,8 @@ function setupDetailButtonHandlers() {
     if (action === "interest") {
       const wasInterested = isInterested(pid);
       setInterest(pid, !wasInterested);
+      if (!wasInterested && typeof incrementRanking === "function") incrementRanking(pid, "interest");
+      if (wasInterested && typeof decrementRanking === "function") decrementRanking(pid, "interest");
       if (typeof trackButtonClick === "function") {
         trackButtonClick(wasInterested ? "interest_remove" : "interest_add", "気になる", productId, productName);
       }
@@ -168,6 +172,7 @@ function setupDetailButtonHandlers() {
     }
 
     if (action === "purchased") {
+      if (typeof incrementRanking === "function") incrementRanking(pid, "purchased");
       if (typeof trackButtonClick === "function") {
         trackButtonClick("purchased_click", "買った", productId, productName);
       }
