@@ -1,7 +1,7 @@
 const MONTHS = ["2026-01", "2026-02", "2026-03", "2026-04", "2026-05", "2026-06"];
 const GENRES = ["キャラクター", "ミニチュア", "動物", "フィギュア", "おもしろ", "推し活"];
 const PRICES = [200, 300, 400, 500, 600, 800, 1000, 1500];
-const MAKERS = ["バンダイ", "タカラトミーアーツ", "IP4", "キタンクラブ", "ブシロードクリエイティブ", "ケンエレファント", "J.DREAM", "TOYS CABIN", "夢屋", "ピーナッツクラブ", "ターリン・インターナショナル", "アミューズ", "SO-TA", "パレード", "ブシロード", "ケーツーステーション", "ウルトラニュープランニング", "Qualia", "コトフル", "エスケイジャパン", "ディーアイエス", "ブライトリンク", "いきもん", "エール", "トーシン", "レインボー"];
+const MAKERS = ["バンダイ", "タカラトミーアーツ", "IP4", "キタンクラブ", "ブシロードクリエイティブ", "ケンエレファント", "J.DREAM", "TOYS CABIN", "夢屋", "ピーナッツクラブ", "ターリン・インターナショナル", "アミューズ", "SO-TA", "パレード", "ブシロード", "ケーツーステーション", "ウルトラニュープランニング", "Qualia", "コトフル", "エスケイジャパン", "ディーアイエス", "ブライトリンク", "いきもん", "エール", "トーシン", "レインボー", "トイズスピリッツ"];
 
 const GACHA_DATA = [
   { id: 1, name: "ちいかわ ソフビフィギュア4", price: 400, releaseMonth: "2026-01", genre: "フィギュア", maker: "パレード", lineup: 5, description: "ちいかわのソフビフィギュアシリーズ第4弾", isNew: true, image: "images/001.jpg" },
@@ -112,7 +112,7 @@ const GACHA_DATA = [
   { id: 106, name: "セサミストリート フラットポーチ", price: 400, releaseMonth: "2026-02", genre: "推し活", maker: "Qualia", lineup: 5, description: "セサミキャラのフラットポーチ", isNew: true, image: "images/106.jpg" },
   { id: 107, name: "ハローキティ 刺繍カスタムキーホルダー", price: 400, releaseMonth: "2026-02", genre: "推し活", maker: "ケーツーステーション", lineup: 5, description: "キティの刺繍キーホルダー", isNew: true, image: "images/107.jpg" },
   { id: 108, name: "アオハルスイング", price: 300, releaseMonth: "2026-02", genre: "キャラクター", maker: "コトフル", lineup: 5, description: "青春のスイングフィギュア", isNew: true, image: "images/108.jpg" },
-  { id: 109, name: "サンリオ かおりつきフルーツ大福マスコット", price: 500, releaseMonth: "2026-02", genre: "キャラクター", maker: "タカラトミーアーツ", lineup: 5, description: "香り付きフルーツ大福型マスコット", isNew: true, image: "images/109.jpg" },
+  { id: 109, name: "サンリオ かおりつきフルーツ大福マスコット", price: 500, releaseMonth: "2026-02", genre: "キャラクター", maker: "ケーツーステーション", lineup: 5, description: "香り付きフルーツ大福型マスコット", isNew: true, image: "images/109.jpg" },
   { id: 110, name: "うちの子かわいい！ドッグリュック第2弾", price: 500, releaseMonth: "2026-02", genre: "動物", maker: "ピーナッツクラブ", lineup: 5, description: "犬型ミニリュック第2弾", isNew: true, image: "images/110.jpg" },
   { id: 111, name: "焼き芋袋2", price: 400, releaseMonth: "2026-02", genre: "ミニチュア", maker: "ターリン・インターナショナル", lineup: 5, description: "焼き芋袋のミニチュア", isNew: true, image: "images/111.jpg" },
   { id: 112, name: "いたずらぐまのグルーミー ネックストラップ", price: 400, releaseMonth: "2026-02", genre: "推し活", maker: "IP4", lineup: 5, description: "グルーミーのネックストラップ", isNew: true, image: "images/112.jpg" },
@@ -132,15 +132,15 @@ const GACHA_DATA = [
   { id: 126, name: "スーパーダンガンロンパ2 まちぼうけ", price: 400, releaseMonth: "2026-02", genre: "キャラクター", maker: "バンダイ", lineup: 5, description: "ダンガンロンパ2まちぼうけ", isNew: true, image: "images/126.jpg" },
   { id: 127, name: "ダンボいっぱいコレクション", price: 400, releaseMonth: "2026-02", genre: "キャラクター", maker: "タカラトミーアーツ", lineup: 5, description: "ディズニー・ダンボのマスコット", isNew: true, image: "images/127.jpg" },
   { id: 128, name: "着せ替え人形は恋をする Season2 キーホルダー", price: 300, releaseMonth: "2026-02", genre: "推し活", maker: "タカラトミーアーツ", lineup: 5, description: "着せ恋のラバーキーホルダー", isNew: true, image: "images/128.jpg" },
-  { id: 129, name: "ポケモン トートバッグ＆ポーチvol.10", price: 400, releaseMonth: "2026-02", genre: "推し活", maker: "タカラトミーアーツ", lineup: 5, description: "ポケモンのミニトート＆ポーチ", isNew: true, image: "images/129.jpg" },
+  { id: 129, name: "ポケモン トートバッグ＆ポーチvol.10", price: 400, releaseMonth: "2026-02", genre: "推し活", maker: "バンダイ", lineup: 5, description: "ポケモンのミニトート＆ポーチ", isNew: true, image: "images/129.jpg" },
   { id: 130, name: "パンダの穴 ミニチュアスナイパー４", price: 300, releaseMonth: "2026-02", genre: "ミニチュア", maker: "タカラトミーアーツ", lineup: 5, description: "パンダの穴ミニチュア第4弾", isNew: true, image: "images/130.jpg" },
-  { id: 131, name: "ミリオンゴッド BGMプッシュボタン", price: 500, releaseMonth: "2026-02", genre: "おもしろ", maker: "タカラトミーアーツ", lineup: 5, description: "ミリオンゴッドのBGM再生ボタン", isNew: true, image: "images/131.jpg" },
+  { id: 131, name: "ミリオンゴッド BGMプッシュボタン", price: 500, releaseMonth: "2026-02", genre: "おもしろ", maker: "J.DREAM", lineup: 5, description: "ミリオンゴッドのBGM再生ボタン", isNew: true, image: "images/131.jpg" },
   { id: 132, name: "サンリオ がまぐちキーホルダー", price: 500, releaseMonth: "2026-02", genre: "推し活", maker: "タカラトミーアーツ", lineup: 5, description: "サンリオのがまぐち型キーホルダー", isNew: true, image: "images/132.jpg" },
   { id: 133, name: "The History Collection PlayStation", price: 500, releaseMonth: "2026-02", genre: "ミニチュア", maker: "タカラトミーアーツ", lineup: 5, description: "プレステの歴史ミニチュア", isNew: true, image: "images/133.jpg" },
   { id: 134, name: "mofusand いちごチョコにゃんマスコット", price: 300, releaseMonth: "2026-02", genre: "キャラクター", maker: "バンダイ", lineup: 5, description: "mofusandいちごチョコのマスコット", isNew: true, image: "images/134.jpg" },
   { id: 135, name: "パンどろぼう カプセルヘアクリップ", price: 300, releaseMonth: "2026-02", genre: "推し活", maker: "バンダイ", lineup: 5, description: "パンどろぼうのヘアクリップ", isNew: true, image: "images/135.jpg" },
-  { id: 136, name: "サンリオ ふわわフロッキーマスコット", price: 300, releaseMonth: "2026-02", genre: "キャラクター", maker: "バンダイ", lineup: 5, description: "サンリオのふわわフロッキーマスコット", isNew: true, image: "images/136.jpg" },
-  { id: 137, name: "ケアベア クリアマスコットチャーム2", price: 300, releaseMonth: "2026-02", genre: "キャラクター", maker: "タカラトミーアーツ", lineup: 5, description: "ケアベアのクリアチャーム第2弾", isNew: true, image: "images/137.jpg" },
+  { id: 136, name: "サンリオ ふわわフロッキーマスコット", price: 300, releaseMonth: "2026-02", genre: "キャラクター", maker: "タカラトミーアーツ", lineup: 5, description: "サンリオのふわわフロッキーマスコット", isNew: true, image: "images/136.jpg" },
+  { id: 137, name: "ケアベア クリアマスコットチャーム2", price: 300, releaseMonth: "2026-02", genre: "キャラクター", maker: "IP4", lineup: 5, description: "ケアベアのクリアチャーム第2弾", isNew: true, image: "images/137.jpg" },
   { id: 138, name: "ムーミン ぬいタオル", price: 500, releaseMonth: "2026-02", genre: "推し活", maker: "キタンクラブ", lineup: 5, description: "ムーミンのぬいぐるみタオル", isNew: true, image: "images/138.jpg" },
   { id: 139, name: "手のひらネットワーク機器4", price: 500, releaseMonth: "2026-02", genre: "ミニチュア", maker: "ターリン・インターナショナル", lineup: 5, description: "ネットワーク機器のミニチュア第4弾", isNew: true, image: "images/139.jpg" },
   { id: 140, name: "サンエックス 巾着＆ポーチコレクション", price: 400, releaseMonth: "2026-02", genre: "推し活", maker: "IP4", lineup: 5, description: "サンエックスの巾着＆ポーチ", isNew: true, image: "images/140.jpg" },
@@ -150,7 +150,7 @@ const GACHA_DATA = [
   { id: 144, name: "けろけろけろっぴ バラエティーコレクション", price: 400, releaseMonth: "2026-02", genre: "キャラクター", maker: "IP4", lineup: 5, description: "けろっぴのバラエティーコレクション", isNew: true, image: "images/144.jpg" },
   { id: 145, name: "MINECRAFT めじるしアクセサリー", price: 300, releaseMonth: "2026-02", genre: "推し活", maker: "バンダイ", lineup: 5, description: "マイクラのめじるしアクセサリー", isNew: true, image: "images/145.jpg" },
   { id: 146, name: "パンツウエストポーチ", price: 400, releaseMonth: "2026-02", genre: "おもしろ", maker: "ターリン・インターナショナル", lineup: 5, description: "パンツ型ウエストポーチ", isNew: true, image: "images/146.jpg" },
-  { id: 147, name: "Honda CIVIC TYPE R コレクション", price: 500, releaseMonth: "2026-02", genre: "ミニチュア", maker: "タカラトミーアーツ", lineup: 5, description: "ホンダシビックType Rミニカー", isNew: true, image: "images/147.jpg" },
+  { id: 147, name: "Honda CIVIC TYPE R コレクション", price: 500, releaseMonth: "2026-02", genre: "ミニチュア", maker: "IP4", lineup: 5, description: "ホンダシビックType Rミニカー", isNew: true, image: "images/147.jpg" },
   { id: 148, name: "Canon ミニチュアカメラコレクション", price: 500, releaseMonth: "2026-02", genre: "ミニチュア", maker: "バンダイ", lineup: 5, description: "キヤノンカメラのミニチュア", isNew: true, image: "images/148.jpg" },
   { id: 149, name: "HGドラゴンボール04 MAJIN BUU SAGA", price: 500, releaseMonth: "2026-02", genre: "フィギュア", maker: "バンダイ", lineup: 5, description: "ドラゴンボールHG魔人ブウ編", isNew: true, image: "images/149.jpg" },
   { id: 150, name: "パンダコパンダ 前髪クリップ2", price: 400, releaseMonth: "2026-02", genre: "推し活", maker: "IP4", lineup: 5, description: "パンダコパンダのヘアクリップ第2弾", isNew: true, image: "images/150.jpg" },
@@ -218,7 +218,7 @@ const GACHA_DATA = [
   { id: 212, name: "チュッパチャプス ミニチュアコレクション Limited flavor2", price: 300, releaseMonth: "2026-03", genre: "ミニチュア", maker: "バンダイ", lineup: 5, description: "チュッパチャプスの限定フレーバーミニチュア", isNew: true, image: "images/212.jpg" },
   { id: 213, name: "ホビーガチャ トヨタ GR Supra -COMPLATE EDITION-", price: 500, releaseMonth: "2026-03", genre: "フィギュア", maker: "タカラトミーアーツ", lineup: 5, description: "トヨタGRスープラの完成品ミニカー", isNew: true, image: "images/213.jpg" },
   { id: 214, name: "どこでもいっしょ めじるしアクセサリー", price: 300, releaseMonth: "2026-03", genre: "推し活", maker: "バンダイ", lineup: 5, description: "トロのめじるしアクセサリー", isNew: true, image: "images/214.jpg" },
-  { id: 215, name: "本当に剥けちゃう！むにゅむにゅ！ふつ〜のバナナマスコット", price: 300, releaseMonth: "2026-03", genre: "おもしろ", maker: "タカラトミーアーツ", lineup: 5, description: "皮が剥けるリアルなバナナマスコット", isNew: true, image: "images/215.jpg" },
+  { id: 215, name: "本当に剥けちゃう！むにゅむにゅ！ふつ〜のバナナマスコット", price: 300, releaseMonth: "2026-03", genre: "おもしろ", maker: "トイズスピリッツ", lineup: 5, description: "皮が剥けるリアルなバナナマスコット", isNew: true, image: "images/215.jpg" },
   { id: 216, name: "ギャビーのドールハウス ザ・ムービー つながるラバーマスコット", price: 300, releaseMonth: "2026-03", genre: "キャラクター", maker: "タカラトミーアーツ", lineup: 5, description: "ギャビーのドールハウスキャラのつながるラバーマスコット", isNew: true, image: "images/216.jpg" },
   { id: 217, name: "EVERLAST ボクシンググローブコレクション", price: 300, releaseMonth: "2026-03", genre: "ミニチュア", maker: "バンダイ", lineup: 5, description: "エバーラストのボクシンググローブミニチュア", isNew: true, image: "images/217.jpg" },
   { id: 218, name: "ミッフィー巾着コレクション", price: 400, releaseMonth: "2026-03", genre: "推し活", maker: "IP4", lineup: 5, description: "ミッフィー柄の巾着バッグコレクション", isNew: true, image: "images/218.jpg" },
@@ -306,7 +306,7 @@ const GACHA_DATA = [
   { id: 300, name: "サンリオキャラクターズ ふわふわパンマスコット", price: 400, releaseMonth: "2026-03", genre: "キャラクター", maker: "タカラトミーアーツ", lineup: 5, description: "サンリオキャラのふわふわパンマスコット", isNew: true, image: "images/300.jpg" },
   { id: 301, name: "ポケモン ぽかぽかびより2", price: 400, releaseMonth: "2026-04", genre: "キャラクター", maker: "タカラトミーアーツ", lineup: 5, description: "ポケモンのぽかぽかびより第2弾", isNew: true, image: "images/301.jpg" },
   { id: 302, name: "ポケモン フニットマスコット7", price: 300, releaseMonth: "2026-04", genre: "キャラクター", maker: "タカラトミーアーツ", lineup: 5, description: "ポケモンのフニットマスコット第7弾", isNew: true, image: "images/302.jpg" },
-  { id: 303, name: "ホロライブ すわらせ隊 アクリルスタンド カラーライズ1", price: 400, releaseMonth: "2026-04", genre: "推し活", maker: "ブシロードクリエイティブ", lineup: 5, description: "ホロライブすわらせ隊のアクリルスタンド", isNew: true, image: "images/303.jpg" },
+  { id: 303, name: "ホロライブ すわらせ隊 アクリルスタンド カラーライズ1", price: 400, releaseMonth: "2026-04", genre: "推し活", maker: "バンダイ", lineup: 5, description: "ホロライブすわらせ隊のアクリルスタンド", isNew: true, image: "images/303.jpg" },
   { id: 304, name: "ふわねこのmineチャーム", price: 400, releaseMonth: "2026-04", genre: "動物", maker: "J.DREAM", lineup: 5, description: "ふわねこのマインクラフトチャーム", isNew: true, image: "images/304.jpg" },
   { id: 305, name: "ゴリランドセル おんなのこバージョン マスコットフィギュア3", price: 500, releaseMonth: "2026-04", genre: "フィギュア", maker: "J.DREAM", lineup: 5, description: "ゴリランドセルの女子向けマスコット第3弾", isNew: true, image: "images/305.jpg" },
   { id: 306, name: "ATC 戦国のぼりコレクション 天下統一編", price: 400, releaseMonth: "2026-04", genre: "おもしろ", maker: "いきもん", lineup: 8, description: "戦国武将のぼりコレクション", isNew: true, image: "images/306.jpg" },
