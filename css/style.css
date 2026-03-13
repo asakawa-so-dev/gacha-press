@@ -1202,10 +1202,19 @@ a.gacha-card:hover .card-image img { transform: scale(1.03); }
   top: 16px; left: 50%;
   transform: translateX(-50%);
   width: 110px; height: 110px;
+  perspective: 400px;
 }
 
-.capsule-wrap.shake {
-  animation: capsuleWobble 0.9s cubic-bezier(0.4, 0, 0.2, 1) both;
+.capsule-wrap.twist {
+  animation: capsuleGrip 0.9s ease both;
+}
+
+.capsule-wrap.twist .capsule-top {
+  animation: twistTop 0.9s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+.capsule-wrap.twist .capsule-bottom {
+  animation: twistBottom 0.9s cubic-bezier(0.4, 0, 0.2, 1) both;
 }
 
 .capsule-wrap.open .capsule-shadow { opacity: 0.4; width: 100px; }
@@ -1219,7 +1228,7 @@ a.gacha-card:hover .card-image img { transform: scale(1.03); }
   border-radius: 1px;
   transform: translateY(-50%);
   z-index: 3;
-  transition: opacity 0.3s;
+  transition: opacity 0.25s;
 }
 
 .capsule-wrap.open::after { opacity: 0; }
@@ -1233,13 +1242,14 @@ a.gacha-card:hover .card-image img { transform: scale(1.03); }
   box-shadow:
     inset -4px -2px 12px rgba(0,0,0,0.2),
     inset 4px 4px 12px rgba(255,255,255,0.15);
-  transition: transform 0.55s cubic-bezier(0.22, 1.6, 0.36, 1);
+  transition: transform 0.5s cubic-bezier(0.22, 1.5, 0.36, 1);
   z-index: 2;
   overflow: hidden;
+  transform-origin: center bottom;
 }
 
 .capsule-wrap.open .capsule-top {
-  transform: translateY(-56px) rotate(-15deg);
+  transform: translateY(-52px) rotate(-20deg) scale(0.95);
 }
 
 .capsule-top-shine {
@@ -1257,7 +1267,7 @@ a.gacha-card:hover .card-image img { transform: scale(1.03); }
   top: 48px; left: 50%;
   transform: translateX(-50%) scaleX(0.3);
   width: 90px; height: 16px;
-  background: radial-gradient(ellipse, rgba(61,59,142,0.3) 0%, transparent 70%);
+  background: radial-gradient(ellipse, rgba(61,59,142,0.25) 0%, transparent 70%);
   filter: blur(6px);
   z-index: 5;
   opacity: 0;
@@ -1280,6 +1290,7 @@ a.gacha-card:hover .card-image img { transform: scale(1.03); }
   overflow: hidden;
   border: 1px solid var(--border-light);
   border-top: none;
+  transform-origin: center top;
 }
 
 .capsule-bottom-shine {
@@ -1358,17 +1369,32 @@ a.gacha-card:hover .card-image img { transform: scale(1.03); }
   letter-spacing: 0.08em;
 }
 
-@keyframes capsuleWobble {
-  0%   { transform: translateX(-50%) scale(1) rotate(0deg); }
-  10%  { transform: translateX(-50%) scale(1.06) rotate(-6deg); }
-  22%  { transform: translateX(-50%) scale(0.96) rotate(5deg); }
-  36%  { transform: translateX(-50%) scale(1.08) rotate(-8deg); }
-  50%  { transform: translateX(-50%) scale(0.95) rotate(6deg); }
-  64%  { transform: translateX(-50%) scale(1.1) rotate(-10deg); }
-  78%  { transform: translateX(-50%) scale(0.94) rotate(8deg); }
-  88%  { transform: translateX(-50%) scale(1.12) rotate(-4deg); }
-  96%  { transform: translateX(-50%) scale(0.92) translateY(4px); }
-  100% { transform: translateX(-50%) scale(1) rotate(0deg); }
+@keyframes capsuleGrip {
+  0%   { transform: translateX(-50%) scale(1); }
+  15%  { transform: translateX(-50%) scale(0.96); }
+  50%  { transform: translateX(-50%) scale(0.94); }
+  85%  { transform: translateX(-50%) scale(0.92); }
+  100% { transform: translateX(-50%) scale(1); }
+}
+
+@keyframes twistTop {
+  0%   { transform: rotate(0deg); }
+  20%  { transform: rotate(-12deg); }
+  35%  { transform: rotate(4deg); }
+  55%  { transform: rotate(-18deg); }
+  70%  { transform: rotate(6deg); }
+  85%  { transform: rotate(-25deg); }
+  100% { transform: rotate(-8deg); }
+}
+
+@keyframes twistBottom {
+  0%   { transform: rotate(0deg); }
+  20%  { transform: rotate(10deg); }
+  35%  { transform: rotate(-3deg); }
+  55%  { transform: rotate(15deg); }
+  70%  { transform: rotate(-4deg); }
+  85%  { transform: rotate(20deg); }
+  100% { transform: rotate(6deg); }
 }
 
 @keyframes glowPulse {
@@ -1379,9 +1405,9 @@ a.gacha-card:hover .card-image img { transform: scale(1.03); }
 
 @keyframes popIn {
   0%   { transform: translate(-50%,-50%) scale(0); opacity: 0; }
-  50%  { transform: translate(-50%,-50%) scale(1.25); opacity: 1; }
-  70%  { transform: translate(-50%,-50%) scale(0.9); }
-  85%  { transform: translate(-50%,-50%) scale(1.06); }
+  50%  { transform: translate(-50%,-50%) scale(1.2); opacity: 1; }
+  70%  { transform: translate(-50%,-50%) scale(0.92); }
+  85%  { transform: translate(-50%,-50%) scale(1.05); }
   100% { transform: translate(-50%,-50%) scale(1); opacity: 1; }
 }
 

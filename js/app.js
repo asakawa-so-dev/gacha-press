@@ -408,7 +408,7 @@ function startCapsuleAnimation() {
   const statusText = overlay.querySelector(".capsule-status");
   const ambientGlow = overlay.querySelector(".capsule-ambient");
 
-  capsuleWrap.classList.remove("shake", "open");
+  capsuleWrap.classList.remove("twist", "open");
   if (glowSeam) glowSeam.classList.remove("visible");
   if (starEl) starEl.classList.remove("visible");
   if (burstEl) burstEl.innerHTML = "";
@@ -417,21 +417,20 @@ function startCapsuleAnimation() {
   if (ambientGlow) ambientGlow.style.opacity = "0";
 
   requestAnimationFrame(() => {
-    capsuleWrap.classList.add("shake");
+    capsuleWrap.classList.add("twist");
     animateProgress(progressBar, 0, 60, 900);
 
     setTimeout(() => {
-      capsuleWrap.classList.remove("shake");
+      capsuleWrap.classList.remove("twist");
       capsuleWrap.classList.add("open");
       if (glowSeam) glowSeam.classList.add("visible");
-      if (statusText) statusText.textContent = "開封中…";
+      if (statusText) statusText.textContent = "";
       animateProgress(progressBar, 60, 80, 600);
     }, 900);
 
     setTimeout(() => {
       if (starEl) starEl.classList.add("visible");
       if (ambientGlow) ambientGlow.style.opacity = "1";
-      if (statusText) statusText.textContent = "";
       generateBurst(burstEl);
       generateSparkles(burstEl);
       animateProgress(progressBar, 80, 100, 300);
