@@ -389,7 +389,7 @@ function triggerGachaTransition(card) {
   }
   overlay.classList.add("active");
   startCapsuleAnimation();
-  setTimeout(() => { window.location.href = href; }, 3200);
+  setTimeout(() => { window.location.href = href; }, 2700);
 }
 
 document.addEventListener("click", handleGachaClick, true);
@@ -418,15 +418,15 @@ function startCapsuleAnimation() {
 
   requestAnimationFrame(() => {
     capsuleWrap.classList.add("shake");
-    animateProgress(progressBar, 0, 60, 1200);
+    animateProgress(progressBar, 0, 60, 900);
 
     setTimeout(() => {
       capsuleWrap.classList.remove("shake");
       capsuleWrap.classList.add("open");
       if (glowSeam) glowSeam.classList.add("visible");
       if (statusText) statusText.textContent = "OPENING...";
-      animateProgress(progressBar, 60, 80, 800);
-    }, 1200);
+      animateProgress(progressBar, 60, 80, 600);
+    }, 900);
 
     setTimeout(() => {
       if (starEl) starEl.classList.add("visible");
@@ -434,8 +434,8 @@ function startCapsuleAnimation() {
       if (statusText) statusText.textContent = "COMPLETE!";
       generateBurst(burstEl);
       generateSparkles(burstEl);
-      animateProgress(progressBar, 80, 100, 400);
-    }, 2000);
+      animateProgress(progressBar, 80, 100, 300);
+    }, 1500);
   });
 }
 
