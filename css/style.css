@@ -819,13 +819,16 @@ a.gacha-card:hover .card-image img { transform: scale(1.03); }
   .filter-section {
     display: none;
     position: fixed;
+    top: auto;
     bottom: 0; left: 0; right: 0;
     width: 100%;
     max-height: 75vh;
+    flex-shrink: 1;
     border-radius: 16px 16px 0 0;
+    border: none;
     z-index: 310;
     padding: 0 var(--s4);
-    overflow-y: auto;
+    overflow: hidden;
     transform: translateY(100%);
     transition: transform 0.3s ease;
     box-shadow: var(--shadow-modal);
@@ -845,30 +848,27 @@ a.gacha-card:hover .card-image img { transform: scale(1.03); }
   }
 
   .filter-section .filter-header {
-    position: sticky;
-    top: 0;
+    flex-shrink: 0;
     background: var(--surface);
-    padding: var(--s3) 0 var(--s3);
-    margin-bottom: var(--s2);
+    padding: var(--s3) 0;
+    margin-bottom: 0;
     border-bottom: 1px solid var(--border-light);
-    z-index: 2;
   }
 
   .filter-section .filter-groups {
     flex: 1;
+    min-height: 0;
     overflow-y: auto;
-    padding-bottom: var(--s4);
+    -webkit-overflow-scrolling: touch;
+    padding: var(--s4) 0;
   }
 
   .filter-modal-footer {
     display: block;
-    position: sticky;
-    bottom: 0;
+    flex-shrink: 0;
     background: var(--surface);
     padding: var(--s3) 0 max(var(--s4), env(safe-area-inset-bottom));
     border-top: 1px solid var(--border-light);
-    z-index: 2;
-    flex-shrink: 0;
   }
 
   .filter-apply-btn {
