@@ -1,22 +1,25 @@
 /* ========================================
-   ガチャプレス Design System
+   カプる。 Design System
    ======================================== */
 
-@import url("https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap");
 
 :root {
-  /* Brand */
-  --brand: #3d3b8e;
-  --brand-light: #ededfa;
+  /* Logo 3-color system */
+  --blue: #3daae0;
+  --blue-dark: #2888c0;
+  --blue-light: #e8f4fc;
 
-  /* Action (interactive elements) */
-  --action: #e05c44;
-  --action-hover: #c94a34;
-  --action-light: #fef0ed;
+  --orange: #f58520;
+  --orange-dark: #d97010;
+  --orange-light: #fff3e6;
+
+  --yellow: #f5c800;
+  --yellow-dark: #d4ad00;
+  --yellow-light: #fffbe6;
 
   /* Status */
-  --new: #d94032;
-  --interested: #e05c44;
+  --new: #f58520;
 
   /* Neutral */
   --ink: #1c1c28;
@@ -67,64 +70,73 @@ a { color: inherit; text-decoration: none; }
    ======================================== */
 .header {
   background: var(--surface);
-  border-bottom: 1px solid var(--border);
   position: sticky;
   top: 0;
   z-index: 100;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
 }
 
-.header-inner {
-  max-width: 1120px;
+.header-top {
+  text-align: center;
+  padding: var(--s4) var(--s4) var(--s2);
+}
+
+.logo-link { display: inline-block; }
+
+.logo-banner-img {
+  display: block;
+  height: 100px;
+  width: auto;
+  max-width: 90%;
+  object-fit: contain;
   margin: 0 auto;
-  padding: 0 var(--s5);
-  height: 56px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
 }
 
-.logo {
+.header-nav {
   display: flex;
-  align-items: center;
-  gap: var(--s2);
-}
-
-.logo-mark {
-  width: 32px;
-  height: 32px;
-  background: var(--brand);
-  border-radius: var(--radius-s);
-  display: flex;
-  align-items: center;
   justify-content: center;
-  color: #fff;
-  font-size: 16px;
-  font-weight: 700;
+  gap: var(--s2);
+  padding: 0 var(--s4) var(--s3);
 }
 
-.logo-text {
-  font-size: 16px;
-  font-weight: 700;
-  color: var(--ink);
-  letter-spacing: 0.5px;
-}
-
-.nav {
-  display: flex;
-  gap: var(--s1);
-}
-
-.nav-link {
-  padding: var(--s2) var(--s3);
+.header-nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: var(--s2) var(--s5);
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 600;
   color: var(--ink-secondary);
-  border-radius: var(--radius-s);
-  transition: background 0.15s, color 0.15s;
+  border-radius: 40px;
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  transition: all 0.2s ease;
 }
 
-.nav-link:hover { background: var(--surface-alt); color: var(--ink); }
-.nav-link.active { background: var(--brand-light); color: var(--brand); font-weight: 700; }
+.header-nav-link svg { flex-shrink: 0; }
+
+.header-nav-link:hover {
+  border-color: #3daae0;
+  color: #3daae0;
+  background: #eef8ff;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(61,154,224,0.15);
+}
+
+.header-nav-link.active {
+  background: linear-gradient(135deg, #3daae0, #2888c0);
+  color: #fff;
+  border-color: transparent;
+  font-weight: 700;
+  box-shadow: 0 2px 10px rgba(61,154,224,0.3);
+}
+
+.header-nav-link.active:hover {
+  background: linear-gradient(135deg, #2888c0, #1e6da0);
+  color: #fff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(61,154,224,0.35);
+}
 
 /* ========================================
    Page Summary (replaces hero)
@@ -223,7 +235,7 @@ a { color: inherit; text-decoration: none; }
   transition: color 0.15s, background 0.15s;
 }
 
-.filter-clear:hover { color: var(--action); background: var(--action-light); }
+.filter-clear:hover { color: var(--orange); background: var(--orange-light); }
 
 .filter-groups {
   display: flex;
@@ -264,13 +276,13 @@ a { color: inherit; text-decoration: none; }
 }
 
 .filter-pill:hover {
-  border-color: var(--brand);
-  color: var(--brand);
+  border-color: var(--blue);
+  color: var(--blue);
 }
 
 .filter-pill.active {
-  border-color: var(--brand);
-  background: var(--brand);
+  border-color: var(--blue);
+  background: var(--blue);
   color: #fff;
 }
 
@@ -285,11 +297,11 @@ a { color: inherit; text-decoration: none; }
   padding: var(--s3) var(--s5);
   border-radius: var(--radius-l);
   border: none;
-  background: var(--ink);
+  background: var(--blue);
   color: #fff;
   font-size: 13px;
   font-weight: 700;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 16px rgba(61,170,224,0.3);
   transition: transform 0.15s;
 }
 
@@ -357,7 +369,7 @@ a { color: inherit; text-decoration: none; }
   transition: border-color 0.15s;
 }
 
-.sort-select:focus { border-color: var(--brand); }
+.sort-select:focus { border-color: var(--blue); }
 
 /* ========================================
    Month Group
@@ -572,7 +584,7 @@ a.gacha-card:hover .card-image img { transform: scale(1.03); }
 }
 
 .scroll-top.visible { opacity: 1; transform: translateY(0); }
-.scroll-top:hover { border-color: var(--brand); color: var(--brand); }
+.scroll-top:hover { border-color: var(--yellow); color: var(--yellow-dark); }
 
 /* ========================================
    Carousel
@@ -598,7 +610,7 @@ a.gacha-card:hover .card-image img { transform: scale(1.03); }
 
 .carousel-more {
   font-size: 12px;
-  color: var(--brand);
+  color: var(--blue);
   font-weight: 500;
 }
 
@@ -635,7 +647,7 @@ a.gacha-card:hover .card-image img { transform: scale(1.03); }
   position: absolute;
   top: 0;
   left: 0;
-  background: var(--brand);
+  background: var(--blue);
   color: #fff;
   font-weight: 700;
   font-size: 11px;
@@ -708,7 +720,7 @@ a.gacha-card:hover .card-image img { transform: scale(1.03); }
 }
 
 .carousel-dot.active {
-  background: var(--brand);
+  background: var(--blue);
   transform: scale(1.4);
 }
 
@@ -716,9 +728,10 @@ a.gacha-card:hover .card-image img { transform: scale(1.03); }
    Responsive
    ======================================== */
 @media (max-width: 768px) {
-  .header-inner { padding: 0 var(--s4); height: 48px; }
-  .logo-text { font-size: 14px; }
-  .nav-link { font-size: 12px; padding: var(--s1) var(--s2); }
+  .header-top { padding: var(--s3) var(--s3) var(--s1); }
+  .logo-banner-img { height: 64px; }
+  .header-nav { gap: var(--s2); padding: 0 var(--s3) var(--s2); }
+  .header-nav-link { font-size: 12px; padding: 6px var(--s4); }
 
   .page-summary { padding: var(--s4) var(--s4) var(--s3); gap: var(--s3); }
   .page-title { font-size: 16px; }
@@ -790,7 +803,7 @@ a.gacha-card:hover .card-image img { transform: scale(1.03); }
 }
 
 .detail-breadcrumb a {
-  color: var(--brand);
+  color: var(--blue);
 }
 
 .detail-breadcrumb a:hover { text-decoration: underline; }
@@ -803,7 +816,7 @@ a.gacha-card:hover .card-image img { transform: scale(1.03); }
 .detail-back-btn {
   display: inline-block;
   padding: var(--s3) var(--s5);
-  background: var(--brand);
+  background: var(--blue);
   color: #fff;
   border-radius: var(--radius-s);
   font-size: 13px;
@@ -867,7 +880,7 @@ a.gacha-card:hover .card-image img { transform: scale(1.03); }
   color: var(--ink-secondary);
 }
 
-.detail-tag-genre { border-color: var(--brand-light); background: var(--brand-light); color: var(--brand); }
+.detail-tag-genre { border-color: var(--blue-light); background: var(--blue-light); color: var(--blue); }
 .detail-tag-maker { background: var(--surface-alt); }
 .detail-tag-lineup { background: var(--surface-alt); }
 
@@ -927,23 +940,27 @@ a.gacha-card:hover .card-image img { transform: scale(1.03); }
   transition: all 0.15s;
 }
 
-.detail-btn:hover { border-color: var(--brand); background: var(--brand-light); }
+.detail-btn:hover { border-color: var(--blue); background: var(--blue-light); }
 .detail-btn:active { transform: scale(0.98); }
 .detail-btn-icon { font-size: 16px; }
 
 .detail-btn-interest.active {
-  background: var(--action);
-  border-color: var(--action);
+  background: var(--orange);
+  border-color: var(--orange);
   color: #fff;
 }
 
-.detail-btn-interest.active:hover { background: var(--action-hover); }
+.detail-btn-interest.active:hover { background: var(--orange-dark); }
 
 .detail-btn-purchased.active {
-  background: var(--brand);
-  border-color: var(--brand);
-  color: #fff;
+  background: var(--yellow);
+  border-color: var(--yellow);
+  color: var(--ink);
 }
+
+.detail-btn-purchased.active:hover { background: var(--yellow-dark); }
+
+.detail-btn-purchased.active .detail-btn-count { color: rgba(0,0,0,0.5); }
 
 .detail-btn-count {
   font-size: 11px;
@@ -959,7 +976,7 @@ a.gacha-card:hover .card-image img { transform: scale(1.03); }
 }
 
 .detail-back-link {
-  color: var(--brand);
+  color: var(--blue);
   font-weight: 500;
   font-size: 13px;
 }
@@ -1026,9 +1043,17 @@ a.gacha-card:hover .card-image img { transform: scale(1.03); }
 }
 
 .ranking-tab.active {
-  background: var(--brand);
   color: #fff;
   font-weight: 700;
+}
+
+.ranking-tab.active[data-tab="interest"] {
+  background: var(--orange);
+}
+
+.ranking-tab.active[data-tab="purchased"] {
+  background: var(--yellow);
+  color: var(--ink);
 }
 
 .ranking-item {
@@ -1047,7 +1072,7 @@ a.gacha-card:hover .card-image img { transform: scale(1.03); }
 
 .ranking-item:hover { box-shadow: var(--shadow-card-hover); }
 
-.ranking-item-top { border-color: var(--brand-light); }
+.ranking-item-top { border-color: var(--blue-light); }
 
 .ranking-item-rank {
   grid-row: 1 / 3;
@@ -1057,7 +1082,7 @@ a.gacha-card:hover .card-image img { transform: scale(1.03); }
   color: var(--ink-muted);
 }
 
-.ranking-item-rank.rank-top { color: var(--brand); }
+.ranking-item-rank.rank-top { color: var(--blue); }
 
 .ranking-num {
   font-size: 14px;
@@ -1109,7 +1134,8 @@ a.gacha-card:hover .card-image img { transform: scale(1.03); }
 .ranking-item-counts { display: flex; gap: var(--s4); }
 
 .ranking-count { font-size: 12px; color: var(--ink-muted); }
-.ranking-count.highlight { color: var(--brand); font-weight: 700; }
+.ranking-count.highlight-interest { color: var(--orange); font-weight: 700; }
+.ranking-count.highlight-purchased { color: var(--yellow-dark); font-weight: 700; }
 .ranking-count strong { font-weight: 700; }
 
 .ranking-item-bar {
@@ -1124,15 +1150,17 @@ a.gacha-card:hover .card-image img { transform: scale(1.03); }
 .ranking-bar-fill {
   height: 100%;
   border-radius: 2px;
-  background: var(--brand);
   transition: width 0.4s ease;
 }
+
+.ranking-bar-fill.bar-interest { background: var(--orange); }
+.ranking-bar-fill.bar-purchased { background: var(--yellow); }
 
 .ranking-empty { text-align: center; padding: var(--s8) var(--s5); }
 .ranking-empty-icon { font-size: 32px; margin-bottom: var(--s3); opacity: 0.3; }
 .ranking-empty-title { font-size: 16px; font-weight: 700; margin-bottom: var(--s2); }
 .ranking-empty-text { color: var(--ink-muted); font-size: 13px; margin-bottom: var(--s4); }
-.ranking-empty-link { color: var(--brand); font-weight: 500; }
+.ranking-empty-link { color: var(--blue); font-weight: 500; }
 .ranking-empty-link:hover { text-decoration: underline; }
 
 @media (max-width: 640px) {
@@ -1173,7 +1201,7 @@ a.gacha-card:hover .card-image img { transform: scale(1.03); }
   position: absolute;
   width: 320px; height: 320px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(61,59,142,0.06) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(61,170,224,0.08) 0%, transparent 70%);
   top: 50%; left: 50%;
   transform: translate(-50%,-50%);
   pointer-events: none;
@@ -1225,7 +1253,7 @@ a.gacha-card:hover .card-image img { transform: scale(1.03); }
   position: absolute;
   top: 0; left: 0;
   width: 110px; height: 55px;
-  background: linear-gradient(160deg, #6864c0 0%, var(--brand) 70%);
+  background: linear-gradient(160deg, #5cc4f0 0%, var(--blue) 70%);
   border-radius: 55px 55px 0 0;
   box-shadow:
     inset -4px -2px 12px rgba(0,0,0,0.2),
@@ -1255,7 +1283,7 @@ a.gacha-card:hover .card-image img { transform: scale(1.03); }
   top: 48px; left: 50%;
   transform: translateX(-50%) scaleX(0.3);
   width: 90px; height: 16px;
-  background: radial-gradient(ellipse, rgba(61,59,142,0.25) 0%, transparent 70%);
+  background: radial-gradient(ellipse, rgba(61,170,224,0.3) 0%, transparent 70%);
   filter: blur(6px);
   z-index: 5;
   opacity: 0;
@@ -1306,8 +1334,8 @@ a.gacha-card:hover .card-image img { transform: scale(1.03); }
 .capsule-star-orb {
   width: 40px; height: 40px;
   border-radius: 50%;
-  background: var(--action);
-  box-shadow: 0 0 16px rgba(224,92,68,0.3);
+  background: var(--orange);
+  box-shadow: 0 0 16px rgba(245,133,32,0.35);
   display: flex; align-items: center; justify-content: center;
   font-size: 18px;
   color: #fff;
@@ -1345,7 +1373,7 @@ a.gacha-card:hover .card-image img { transform: scale(1.03); }
   height: 100%;
   width: 0%;
   border-radius: 1px;
-  background: var(--brand);
+  background: var(--blue);
   transition: width 0.1s linear;
 }
 
