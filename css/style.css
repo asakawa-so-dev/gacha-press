@@ -198,8 +198,8 @@ a { color: inherit; text-decoration: none; }
   width: 220px;
   flex-shrink: 0;
   position: sticky;
-  top: 72px;
-  max-height: calc(100vh - 88px);
+  top: 160px;
+  max-height: calc(100vh - 176px);
   overflow-y: auto;
   background: var(--surface);
   border: 1px solid var(--border);
@@ -333,6 +333,65 @@ a { color: inherit; text-decoration: none; }
   font-size: 16px;
   align-items: center;
   justify-content: center;
+}
+
+/* ========================================
+   Search Bar
+   ======================================== */
+.search-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-bottom: var(--s4);
+}
+
+.search-bar-icon {
+  position: absolute;
+  left: var(--s3);
+  color: var(--ink-muted);
+  pointer-events: none;
+  flex-shrink: 0;
+}
+
+.search-bar-input {
+  width: 100%;
+  padding: var(--s3) var(--s5) var(--s3) 36px;
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-m);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.search-bar-input::placeholder { color: var(--ink-muted); }
+
+.search-bar-input:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(61,170,224,0.12);
+}
+
+.search-bar-clear {
+  position: absolute;
+  right: var(--s2);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border: none;
+  border-radius: 50%;
+  background: var(--surface-alt);
+  color: var(--ink-muted);
+  font-size: 14px;
+  transition: background 0.15s, color 0.15s;
+}
+
+.search-bar-clear:hover {
+  background: var(--border);
+  color: var(--ink);
 }
 
 /* ========================================
@@ -728,10 +787,30 @@ a.gacha-card:hover .card-image img { transform: scale(1.03); }
    Responsive
    ======================================== */
 @media (max-width: 768px) {
-  .header-top { padding: var(--s3) var(--s3) var(--s1); }
-  .logo-banner-img { height: 64px; }
-  .header-nav { gap: var(--s2); padding: 0 var(--s3) var(--s2); }
-  .header-nav-link { font-size: 12px; padding: 6px var(--s4); }
+  .header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: var(--s2) var(--s3);
+    gap: var(--s3);
+  }
+  .header-top {
+    padding: 0;
+    flex-shrink: 0;
+  }
+  .logo-banner-img { height: 75px; }
+  .header-nav {
+    gap: var(--s1);
+    padding: 0;
+    flex: 1;
+    justify-content: flex-end;
+  }
+  .header-nav-link {
+    font-size: 11px;
+    padding: 6px 14px;
+    gap: 4px;
+  }
+  .header-nav-link svg { width: 14px; height: 14px; }
 
   .page-summary { padding: var(--s4) var(--s4) var(--s3); gap: var(--s3); }
   .page-title { font-size: 16px; }
@@ -830,7 +909,7 @@ a.gacha-card:hover .card-image img { transform: scale(1.03); }
   align-items: start;
 }
 
-.detail-gallery { position: sticky; top: 72px; }
+.detail-gallery { position: sticky; top: 160px; }
 
 .detail-image-wrap {
   position: relative;
@@ -1164,13 +1243,19 @@ a.gacha-card:hover .card-image img { transform: scale(1.03); }
 .ranking-empty-link:hover { text-decoration: underline; }
 
 @media (max-width: 640px) {
-  .ranking-hero { padding: var(--s5) var(--s4) var(--s3); }
+  .ranking-hero { padding: var(--s4) var(--s3) var(--s3); }
   .ranking-hero-title { font-size: 16px; }
-  .ranking-item { grid-template-columns: 32px 44px 1fr; padding: var(--s2); }
+  .ranking-main { padding: 0 var(--s3) var(--s6); }
+  .ranking-tabs { margin-bottom: var(--s4); }
+  .ranking-tab { font-size: 12px; padding: var(--s2) var(--s3); }
+  .ranking-item { grid-template-columns: 28px 44px 1fr; padding: var(--s2); gap: 0 var(--s2); }
   .ranking-item-image { width: 44px; height: 44px; }
   .ranking-item-name { font-size: 12px; }
-  .ranking-item-counts { flex-direction: column; gap: 1px; }
-  .ranking-tab { font-size: 12px; padding: var(--s2) var(--s3); }
+  .ranking-item-tags { display: none; }
+  .ranking-item-counts { gap: var(--s3); }
+  .ranking-count { font-size: 11px; }
+  .ranking-item-rank { font-size: 15px; }
+  .ranking-num { font-size: 12px; }
 }
 
 /* ========================================
