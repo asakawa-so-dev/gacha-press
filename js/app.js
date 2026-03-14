@@ -1,5 +1,5 @@
 /* ========================================
-   ガチャプレス - メインアプリケーション
+   カプる。 - メインアプリケーション
    ======================================== */
 
 const MONTH_LABELS = {
@@ -459,7 +459,7 @@ function animateProgress(el, from, to, duration) {
 
 function generateBurst(container) {
   if (!container) return;
-  const colors = ["#3d3b8e", "#6864c0", "#e05c44", "#9b9bab"];
+  const colors = ["#3daae0", "#f58520", "#f5c800", "#2888c0"];
   for (let i = 0; i < 16; i++) {
     const angle = (i / 16) * 360 + Math.random() * 20;
     const rad = angle * Math.PI / 180;
@@ -476,7 +476,7 @@ function generateBurst(container) {
 
 function generateSparkles(container) {
   if (!container) return;
-  const colors = ["#3d3b8e", "#e05c44", "#6864c0", "#9b9bab"];
+  const colors = ["#3daae0", "#f58520", "#f5c800", "#2888c0"];
   for (let i = 0; i < 6; i++) {
     const sp = document.createElement("div");
     sp.className = "sparkle-dot";

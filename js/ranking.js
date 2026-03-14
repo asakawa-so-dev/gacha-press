@@ -1,5 +1,5 @@
 /* ========================================
-   ガチャプレス - ランキングページ
+   カプる。 - ランキングページ
    ======================================== */
 
 let activeTab = "interest";
@@ -47,12 +47,12 @@ function renderRanking() {
             <span class="ranking-item-tag">&yen;${product.price}</span>
           </div>
           <div class="ranking-item-counts">
-            <span class="ranking-count ${activeTab === "interest" ? "highlight" : ""}">気になる <strong>${interestCount}</strong></span>
-            <span class="ranking-count ${activeTab === "purchased" ? "highlight" : ""}">買った <strong>${purchasedCount}</strong></span>
+            <span class="ranking-count ${activeTab === "interest" ? "highlight-interest" : ""}">気になる <strong>${interestCount}</strong></span>
+            <span class="ranking-count ${activeTab === "purchased" ? "highlight-purchased" : ""}">買った <strong>${purchasedCount}</strong></span>
           </div>
         </div>
         <div class="ranking-item-bar">
-          <div class="ranking-bar-fill" style="width: ${Math.min(100, (entry.count / ranked[0].count) * 100)}%"></div>
+          <div class="ranking-bar-fill bar-${activeTab}" style="width: ${Math.min(100, (entry.count / ranked[0].count) * 100)}%"></div>
         </div>
       </a>
     `;

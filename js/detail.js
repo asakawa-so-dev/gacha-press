@@ -1,5 +1,5 @@
 /* ========================================
-   ガチャプレス - 商品詳細ページ
+   カプる。 - 商品詳細ページ
    ======================================== */
 
 const MONTH_LABELS_D = {
@@ -136,7 +136,7 @@ function setupDetailButtonHandlers() {
         trackButtonClick("share_click", "共有", productId, productName);
       const url = window.location.href;
       if (navigator.share) {
-        navigator.share({ title: productName + " | ガチャプレス", text: productName, url }).catch(() => copyUrl(url));
+        navigator.share({ title: productName + " | カプる。", text: productName, url }).catch(() => copyUrl(url));
       } else {
         copyUrl(url);
       }
@@ -166,7 +166,7 @@ function copyUrl(url) {
 document.addEventListener("DOMContentLoaded", () => {
   const id = getProductId();
   const product = getProduct(id);
-  document.title = product ? `${product.name} | ガチャプレス` : "商品が見つかりません | ガチャプレス";
+  document.title = product ? `${product.name} | カプる。` : "商品が見つかりません | カプる。";
   renderDetail(product);
   if (product && typeof trackButtonClick === "function")
     trackButtonClick("detail_page_view", "詳細表示", String(product.id), product.name);
