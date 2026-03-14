@@ -29,6 +29,7 @@ const state = {
   selectedGenre: null,
   selectedPrice: null,
   selectedMaker: null,
+  searchQuery: "",
   sortBy: "month-asc",
 };
 
@@ -41,6 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
   setupScrollTop();
   setupSortSelect();
   setupFilterModal();
+  setupSearch();
 });
 
 window.addEventListener("pageshow", (e) => {
@@ -107,8 +109,45 @@ function clearFilters() {
   state.selectedGenre = null;
   state.selectedPrice = null;
   state.selectedMaker = null;
+  state.searchQuery = "";
   document.querySelectorAll(".filter-pill.active").forEach((p) => p.classList.remove("active"));
+  const searchInput = document.getElementById("searchInput");
+  if (searchInput) searchInput.value = "";
+  updateSearchClearVisibility();
   renderCards();
+}
+
+// ── Search ──
+function setupSearch() {
+  const input = document.getElementById("searchInput");
+  const clearBtn = document.getElementById("searchClear");
+  if (!input) return;
+
+  let debounceTimer;
+  input.addEventListener("input", () => {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => {
+      state.searchQuery = input.value.trim();
+      updateSearchClearVisibility();
+      renderCards();
+    }, 200);
+  });
+
+  if (clearBtn) {
+    clearBtn.addEventListener("click", () => {
+      input.value = "";
+      state.searchQuery = "";
+      updateSearchClearVisibility();
+      renderCards();
+      input.focus();
+    });
+  }
+  updateSearchClearVisibility();
+}
+
+function updateSearchClearVisibility() {
+  const clearBtn = document.getElementById("searchClear");
+  if (clearBtn) clearBtn.style.display = state.searchQuery ? "flex" : "none";
 }
 
 // ── Sort ──
@@ -146,6 +185,12 @@ function getFilteredData() {
     if (state.selectedGenre && item.genre !== state.selectedGenre) return false;
     if (state.selectedPrice && item.price !== Number(state.selectedPrice)) return false;
     if (state.selectedMaker && item.maker !== state.selectedMaker) return false;
+    if (state.searchQuery) {
+      const q = state.searchQuery.toLowerCase();
+      const haystack = [item.name, item.maker, item.genre, item.description || "", item.lineup || ""]
+        .join(" ").toLowerCase();
+      if (!haystack.includes(q)) return false;
+    }
     return true;
   });
 }
@@ -161,10 +206,13 @@ function renderCards() {
   if (countEl) countEl.innerHTML = `<strong>${sorted.length}</strong> 件`;
 
   if (sorted.length === 0) {
+    const hint = state.searchQuery
+      ? `「${state.searchQuery}」に一致する商品が見つかりません`
+      : "該当する商品がありません";
     container.innerHTML = `
       <div class="empty-state">
         <div class="empty-icon">-</div>
-        <div class="empty-title">該当する商品がありません</div>
+        <div class="empty-title">${hint}</div>
         <div class="empty-text">条件を変更してお試しください</div>
       </div>
     `;
