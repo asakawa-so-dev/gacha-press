@@ -43,6 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
   setupSortSelect();
   setupFilterModal();
   setupSearch();
+  setupFilterClear();
 });
 
 window.addEventListener("pageshow", (e) => {
@@ -101,6 +102,7 @@ function toggleFilter(group, value, pill) {
     pill.classList.add("active");
   }
 
+  updateApplyBtnLabel();
   renderCards();
 }
 
@@ -371,15 +373,29 @@ function renderCarousel() {
   startAuto();
 }
 
+// ── Filter Clear (desktop + mobile) ──
+function setupFilterClear() {
+  const clearBtn = document.getElementById("filterClearBtn");
+  if (clearBtn) {
+    clearBtn.addEventListener("click", () => {
+      clearFilters();
+      updateApplyBtnLabel();
+    });
+  }
+}
+
 // ── Filter Modal (Mobile) ──
+let closeFilterModal = null;
+
 function setupFilterModal() {
   const toggleBtn = document.getElementById("filterToggleBtn");
-  const closeBtn = document.getElementById("filterCloseBtn");
+  const applyBtn = document.getElementById("filterApplyBtn");
   const overlay = document.getElementById("filterOverlay");
   const section = document.getElementById("filterSection");
   if (!toggleBtn || !section) return;
 
   function openFilter() {
+    updateApplyBtnLabel();
     if (overlay) {
       overlay.style.display = "block";
       requestAnimationFrame(() => overlay.classList.add("active"));
@@ -388,16 +404,23 @@ function setupFilterModal() {
     document.body.style.overflow = "hidden";
   }
 
-  function closeFilter() {
+  closeFilterModal = function () {
     section.classList.remove("modal-open");
     if (overlay) overlay.classList.remove("active");
     document.body.style.overflow = "";
     setTimeout(() => { if (overlay) overlay.style.display = "none"; }, 350);
-  }
+  };
 
   toggleBtn.addEventListener("click", openFilter);
-  if (closeBtn) closeBtn.addEventListener("click", closeFilter);
-  if (overlay) overlay.addEventListener("click", closeFilter);
+  if (applyBtn) applyBtn.addEventListener("click", () => { renderCards(); closeFilterModal(); });
+  if (overlay) overlay.addEventListener("click", closeFilterModal);
+}
+
+function updateApplyBtnLabel() {
+  const btn = document.getElementById("filterApplyBtn");
+  if (!btn) return;
+  const count = getFilteredData().length;
+  btn.textContent = `${count}件を表示する`;
 }
 
 // ── Gacha Loading Transition ──

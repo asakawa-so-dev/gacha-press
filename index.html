@@ -50,10 +50,10 @@
   <main class="main">
 
     <div class="filter-section" id="filterSection">
-      <button class="filter-close-btn" id="filterCloseBtn">&times;</button>
+      <div class="filter-modal-handle"></div>
       <div class="filter-header">
         <div class="filter-title">絞り込み</div>
-        <button class="filter-clear" onclick="clearFilters()">クリア</button>
+        <button class="filter-clear" id="filterClearBtn">条件をクリア</button>
       </div>
       <div class="filter-groups">
         <div class="filter-group">
@@ -72,6 +72,9 @@
           <div class="filter-label">メーカー</div>
           <div class="filter-pills" id="makerPills"></div>
         </div>
+      </div>
+      <div class="filter-modal-footer" id="filterFooter">
+        <button class="filter-apply-btn" id="filterApplyBtn">表示する</button>
       </div>
     </div>
 

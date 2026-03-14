@@ -319,20 +319,16 @@ a { color: inherit; text-decoration: none; }
 
 .filter-overlay.active { opacity: 1; }
 
-.filter-close-btn {
+.filter-modal-handle {
   display: none;
-  position: absolute;
-  top: var(--s3);
-  right: var(--s3);
-  width: 28px;
-  height: 28px;
-  border: none;
-  border-radius: 50%;
-  background: var(--surface-alt);
-  color: var(--ink-secondary);
-  font-size: 16px;
-  align-items: center;
-  justify-content: center;
+}
+
+.filter-modal-footer {
+  display: none;
+}
+
+.filter-apply-btn {
+  display: none;
 }
 
 /* ========================================
@@ -825,19 +821,71 @@ a.gacha-card:hover .card-image img { transform: scale(1.03); }
     position: fixed;
     bottom: 0; left: 0; right: 0;
     width: 100%;
-    max-height: 70vh;
-    border-radius: var(--radius-l) var(--radius-l) 0 0;
+    max-height: 75vh;
+    border-radius: 16px 16px 0 0;
     z-index: 310;
-    padding: var(--s5) var(--s4) 80px;
+    padding: 0 var(--s4);
     overflow-y: auto;
     transform: translateY(100%);
     transition: transform 0.3s ease;
     box-shadow: var(--shadow-modal);
   }
 
-  .filter-section.modal-open { display: block; transform: translateY(0); }
+  .filter-section.modal-open { display: flex; flex-direction: column; transform: translateY(0); }
   .filter-overlay.active { display: block; opacity: 1; }
-  .filter-close-btn { display: flex; }
+
+  .filter-modal-handle {
+    display: block;
+    width: 36px;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--border);
+    margin: var(--s3) auto var(--s2);
+    flex-shrink: 0;
+  }
+
+  .filter-section .filter-header {
+    position: sticky;
+    top: 0;
+    background: var(--surface);
+    padding: var(--s3) 0 var(--s3);
+    margin-bottom: var(--s2);
+    border-bottom: 1px solid var(--border-light);
+    z-index: 2;
+  }
+
+  .filter-section .filter-groups {
+    flex: 1;
+    overflow-y: auto;
+    padding-bottom: var(--s4);
+  }
+
+  .filter-modal-footer {
+    display: block;
+    position: sticky;
+    bottom: 0;
+    background: var(--surface);
+    padding: var(--s3) 0 max(var(--s4), env(safe-area-inset-bottom));
+    border-top: 1px solid var(--border-light);
+    z-index: 2;
+    flex-shrink: 0;
+  }
+
+  .filter-apply-btn {
+    display: block;
+    width: 100%;
+    padding: var(--s3) var(--s5);
+    border: none;
+    border-radius: var(--radius-m);
+    background: var(--blue);
+    color: #fff;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 700;
+    transition: background 0.15s;
+  }
+
+  .filter-apply-btn:active { background: var(--blue-dark); }
 
   /* 3-column grid */
   .card-grid {
