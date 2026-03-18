@@ -49,10 +49,9 @@ function renderDetail(product) {
   }
 
   const interested = isInterested(product.id);
-  const imgSrc = product.image || "";
-  const imageHtml = imgSrc
-    ? `<img src="${imgSrc}" alt="${product.name}">`
-    : `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--ink-muted);">No Image</div>`;
+  const imgSrc = product.image || (typeof getPlaceholderForGenre === "function" ? getPlaceholderForGenre(product.genre) : "images/placeholder_character.svg");
+  const fallback = typeof getPlaceholderForGenre === "function" ? getPlaceholderForGenre(product.genre) : "images/placeholder_character.svg";
+  const imageHtml = `<img src="${imgSrc}" alt="${product.name}" onerror="this.onerror=null;this.src='${fallback}'">`;
   const interestCount = typeof getRankingCount === "function" ? getRankingCount(product.id, "interest") : 0;
   const purchasedCount = typeof getRankingCount === "function" ? getRankingCount(product.id, "purchased") : 0;
 

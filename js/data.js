@@ -3,6 +3,18 @@ const GENRES = ["キャラクター", "ミニチュア", "動物", "フィギュ
 const PRICES = [200, 300, 400, 500, 600, 800, 1000, 1500];
 const MAKERS = ["バンダイ", "タカラトミーアーツ", "IP4", "キタンクラブ", "ブシロードクリエイティブ", "ケンエレファント", "J.DREAM", "TOYS CABIN", "夢屋", "ピーナッツクラブ", "ターリン・インターナショナル", "アミューズ", "SO-TA", "パレード", "ブシロード", "ケーツーステーション", "ウルトラニュープランニング", "Qualia", "コトフル", "エスケイジャパン", "ディーアイエス", "ブライトリンク", "いきもん", "エール", "トーシン", "レインボー", "トイズスピリッツ"];
 
+function getPlaceholderForGenre(genre) {
+  const map = {
+    キャラクター: "placeholder_character.svg",
+    ミニチュア: "placeholder_miniature.svg",
+    動物: "placeholder_animal.svg",
+    フィギュア: "placeholder_figure.svg",
+    おもしろ: "placeholder_fun.svg",
+    推し活: "placeholder_oshi.svg"
+  };
+  return "images/" + (map[genre] || "placeholder_character.svg");
+}
+
 const GACHA_DATA = [
   { id: 1, name: "ちいかわ ソフビフィギュア4", price: 400, releaseMonth: "2026-01", genre: "フィギュア", maker: "パレード", lineup: 5, description: "ちいかわのソフビフィギュアシリーズ第4弾", isNew: true, image: "images/001.jpg" },
   { id: 2, name: "THE!ガチャハンドル リターンズ", price: 400, releaseMonth: "2026-01", genre: "おもしろ", maker: "タカラトミーアーツ", lineup: 5, description: "ガチャハンドル型のユニークなグッズ", isNew: true, image: "images/002.jpg" },

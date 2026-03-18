@@ -25,9 +25,9 @@ function renderRanking() {
     const product = GACHA_DATA.find((g) => g.id === entry.id);
     if (!product) return "";
 
-    const imageHtml = product.image
-      ? `<img src="${product.image}" alt="${product.name}" class="ranking-item-img">`
-      : `<div class="ranking-item-placeholder">-</div>`;
+    const imgSrc = product.image || (typeof getPlaceholderForGenre === "function" ? getPlaceholderForGenre(product.genre) : "images/placeholder_character.svg");
+    const fallback = typeof getPlaceholderForGenre === "function" ? getPlaceholderForGenre(product.genre) : "images/placeholder_character.svg";
+    const imageHtml = `<img src="${imgSrc}" alt="${product.name}" class="ranking-item-img" onerror="this.onerror=null;this.src='${fallback}'">`;
 
     const interestCount = getRankingCount(product.id, "interest");
     const purchasedCount = getRankingCount(product.id, "purchased");

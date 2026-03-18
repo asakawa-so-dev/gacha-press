@@ -10,22 +10,27 @@
 </head>
 <body>
 
+  <!-- Floating Navbar (scroll-aware, Framer Motion style) -->
+  <nav class="floating-nav" id="floatingNav">
+    <a href="index.html" class="floating-nav-link">
+      <svg viewBox="0 0 16 16" fill="none"><rect x="1" y="2" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="10" y="2" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="1" y="9" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="10" y="9" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.5"/></svg>
+      <span class="fn-label">カレンダー</span>
+    </a>
+    <a href="ranking.html" class="floating-nav-link active">
+      <svg viewBox="0 0 16 16" fill="none"><path d="M8 1l2.1 4.3 4.7.7-3.4 3.3.8 4.7L8 11.7 3.8 14l.8-4.7L1.2 6l4.7-.7L8 1z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+      <span class="fn-label">ランキング</span>
+    </a>
+    <button class="floating-nav-cta" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+      トップへ
+    </button>
+  </nav>
+
   <header class="header">
     <div class="header-top">
       <a href="index.html" class="logo-link">
         <img src="images/logo.png" alt="カプる。" class="logo-banner-img">
       </a>
     </div>
-    <nav class="header-nav">
-      <a href="index.html" class="header-nav-link">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="2" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="10" y="2" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="1" y="9" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="10" y="9" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.5"/></svg>
-        カレンダー
-      </a>
-      <a href="ranking.html" class="header-nav-link active">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1l2.1 4.3 4.7.7-3.4 3.3.8 4.7L8 11.7 3.8 14l.8-4.7L1.2 6l4.7-.7L8 1z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
-        ランキング
-      </a>
-    </nav>
   </header>
 
   <section class="ranking-hero">
@@ -58,5 +63,7 @@
   <script src="js/data.js"></script>
   <script src="js/track.js"></script>
   <script src="js/ranking.js"></script>
+  <script src="js/floating-nav.js"></script>
+  <script src="js/bottom-nav.js"></script>
 </body>
 </html>
