@@ -1153,12 +1153,15 @@ a.gacha-card:hover {
   background: var(--surface-alt);
   overflow: hidden;
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .card-image img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   transition: transform 0.3s;
 }
 
@@ -1733,17 +1736,19 @@ a.gacha-card:hover .card-image img { transform: scale(1.03); }
 
 .detail-image-wrap {
   position: relative;
-  aspect-ratio: 1;
   border-radius: var(--radius-m);
   overflow: hidden;
   background: var(--surface-alt);
   border: 1px solid var(--border-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .detail-image-wrap img {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  height: auto;
+  display: block;
 }
 
 .detail-new-badge {
@@ -2062,7 +2067,7 @@ a.gacha-card:hover .card-image img { transform: scale(1.03); }
   background: var(--surface-alt);
 }
 
-.ranking-item-img { width: 100%; height: 100%; object-fit: cover; }
+.ranking-item-img { width: 100%; height: 100%; object-fit: contain; }
 
 .ranking-item-placeholder {
   width: 100%; height: 100%;
