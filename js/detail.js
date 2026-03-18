@@ -11,8 +11,6 @@ const MONTH_LABELS_D = {
   "2026-06": "2026年6月",
 };
 
-const INTEREST_STORAGE_KEY = "gacha_press_interest";
-
 function getProductId() {
   return parseInt(new URLSearchParams(window.location.search).get("id"), 10);
 }
@@ -21,20 +19,6 @@ function getProduct(id) {
   return GACHA_DATA.find((g) => g.id === id);
 }
 
-function getInterestIds() {
-  try { return JSON.parse(localStorage.getItem(INTEREST_STORAGE_KEY) || "[]"); }
-  catch { return []; }
-}
-
-function setInterest(id, add) {
-  let ids = getInterestIds();
-  if (add) { if (!ids.includes(id)) ids.push(id); }
-  else { ids = ids.filter((x) => x !== id); }
-  localStorage.setItem(INTEREST_STORAGE_KEY, JSON.stringify(ids));
-}
-
-function isInterested(id) { return getInterestIds().includes(id); }
-
 function renderDetail(product) {
   const wrap = document.getElementById("detailContent");
   if (!product) {
@@ -42,18 +26,22 @@ function renderDetail(product) {
       <div class="detail-notfound">
         <div class="detail-notfound-title">商品が見つかりません</div>
         <div class="detail-notfound-text">お探しの商品は存在しないか、削除された可能性があります。</div>
-        <a href="index.html" class="detail-back-btn">カレンダーに戻る</a>
+        <a href="index.html" class="detail-back-btn">さがすに戻る</a>
       </div>
     `;
     return;
   }
 
-  const interested = isInterested(product.id);
+  const liked = typeof isLiked === "function" && isLiked(product.id);
   const imgSrc = product.image || (typeof getPlaceholderForGenre === "function" ? getPlaceholderForGenre(product.genre) : "images/placeholder_character.svg");
   const fallback = typeof getPlaceholderForGenre === "function" ? getPlaceholderForGenre(product.genre) : "images/placeholder_character.svg";
   const imageHtml = `<img src="${imgSrc}" alt="${product.name}" onerror="this.onerror=null;this.src='${fallback}'">`;
   const interestCount = typeof getRankingCount === "function" ? getRankingCount(product.id, "interest") : 0;
   const purchasedCount = typeof getRankingCount === "function" ? getRankingCount(product.id, "purchased") : 0;
+
+  const heartSvg = `<svg viewBox="0 0 24 24" width="22" height="22"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z" fill="${liked ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>`;
+  const checkSvg = `<svg viewBox="0 0 24 24" width="22" height="22" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.8"/><path d="M8 12.5l2.5 2.5 5.5-5.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+  const shareSvg = `<svg viewBox="0 0 24 24" width="18" height="18" fill="none"><path d="M4 12v7a2 2 0 002 2h12a2 2 0 002-2v-7M16 6l-4-4-4 4M12 2v13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 
   wrap.innerHTML = `
     <div class="detail-layout">
@@ -76,79 +64,105 @@ function renderDetail(product) {
         </div>
         <p class="detail-description">${product.description}</p>
 
-        <div class="detail-actions">
-          <button type="button" class="detail-btn detail-btn-interest ${interested ? "active" : ""}"
-            data-track="interest" data-product-id="${product.id}" data-product-name="${product.name}">
-            <span class="detail-btn-text">${interested ? "気になる済み" : "気になる"}</span>
-            ${interestCount > 0 ? `<span class="detail-btn-count">${interestCount}</span>` : ""}
+        <div class="detail-reactions">
+          <button type="button" class="reaction-btn reaction-like${liked ? ' active' : ''}"
+            data-action="like" data-product-id="${product.id}">
+            <span class="reaction-icon">${heartSvg}</span>
+            <span class="reaction-label">${liked ? '気になる済み' : '気になる'}</span>
+            ${interestCount > 0 ? `<span class="reaction-count">${interestCount}</span>` : ''}
           </button>
-          <button type="button" class="detail-btn detail-btn-purchased"
-            data-track="purchased" data-product-id="${product.id}" data-product-name="${product.name}">
-            <span class="detail-btn-text">買った</span>
-            ${purchasedCount > 0 ? `<span class="detail-btn-count">${purchasedCount}</span>` : ""}
+          <button type="button" class="reaction-btn reaction-bought"
+            data-action="bought" data-product-id="${product.id}">
+            <span class="reaction-icon">${checkSvg}</span>
+            <span class="reaction-label">買った</span>
+            ${purchasedCount > 0 ? `<span class="reaction-count">${purchasedCount}</span>` : ''}
           </button>
-          <button type="button" class="detail-btn detail-btn-share"
-            data-track="share" data-product-id="${product.id}" data-product-name="${product.name}">
-            <span class="detail-btn-text">共有</span>
+          <button type="button" class="reaction-btn reaction-share"
+            data-action="share" data-product-id="${product.id}" data-product-name="${product.name}">
+            <span class="reaction-icon">${shareSvg}</span>
           </button>
         </div>
       </div>
     </div>
     <div class="detail-footer-actions">
-      <a href="index.html" class="detail-back-link">&larr; カレンダーに戻る</a>
+      <a href="index.html" class="detail-back-link">&larr; さがすに戻る</a>
     </div>
   `;
 
-  setupDetailButtonHandlers();
+  setupReactionHandlers();
 }
 
-function setupDetailButtonHandlers() {
+function setupReactionHandlers() {
   const container = document.getElementById("detailContent");
-  if (!container || container._clickBound) return;
-  container._clickBound = true;
+  if (!container || container._reactionsBound) return;
+  container._reactionsBound = true;
 
   container.addEventListener("click", function(e) {
-    const btn = e.target.closest("button[data-track]");
+    const btn = e.target.closest(".reaction-btn");
     if (!btn) return;
     e.preventDefault();
     e.stopPropagation();
 
-    const action = btn.getAttribute("data-track");
-    const productId = btn.getAttribute("data-product-id");
-    const productName = btn.getAttribute("data-product-name");
-    const pid = parseInt(productId, 10);
+    const action = btn.dataset.action;
+    const pid = parseInt(btn.dataset.productId, 10);
     const product = getProduct(pid);
 
-    if (action === "interest") {
-      const was = isInterested(pid);
-      setInterest(pid, !was);
-      if (!was && typeof incrementRanking === "function") incrementRanking(pid, "interest");
-      if (was && typeof decrementRanking === "function") decrementRanking(pid, "interest");
-      if (typeof trackButtonClick === "function")
-        trackButtonClick(was ? "interest_remove" : "interest_add", "気になる", productId, productName);
+    if (action === "like") {
+      var user = null;
+      try { user = JSON.parse(localStorage.getItem("gacha_auth_user")); } catch(ex) {}
+      if (!user) {
+        window.location.href = "mypage.html";
+        return;
+      }
+
+      if (typeof toggleLike === "function") {
+        var added = toggleLike(pid);
+        if (added) {
+          btn.classList.add("pop");
+          setTimeout(function() { btn.classList.remove("pop"); }, 400);
+        }
+      }
+      if (typeof trackButtonClick === "function") {
+        var was = btn.classList.contains("active");
+        trackButtonClick(was ? "interest_remove" : "interest_add", "気になる", String(pid), product ? product.name : "");
+      }
       if (product) renderDetail(product);
       return;
     }
 
-    if (action === "share") {
+    if (action === "bought") {
+      if (typeof incrementRanking === "function") incrementRanking(pid, "purchased");
       if (typeof trackButtonClick === "function")
-        trackButtonClick("share_click", "共有", productId, productName);
-      const url = window.location.href;
-      if (navigator.share) {
-        navigator.share({ title: productName + " | カプる。", text: productName, url }).catch(() => copyUrl(url));
-      } else {
-        copyUrl(url);
+        trackButtonClick("purchased_click", "買った", String(pid), product ? product.name : "");
+      btn.classList.add("active");
+      btn.classList.add("pop");
+      var label = btn.querySelector(".reaction-label");
+      if (label) label.textContent = "買った！";
+      setTimeout(function() { btn.classList.remove("pop"); }, 400);
+
+      var countEl = btn.querySelector(".reaction-count");
+      var newCount = typeof getRankingCount === "function" ? getRankingCount(pid, "purchased") : 0;
+      if (countEl) {
+        countEl.textContent = newCount;
+      } else if (newCount > 0) {
+        var span = document.createElement("span");
+        span.className = "reaction-count";
+        span.textContent = newCount;
+        btn.appendChild(span);
       }
       return;
     }
 
-    if (action === "purchased") {
-      if (typeof incrementRanking === "function") incrementRanking(pid, "purchased");
+    if (action === "share") {
+      var productName = btn.dataset.productName || "";
       if (typeof trackButtonClick === "function")
-        trackButtonClick("purchased_click", "買った", productId, productName);
-      btn.classList.add("active");
-      const text = btn.querySelector(".detail-btn-text");
-      if (text) text.textContent = "買った！";
+        trackButtonClick("share_click", "共有", String(pid), productName);
+      var url = window.location.href;
+      if (navigator.share) {
+        navigator.share({ title: productName + " | カプる。", text: productName, url: url }).catch(function() { copyUrl(url); });
+      } else {
+        copyUrl(url);
+      }
       return;
     }
   });

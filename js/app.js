@@ -37,10 +37,7 @@ const state = {
 
 document.addEventListener("DOMContentLoaded", () => {
   if (typeof ensureDemoRanking === "function") ensureDemoRanking();
-  initIndexViews();
   renderStats();
-  renderDropCard();
-  renderHomeCuration();
   renderFilters();
   renderCards();
   setupScrollTop();
@@ -48,6 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
   setupFilterModal();
   setupSearch();
   setupFilterClear();
+  setupHeartButtons();
 });
 
 window.addEventListener("pageshow", (e) => {
@@ -58,60 +56,47 @@ window.addEventListener("pageshow", (e) => {
   }
 });
 
-// ── Stats ──
+
+// ── Stats ── (search page)
 function renderStats() {
-  const els = [document.getElementById("heroStats"), document.getElementById("searchStats")].filter(Boolean);
-  if (els.length === 0) return;
-  const thisMonth = GACHA_DATA.filter((g) => g.releaseMonth === "2026-03").length;
-  const html = `
-    <span class="page-stat"><strong>${GACHA_DATA.length}</strong>件</span>
-    <span class="page-stat">今月 <strong>${thisMonth}</strong>件</span>
-    <span class="page-stat"><strong>${MAKERS.length}</strong>メーカー</span>
-  `;
-  els.forEach((el) => {
-    el.innerHTML = html;
-  });
+  var el = document.getElementById("searchStats");
+  if (!el) return;
+  var thisMonth = GACHA_DATA.filter(function(g) { return g.releaseMonth === "2026-03"; }).length;
+  el.innerHTML =
+    '<span class="page-stat"><strong>' + GACHA_DATA.length + '</strong>件</span>' +
+    '<span class="page-stat">今月 <strong>' + thisMonth + '</strong>件</span>' +
+    '<span class="page-stat"><strong>' + MAKERS.length + '</strong>メーカー</span>';
 }
 
-// ── View Switch (Home / Search) ──
-function initIndexViews() {
-  const homeView = document.getElementById("homeView");
-  const searchView = document.getElementById("searchView");
-  if (!homeView || !searchView) return;
-
-  function applyIndexView(view, updateHash) {
-    const isSearch = view === "search";
-    document.body.classList.toggle("index-view-search", isSearch);
-    homeView.setAttribute("aria-hidden", isSearch ? "true" : "false");
-    searchView.setAttribute("aria-hidden", isSearch ? "false" : "true");
-
-    if (!isSearch && typeof closeFilterModal === "function") closeFilterModal();
-
-    if (updateHash) {
-      const hash = isSearch ? "#search" : "#home";
-      if (window.location.hash !== hash) history.replaceState(null, "", hash);
-    }
-  }
-
-  const initialView = window.location.hash === "#search" || window.location.hash === "#searchInput" ? "search" : "home";
-  applyIndexView(initialView, false);
-
-  window.setIndexView = function (view) {
-    applyIndexView(view === "search" ? "search" : "home", true);
-  };
-}
-
-// ── Home Curation (Article Cards) ──
+// ── Home Curation (Curator Shelf + Article Cards) ──
 function renderHomeCuration() {
   var container = document.getElementById('curationContainer');
   if (!container) return;
 
+  var curators = getCuratorData();
   var articles = getArticleData();
 
-  container.innerHTML = '<div class="article-card-grid">' + articles.map(function(a) {
+  var curatorShelf = '<div class="curator-shelf">' + curators.map(function(c) {
+    return '<a href="curator.html?id=' + c.id + '" class="curator-bubble">' +
+      '<div class="curator-avatar-ring" style="--ring-color:' + c.color + '">' +
+        '<img src="' + c.avatar + '" alt="' + c.name + '" class="curator-avatar-img">' +
+      '</div>' +
+      '<span class="curator-bubble-name">' + c.name + '</span>' +
+      '<span class="curator-bubble-role">' + c.role.split('・')[0] + '</span>' +
+    '</a>';
+  }).join('') + '</div>';
+
+  var articleGrid = '<div class="article-card-grid">' + articles.map(function(a) {
     var coverItem = GACHA_DATA.find(function(g) { return g.id === a.coverProductId; });
     var coverImg = coverItem ? getProductImage(coverItem) : 'images/placeholder_character.svg';
     var coverFallback = coverItem ? getPlaceholderForGenre(coverItem.genre) : 'images/placeholder_character.svg';
+    var curator = curators.find(function(c) { return c.id === a.curatorId; });
+    var curatorBadge = curator
+      ? '<div class="article-card-curator">' +
+          '<img src="' + curator.avatar + '" alt="" class="article-card-curator-img">' +
+          '<span>' + curator.name + '</span>' +
+        '</div>'
+      : '';
     return '<a href="article.html?id=' + a.id + '" class="article-card">' +
       '<div class="article-card-cover">' +
         '<img src="' + coverImg + '" alt="" loading="lazy" onerror="this.onerror=null;this.src=\'' + coverFallback + '\'">' +
@@ -119,16 +104,54 @@ function renderHomeCuration() {
       '</div>' +
       '<div class="article-card-body">' +
         '<h3 class="article-card-title">' + a.title + '</h3>' +
-        '<p class="article-card-count">' + a.productIds.length + ' アイテム</p>' +
+        curatorBadge +
       '</div>' +
     '</a>';
   }).join('') + '</div>';
+
+  container.innerHTML = curatorShelf + articleGrid;
+}
+
+function getCuratorData() {
+  return [
+    {
+      id: 'yagi',
+      name: '八木',
+      avatar: 'images/yagi-profile.png',
+      color: '#F58520',
+      role: 'ネタ枠・コスパ・光りもの担当',
+      bio: 'ガチャの棚で「なぜ作った？」と声が出るものに吸い寄せられる。実用性は二の次。面白さとコスパの天秤を楽しむのが流儀。深夜に光るガチャを集めて並べるのが趣味。',
+      favoriteGenres: ['おもしろ', 'コスパ', '光る'],
+      articleIds: ['omoshiro-3', 'light-up', 'budget-picks'],
+    },
+    {
+      id: 'asakawa',
+      name: '浅川',
+      avatar: 'images/asakawa-profile.png',
+      color: '#3DAAE0',
+      role: 'キャラクター・推し活担当',
+      bio: 'ちいかわで入り、サンリオで深みにハマり、ジャンプ系フィギュアで造形の沼に沈んだ。推しのガチャは発売月にコンプするのが信条。まちぼうけシリーズは棚1段を占拠中。',
+      favoriteGenres: ['キャラクター', 'アニメ', 'シリーズ'],
+      articleIds: ['chiikawa', 'sanrio-flood', 'jump-anime', 'machibouke'],
+    },
+    {
+      id: 'onishi',
+      name: '大西',
+      avatar: 'images/onishi-profile.jpg',
+      color: '#4CAF50',
+      role: 'ミニチュア・造形担当',
+      bio: 'ケンエレファントの新作はとりあえず回す。食品・日用品・ガジェット、何でも小さければ正義。塗装の断面と素材の質感を語り出すと止まらない。造形の密度が¥500に見合うかを常にジャッジしている。',
+      favoriteGenres: ['ミニチュア', '動物', 'メーカー'],
+      articleIds: ['miniature', 'kitan-animals', 'ken-elephant', 'retro-tech'],
+    },
+  ];
 }
 
 function getArticleData() {
   return [
     {
       id: 'omoshiro-3',
+      curatorId: 'yagi',
       tag: 'おもしろ',
       title: 'ネタ枠ガチャ、今月の3つ',
       coverProductId: 2,
@@ -148,6 +171,7 @@ function getArticleData() {
     },
     {
       id: 'chiikawa',
+      curatorId: 'asakawa',
       tag: 'ちいかわ',
       title: 'ちいかわガチャ、どこまで増えるのか',
       coverProductId: 1,
@@ -167,6 +191,7 @@ function getArticleData() {
     },
     {
       id: 'miniature',
+      curatorId: 'onishi',
       tag: 'ミニチュア',
       title: '食卓に並べたくなるミニチュアの話',
       coverProductId: 5,
@@ -189,6 +214,7 @@ function getArticleData() {
     },
     {
       id: 'kitan-animals',
+      curatorId: 'onishi',
       tag: '動物',
       title: 'キタンクラブの猫、5匹連れてきた',
       coverProductId: 14,
@@ -214,6 +240,7 @@ function getArticleData() {
     },
     {
       id: 'sanrio-flood',
+      curatorId: 'asakawa',
       tag: 'キャラクター',
       title: 'サンリオガチャ、正直出すぎではないか',
       coverProductId: 4,
@@ -239,6 +266,7 @@ function getArticleData() {
     },
     {
       id: 'budget-picks',
+      curatorId: 'yagi',
       tag: 'コスパ',
       title: '¥300以下。安いガチャは安いなりか？',
       coverProductId: 37,
@@ -264,6 +292,7 @@ function getArticleData() {
     },
     {
       id: 'light-up',
+      curatorId: 'yagi',
       tag: '光る',
       title: '暗い部屋で光るガチャだけ集めた',
       coverProductId: 55,
@@ -289,6 +318,7 @@ function getArticleData() {
     },
     {
       id: 'machibouke',
+      curatorId: 'asakawa',
       tag: 'シリーズ',
       title: '「まちぼうけ」という万能フォーマット',
       coverProductId: 18,
@@ -314,6 +344,7 @@ function getArticleData() {
     },
     {
       id: 'ken-elephant',
+      curatorId: 'onishi',
       tag: 'メーカー',
       title: 'ケンエレファントが作ると、なぜか欲しくなる',
       coverProductId: 41,
@@ -339,6 +370,7 @@ function getArticleData() {
     },
     {
       id: 'retro-tech',
+      curatorId: 'onishi',
       tag: 'ミニチュア',
       title: 'ガジェットのミニチュアには、なぜ惹かれるのか',
       coverProductId: 133,
@@ -364,6 +396,7 @@ function getArticleData() {
     },
     {
       id: 'jump-anime',
+      curatorId: 'asakawa',
       tag: 'アニメ',
       title: 'ジャンプ系ガチャ、造形で選ぶならこの5つ',
       coverProductId: 64,
@@ -589,23 +622,58 @@ function renderCard(item) {
     ? `<div class="card-image"><img src="${imgSrc}" alt="${item.name}" loading="lazy" onerror="this.onerror=null;this.src='${placeholder}'"></div>`
     : `<div class="card-image"><div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--ink-muted);">No Image</div></div>`;
 
+  var liked = typeof isLiked === "function" && isLiked(item.id);
+  var heartClass = liked ? " liked" : "";
+
   return `
-    <a href="detail.html?id=${item.id}" class="gacha-card">
-      ${item.isNew ? '<div class="card-new-badge">NEW</div>' : ""}
-      ${imageHtml}
-      <div class="card-body">
-        <div class="card-tags">
-          <span class="card-tag">${item.genre}</span>
-          <span class="card-tag">${item.maker}</span>
+    <div class="gacha-card-wrap">
+      <a href="detail.html?id=${item.id}" class="gacha-card">
+        ${item.isNew ? '<div class="card-new-badge">NEW</div>' : ""}
+        ${imageHtml}
+        <div class="card-body">
+          <div class="card-tags">
+            <span class="card-tag">${item.genre}</span>
+            <span class="card-tag">${item.maker}</span>
+          </div>
+          <div class="card-title">${item.name}</div>
+          <div class="card-footer">
+            <div class="card-price">&yen;${item.price}<small> /回</small></div>
+          </div>
         </div>
-        <div class="card-title">${item.name}</div>
-        <div class="card-footer">
-          <div class="card-price">&yen;${item.price}<small> /回</small></div>
-          <div class="card-release">${MONTH_LABELS[item.releaseMonth] || item.releaseMonth}</div>
-        </div>
-      </div>
-    </a>
+      </a>
+      <button class="card-heart${heartClass}" data-heart-id="${item.id}" aria-label="気になる">
+        <svg viewBox="0 0 24 24" width="20" height="20"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z" fill="${liked ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
   `;
+}
+
+function setupHeartButtons() {
+  document.addEventListener("click", function (e) {
+    var btn = e.target.closest(".card-heart");
+    if (!btn) return;
+    e.preventDefault();
+    e.stopPropagation();
+
+    var user = null;
+    try { user = JSON.parse(localStorage.getItem("gacha_auth_user")); } catch(ex) {}
+    if (!user) {
+      window.location.href = "mypage.html";
+      return;
+    }
+
+    var id = parseInt(btn.dataset.heartId, 10);
+    if (typeof toggleLike === "function") {
+      var added = toggleLike(id);
+      btn.classList.toggle("liked", added);
+      var path = btn.querySelector("svg path");
+      if (path) path.setAttribute("fill", added ? "currentColor" : "none");
+      if (added) {
+        btn.classList.add("pop");
+        setTimeout(function() { btn.classList.remove("pop"); }, 300);
+      }
+    }
+  });
 }
 
 // ── Product Drop Card (注目ランキング) ──

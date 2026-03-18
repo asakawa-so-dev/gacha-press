@@ -15,12 +15,15 @@
       wrap.innerHTML =
         '<div class="article-notfound">' +
           '<p>記事が見つかりません。</p>' +
-          '<a href="index.html">ホームに戻る</a>' +
+          '<a href="index.html">さがすに戻る</a>' +
         '</div>';
       return;
     }
 
     document.title = article.title + " \u2014 カプる。";
+
+    var curators = typeof getCuratorData === "function" ? getCuratorData() : [];
+    var curator = article.curatorId ? curators.find(function (c) { return c.id === article.curatorId; }) : null;
 
     var html = '<article class="article-body">';
     html += '<header class="article-header">';
@@ -28,6 +31,16 @@
     html += '<h1 class="article-page-title">' + article.title + '</h1>';
     if (article.lede) {
       html += '<p class="article-lede">' + article.lede + '</p>';
+    }
+    if (curator) {
+      html += '<a href="curator.html?id=' + curator.id + '" class="article-curator-byline">';
+      html +=   '<img src="' + curator.avatar + '" alt="" class="article-curator-byline-img">';
+      html +=   '<div class="article-curator-byline-text">';
+      html +=     '<span class="article-curator-byline-label">この記事を書いた人</span>';
+      html +=     '<span class="article-curator-byline-name">' + curator.name + '</span>';
+      html +=     '<span class="article-curator-byline-bio">' + curator.bio + '</span>';
+      html +=   '</div>';
+      html += '</a>';
     }
     html += '</header>';
 
