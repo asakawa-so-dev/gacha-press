@@ -120,6 +120,7 @@ function setupReactionHandlers() {
         if (added) {
           btn.classList.add("pop");
           setTimeout(function() { btn.classList.remove("pop"); }, 400);
+          if (typeof capHapticMedium === "function") capHapticMedium();
         }
       }
       if (typeof trackButtonClick === "function") {
@@ -136,6 +137,7 @@ function setupReactionHandlers() {
         trackButtonClick("purchased_click", "買った", String(pid), product ? product.name : "");
       btn.classList.add("active");
       btn.classList.add("pop");
+      if (typeof capHapticSuccess === "function") capHapticSuccess();
       var label = btn.querySelector(".reaction-label");
       if (label) label.textContent = "買った！";
       setTimeout(function() { btn.classList.remove("pop"); }, 400);
@@ -157,8 +159,11 @@ function setupReactionHandlers() {
       var productName = btn.dataset.productName || "";
       if (typeof trackButtonClick === "function")
         trackButtonClick("share_click", "共有", String(pid), productName);
+      if (typeof capHapticLight === "function") capHapticLight();
       var url = window.location.href;
-      if (navigator.share) {
+      if (typeof capShare === "function") {
+        capShare(productName + " | カプる。", productName, url).then(function() {}).catch(function() { copyUrl(url); });
+      } else if (navigator.share) {
         navigator.share({ title: productName + " | カプる。", text: productName, url: url }).catch(function() { copyUrl(url); });
       } else {
         copyUrl(url);

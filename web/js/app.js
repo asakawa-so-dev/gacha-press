@@ -671,6 +671,7 @@ function setupHeartButtons() {
       if (added) {
         btn.classList.add("pop");
         setTimeout(function() { btn.classList.remove("pop"); }, 300);
+        if (typeof capHapticMedium === "function") capHapticMedium();
       }
     }
   });
