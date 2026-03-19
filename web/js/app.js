@@ -68,49 +68,6 @@ function renderStats() {
     '<span class="page-stat"><strong>' + MAKERS.length + '</strong>メーカー</span>';
 }
 
-// ── Home Curation (Curator Shelf + Article Cards) ──
-function renderHomeCuration() {
-  var container = document.getElementById('curationContainer');
-  if (!container) return;
-
-  var curators = getCuratorData();
-  var articles = getArticleData();
-
-  var curatorShelf = '<div class="curator-shelf">' + curators.map(function(c) {
-    return '<a href="curator.html?id=' + c.id + '" class="curator-bubble">' +
-      '<div class="curator-avatar-ring" style="--ring-color:' + c.color + '">' +
-        '<img src="' + c.avatar + '" alt="' + c.name + '" class="curator-avatar-img">' +
-      '</div>' +
-      '<span class="curator-bubble-name">' + c.name + '</span>' +
-      '<span class="curator-bubble-role">' + c.role.split('・')[0] + '</span>' +
-    '</a>';
-  }).join('') + '</div>';
-
-  var articleGrid = '<div class="article-card-grid">' + articles.map(function(a) {
-    var coverItem = GACHA_DATA.find(function(g) { return g.id === a.coverProductId; });
-    var coverImg = coverItem ? getProductImage(coverItem) : 'images/placeholder_character.svg';
-    var coverFallback = coverItem ? getPlaceholderForGenre(coverItem.genre) : 'images/placeholder_character.svg';
-    var curator = curators.find(function(c) { return c.id === a.curatorId; });
-    var curatorBadge = curator
-      ? '<div class="article-card-curator">' +
-          '<img src="' + curator.avatar + '" alt="" class="article-card-curator-img">' +
-          '<span>' + curator.name + '</span>' +
-        '</div>'
-      : '';
-    return '<a href="article.html?id=' + a.id + '" class="article-card">' +
-      '<div class="article-card-cover">' +
-        '<img src="' + coverImg + '" alt="" loading="lazy" onerror="this.onerror=null;this.src=\'' + coverFallback + '\'">' +
-        '<span class="article-card-tag">' + a.tag + '</span>' +
-      '</div>' +
-      '<div class="article-card-body">' +
-        '<h3 class="article-card-title">' + a.title + '</h3>' +
-        curatorBadge +
-      '</div>' +
-    '</a>';
-  }).join('') + '</div>';
-
-  container.innerHTML = curatorShelf + articleGrid;
-}
 
 function getCuratorData() {
   return [

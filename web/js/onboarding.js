@@ -44,17 +44,17 @@
             '<div class="ob-search-count ob-anim-scount">3 件ヒット</div>' +
             '<div class="ob-search-results">' +
               '<div class="ob-result-card ob-anim-result1">' +
-                '<img class="ob-r-img" src="' + img1 + '" onerror="this.style.background=\'#ffe0e6\';this.src=\'\'">' +
+                '<img class="ob-r-img" src="' + img1 + '" alt="ちいかわ ソフビフィギュア4" onerror="this.style.background=\'#ffe0e6\';this.src=\'\'">' +
                 '<div class="ob-r-info"><div class="ob-r-name-text">ちいかわ ソフビフィギュア4</div><div class="ob-r-sub-text">パレード / ¥400</div></div>' +
                 '<span class="ob-r-heart">♡</span>' +
               '</div>' +
               '<div class="ob-result-card ob-anim-result2">' +
-                '<img class="ob-r-img" src="' + img2 + '" onerror="this.style.background=\'#ddeeff\';this.src=\'\'">' +
+                '<img class="ob-r-img" src="' + img2 + '" alt="ちいかわ なんか小さくて…" onerror="this.style.background=\'#ddeeff\';this.src=\'\'">' +
                 '<div class="ob-r-info"><div class="ob-r-name-text">ちいかわ なんか小さくて…</div><div class="ob-r-sub-text">バンダイ / ¥300</div></div>' +
                 '<span class="ob-r-heart">♡</span>' +
               '</div>' +
               '<div class="ob-result-card ob-anim-result3">' +
-                '<img class="ob-r-img" src="' + img3 + '" onerror="this.style.background=\'#e8f5e9\';this.src=\'\'">' +
+                '<img class="ob-r-img" src="' + img3 + '" alt="ちいかわ おともだち…" onerror="this.style.background=\'#e8f5e9\';this.src=\'\'">' +
                 '<div class="ob-r-info"><div class="ob-r-name-text">ちいかわ おともだち…</div><div class="ob-r-sub-text">タカラトミー / ¥400</div></div>' +
                 '<span class="ob-r-heart">♡</span>' +
               '</div>' +
@@ -71,7 +71,7 @@
         return '<div class="ob-demo ob-demo-heart">' +
           '<div class="ob-phone">' +
             '<div class="ob-heart-card">' +
-              '<div class="ob-hc-img"><img src="' + cImg + '" class="ob-hc-img-real" onerror="this.style.display=\'none\'">' +
+              '<div class="ob-hc-img"><img src="' + cImg + '" class="ob-hc-img-real" alt="ガチャ商品サンプル画像" onerror="this.style.display=\'none\'">' +
                 '<div class="ob-hc-heart ob-anim-heart">' +
                   '<svg viewBox="0 0 24 24" width="18" height="18"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z" class="ob-heart-path"/></svg>' +
                 '</div>' +

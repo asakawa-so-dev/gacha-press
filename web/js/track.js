@@ -12,7 +12,7 @@ const GACHA_TRACK = {
       page: window.location.pathname || "index",
     };
 
-    if (typeof console !== "undefined" && console.debug) {
+    if (typeof console !== "undefined" && console.debug && location.hostname === "localhost") {
       console.debug("[GachaTrack]", event);
     }
 

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://asakawa-so-dev.github.io/gacha-press/sitemap.xml

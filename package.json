@@ -1,27 +1,29 @@
 {
   "name": "capuru-app",
-  "version": "1.0.0",
+  "version": "2.0.0",
+  "private": true,
   "description": "カプる。- ガチャガチャ情報メディア",
   "scripts": {
-    "build": "echo 'Static site - no build step required'",
-    "cap:sync": "npx cap sync",
-    "cap:open:ios": "npx cap open ios",
-    "cap:open:android": "npx cap open android"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "seed": "npx tsx scripts/seed.ts"
   },
   "dependencies": {
-    "@capacitor/android": "^8.2.0",
-    "@capacitor/app": "^8.0.1",
-    "@capacitor/cli": "^8.2.0",
-    "@capacitor/core": "^8.2.0",
-    "@capacitor/haptics": "^8.0.1",
-    "@capacitor/ios": "^8.2.0",
-    "@capacitor/keyboard": "^8.0.1",
-    "@capacitor/share": "^8.0.1",
-    "@capacitor/splash-screen": "^8.0.1",
-    "@capacitor/status-bar": "^8.0.1",
-    "playwright": "^1.58.2"
+    "@supabase/ssr": "^0.6.1",
+    "@supabase/supabase-js": "^2.49.4",
+    "next": "^15.3.1",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
   },
   "devDependencies": {
-    "@capacitor/assets": "^3.0.5"
+    "@tailwindcss/postcss": "^4.1.4",
+    "@types/node": "^22.15.3",
+    "@types/react": "^19.1.2",
+    "@types/react-dom": "^19.1.2",
+    "tailwindcss": "^4.1.4",
+    "typescript": "^5.8.3",
+    "tsx": "^4.19.4"
   }
 }

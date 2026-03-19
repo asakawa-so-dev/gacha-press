@@ -16,9 +16,14 @@ npm-debug.log*
 # Local
 .env
 .env.local
+.env*.local
 
 # Dependencies
 node_modules/
+
+# Next.js
+.next/
+out/
 
 # Capacitor - iOS build artifacts
 ios/App/Pods/
@@ -35,3 +40,5 @@ android/capacitor-cordova-android-plugins/build/
 
 # Archives
 *.zip
+screenshots/
+scripts/full_check*

@@ -2,7 +2,7 @@
    カプる。 Design System
    ======================================== */
 
-@import url("https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap");
+/* Font loaded via <link> in HTML for better performance */
 
 :root {
   /* Logo 3-color system */

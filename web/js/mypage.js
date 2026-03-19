@@ -60,7 +60,7 @@ function renderLoginScreen(wrap) {
         '</button>' +
       '</div>' +
 
-      '<p class="auth-notice">アカウント登録・ログインすると<br><a href="#">利用規約</a>と<a href="#">プライバシーポリシー</a>に同意したことになります。</p>' +
+      '<p class="auth-notice">アカウント登録・ログインすると<br><a href="terms.html">利用規約</a>と<a href="privacy.html">プライバシーポリシー</a>に同意したことになります。</p>' +
     '</div>';
 
   wrap.querySelectorAll(".auth-btn").forEach(function (btn) {
@@ -104,7 +104,7 @@ function renderEmailForm(wrap) {
 
 function renderLoggedIn(wrap, user) {
   var listCount = 0;
-  try { listCount = JSON.parse(localStorage.getItem("gacha_mylist") || "[]").length; } catch (e) {}
+  try { listCount = JSON.parse(localStorage.getItem("gacha_press_interest") || "[]").length; } catch (e) {}
 
   var providerLabel = { email: "メール", google: "Google", apple: "Apple", x: "X", line: "LINE" };
   var displayProvider = providerLabel[user.provider] || user.provider;
