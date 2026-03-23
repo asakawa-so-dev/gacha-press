@@ -111,7 +111,7 @@ export default function BottomNav() {
               <span className="w-6 h-6 flex items-center justify-center [&>svg]:w-5 [&>svg]:h-5">
                 {item.icon}
               </span>
-              <span className="text-[10px] font-medium">{item.label}</span>
+              <span className="text-[10px] font-bold">{item.label}</span>
             </Link>
           );
         })}

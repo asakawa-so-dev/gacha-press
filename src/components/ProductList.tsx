@@ -32,44 +32,18 @@ const SORT_OPTIONS = [
   { value: "name", label: "名前順" },
 ] as const;
 
+type FilterKey = "genre" | "month" | "price" | "maker";
+
+const FILTER_DEFS: { key: FilterKey; icon: string; label: string }[] = [
+  { key: "genre", icon: "🏷", label: "ジャンル" },
+  { key: "month", icon: "📅", label: "発売月" },
+  { key: "price", icon: "💰", label: "価格" },
+  { key: "maker", icon: "🏭", label: "メーカー" },
+];
+
 type ProductListProps = {
   products: Product[];
 };
-
-function MagnifierIcon() {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className="w-5 h-5 text-[#9b9bab]"
-    >
-      <circle cx="11" cy="11" r="8" />
-      <path d="m21 21-4.3-4.3" />
-    </svg>
-  );
-}
-
-function ChevronDownIcon() {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className="w-4 h-4 transition-transform"
-    >
-      <path d="m6 9 6 6 6-6" />
-    </svg>
-  );
-}
 
 export default function ProductList({ products }: ProductListProps) {
   const [searchQuery, setSearchQuery] = useState("");
@@ -80,7 +54,7 @@ export default function ProductList({ products }: ProductListProps) {
   const [sortBy, setSortBy] = useState<(typeof SORT_OPTIONS)[number]["value"]>(
     "month-desc"
   );
-  const [filterPanelOpen, setFilterPanelOpen] = useState(false);
+  const [openFilter, setOpenFilter] = useState<FilterKey | null>(null);
 
   const makers = useMemo(
     () => [...new Set(products.map((p) => p.maker))].sort(),
@@ -149,22 +123,43 @@ export default function ProductList({ products }: ProductListProps) {
     setter(current === value ? null : value);
   };
 
+  function getActiveLabel(key: FilterKey): string | null {
+    switch (key) {
+      case "genre": return selectedGenre;
+      case "month": return selectedMonth?.replace("-", "/") ?? null;
+      case "price": return selectedPrice != null ? `¥${selectedPrice}` : null;
+      case "maker": return selectedMaker;
+    }
+  }
+
+  function clearFilter(key: FilterKey) {
+    switch (key) {
+      case "genre": setSelectedGenre(null); break;
+      case "month": setSelectedMonth(null); break;
+      case "price": setSelectedPrice(null); break;
+      case "maker": setSelectedMaker(null); break;
+    }
+  }
+
   const hasActiveFilters =
     selectedGenre || selectedMaker || selectedPrice != null || selectedMonth;
 
   return (
     <div className="mt-6">
-      {/* SearchBar */}
+      {/* Search */}
       <div className="relative">
         <span className="absolute left-3 top-1/2 -translate-y-1/2">
-          <MagnifierIcon />
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 text-[#9b9bab]">
+            <circle cx="11" cy="11" r="8" />
+            <path d="m21 21-4.3-4.3" />
+          </svg>
         </span>
         <input
           type="text"
           placeholder="商品名・メーカー・ジャンルで検索"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full pl-10 pr-10 py-3 rounded-[10px] border border-[#e4e4ea] bg-white text-ink placeholder:text-[#9b9bab] focus:outline-none focus:ring-2 focus:ring-[#3daae0]/40 focus:border-[#3daae0] transition-shadow"
+          className="w-full pl-10 pr-10 py-3 rounded-xl border border-[#e4e4ea] bg-white text-ink placeholder:text-[#9b9bab] focus:outline-none focus:ring-2 focus:ring-[#3daae0]/40 focus:border-[#3daae0] transition-shadow"
         />
         {searchQuery && (
           <button
@@ -177,161 +172,141 @@ export default function ProductList({ products }: ProductListProps) {
         )}
       </div>
 
-      {/* Filter toggle (mobile) */}
-      <button
-        type="button"
-        onClick={() => setFilterPanelOpen((o) => !o)}
-        className="mt-4 sm:hidden w-full flex items-center justify-between gap-2 py-3 px-4 rounded-[10px] border border-[#e4e4ea] bg-white text-ink font-medium"
-      >
-        <span>絞り込み</span>
-        <span
-          className={
-            filterPanelOpen ? "rotate-180" : ""
-          }
-        >
-          <ChevronDownIcon />
-        </span>
-      </button>
+      {/* Filter chips row */}
+      <div className="mt-3 flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
+        {FILTER_DEFS.map((f) => {
+          const active = getActiveLabel(f.key);
+          const isOpen = openFilter === f.key;
+          return (
+            <button
+              key={f.key}
+              type="button"
+              onClick={() => setOpenFilter(isOpen ? null : f.key)}
+              className={`flex-shrink-0 flex items-center gap-1.5 rounded-full px-3.5 py-2 text-sm font-bold transition-all active:scale-95 ${
+                active
+                  ? "bg-[#3daae0] text-white shadow-sm"
+                  : isOpen
+                    ? "bg-[#3daae0]/10 text-[#3daae0] border border-[#3daae0]/30"
+                    : "bg-white text-[var(--color-ink-secondary)] border border-[#e4e4ea]"
+              }`}
+            >
+              <span className="text-base leading-none">{f.icon}</span>
+              <span>{active || f.label}</span>
+              {active && (
+                <span
+                  onClick={(e) => { e.stopPropagation(); clearFilter(f.key); setOpenFilter(null); }}
+                  className="ml-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-white/30 text-[10px] leading-none"
+                >
+                  ×
+                </span>
+              )}
+              {!active && (
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className={`transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}>
+                  <path d="m6 9 6 6 6-6" />
+                </svg>
+              )}
+            </button>
+          );
+        })}
 
-      {/* Filter panel (collapsible on mobile) */}
-      <div
-        className={
-          filterPanelOpen
-            ? "mt-4 sm:mt-4 block"
-            : "hidden sm:block sm:mt-4"
-        }
-      >
-        <div className="rounded-lg border border-[#e4e4ea] bg-white p-4 space-y-5">
-          {/* Genre */}
-          <div>
-            <p className="text-xs font-medium text-[#5c5c6f] mb-2">ジャンル</p>
-            <div className="flex flex-wrap gap-2">
-              {GENRES.map((g) => {
-                const active = selectedGenre === g;
-                return (
-                  <button
-                    key={g}
-                    type="button"
-                    onClick={() => toggleFilter(selectedGenre, g, setSelectedGenre)}
-                    className={`px-4 py-2 rounded-full border text-sm font-medium transition-colors ${
-                      active
-                        ? "bg-[#3daae0] text-white border-[#3daae0]"
-                        : "bg-white text-ink border-[#e4e4ea] hover:border-[#3daae0]/50"
-                    }`}
-                  >
-                    {g}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Month */}
-          <div>
-            <p className="text-xs font-medium text-[#5c5c6f] mb-2">発売月</p>
-            <div className="flex flex-wrap gap-2">
-              {MONTHS.map((m) => {
-                const active = selectedMonth === m;
-                return (
-                  <button
-                    key={m}
-                    type="button"
-                    onClick={() =>
-                      toggleFilter(selectedMonth, m, setSelectedMonth)
-                    }
-                    className={`px-4 py-2 rounded-full border text-sm font-medium transition-colors ${
-                      active
-                        ? "bg-[#3daae0] text-white border-[#3daae0]"
-                        : "bg-white text-ink border-[#e4e4ea] hover:border-[#3daae0]/50"
-                    }`}
-                  >
-                    {m.replace("-", "/")}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Price */}
-          <div>
-            <p className="text-xs font-medium text-[#5c5c6f] mb-2">価格（¥）</p>
-            <div className="flex flex-wrap gap-2">
-              {PRICES.map((p) => {
-                const active = selectedPrice === p;
-                return (
-                  <button
-                    key={p}
-                    type="button"
-                    onClick={() =>
-                      toggleFilter(selectedPrice, p, setSelectedPrice)
-                    }
-                    className={`px-4 py-2 rounded-full border text-sm font-medium transition-colors ${
-                      active
-                        ? "bg-[#3daae0] text-white border-[#3daae0]"
-                        : "bg-white text-ink border-[#e4e4ea] hover:border-[#3daae0]/50"
-                    }`}
-                  >
-                    ¥{p}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Maker */}
-          <div>
-            <p className="text-xs font-medium text-[#5c5c6f] mb-2">メーカー</p>
-            <div className="flex flex-wrap gap-2">
-              {makers.map((m) => {
-                const active = selectedMaker === m;
-                return (
-                  <button
-                    key={m}
-                    type="button"
-                    onClick={() =>
-                      toggleFilter(selectedMaker, m, setSelectedMaker)
-                    }
-                    className={`px-4 py-2 rounded-full border text-sm font-medium transition-colors ${
-                      active
-                        ? "bg-[#3daae0] text-white border-[#3daae0]"
-                        : "bg-white text-ink border-[#e4e4ea] hover:border-[#3daae0]/50"
-                    }`}
-                  >
-                    {m}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-        </div>
+        {hasActiveFilters && (
+          <button
+            type="button"
+            onClick={() => {
+              setSelectedGenre(null);
+              setSelectedMonth(null);
+              setSelectedPrice(null);
+              setSelectedMaker(null);
+              setOpenFilter(null);
+            }}
+            className="flex-shrink-0 flex items-center gap-1 rounded-full px-3 py-2 text-xs font-bold text-[#ec4899] bg-[#ec4899]/10 border border-[#ec4899]/20 transition-all active:scale-95"
+          >
+            リセット
+          </button>
+        )}
       </div>
 
-      {/* Sort + count */}
-      <div className="mt-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-        <p className="text-sm text-[#5c5c6f]">
+      {/* Expandable filter options */}
+      {openFilter && (
+        <div className="mt-2 rounded-xl border border-[#e4e4ea] bg-white p-3 shadow-sm animate-[fade-up-in_0.2s_ease]">
+          <div className="flex flex-wrap gap-2">
+            {openFilter === "genre" &&
+              GENRES.map((g) => (
+                <FilterChip
+                  key={g}
+                  label={g}
+                  active={selectedGenre === g}
+                  onClick={() => { toggleFilter(selectedGenre, g, setSelectedGenre); setOpenFilter(null); }}
+                />
+              ))}
+            {openFilter === "month" &&
+              MONTHS.map((m) => (
+                <FilterChip
+                  key={m}
+                  label={m.replace("-", "/")}
+                  active={selectedMonth === m}
+                  onClick={() => { toggleFilter(selectedMonth, m, setSelectedMonth); setOpenFilter(null); }}
+                />
+              ))}
+            {openFilter === "price" &&
+              PRICES.map((p) => (
+                <FilterChip
+                  key={p}
+                  label={`¥${p}`}
+                  active={selectedPrice === p}
+                  onClick={() => { toggleFilter(selectedPrice, p, setSelectedPrice); setOpenFilter(null); }}
+                />
+              ))}
+            {openFilter === "maker" &&
+              makers.map((m) => (
+                <FilterChip
+                  key={m}
+                  label={m}
+                  active={selectedMaker === m}
+                  onClick={() => { toggleFilter(selectedMaker, m, setSelectedMaker); setOpenFilter(null); }}
+                />
+              ))}
+          </div>
+        </div>
+      )}
+
+      {/* Count */}
+      <div className="mt-3">
+        <p className="text-sm font-bold text-[#5c5c6f]">
           {filteredProducts.length}件
         </p>
-        <select
-          value={sortBy}
-          onChange={(e) =>
-            setSortBy(e.target.value as (typeof SORT_OPTIONS)[number]["value"])
-          }
-          className="py-2 pl-3 pr-8 rounded-[10px] border border-[#e4e4ea] bg-white text-ink text-sm focus:outline-none focus:ring-2 focus:ring-[#3daae0]/40 focus:border-[#3daae0]"
-        >
-          {SORT_OPTIONS.map((opt) => (
-            <option key={opt.value} value={opt.value}>
-              {opt.label}
-            </option>
-          ))}
-        </select>
       </div>
 
       {/* Product grid */}
-      <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div className="mt-3 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
         {filteredProducts.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}
       </div>
     </div>
+  );
+}
+
+function FilterChip({
+  label,
+  active,
+  onClick,
+}: {
+  label: string;
+  active: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={`px-3.5 py-2 rounded-full text-sm font-bold transition-all active:scale-95 ${
+        active
+          ? "bg-[#3daae0] text-white shadow-sm"
+          : "bg-[#f5f5f7] text-[var(--color-ink-secondary)] hover:bg-[#e4e4ea]"
+      }`}
+    >
+      {label}
+    </button>
   );
 }

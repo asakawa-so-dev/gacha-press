@@ -37,7 +37,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         <CardInterestButton productId={product.id} />
       </div>
       <div className="p-3">
-        <h3 className="text-sm font-medium text-[#1c1c28] line-clamp-2 leading-snug">
+        <h3 className="text-sm font-bold text-[#1c1c28] line-clamp-2 leading-snug">
           {product.name}
         </h3>
         <p className="mt-1.5 text-sm font-bold text-[#1c1c28]">

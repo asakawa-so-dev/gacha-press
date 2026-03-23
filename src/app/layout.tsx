@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
-import { Zen_Maru_Gothic } from "next/font/google";
+import { M_PLUS_Rounded_1c } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import BottomNav from "@/components/BottomNav";
 import { InterestProvider } from "@/components/InterestProvider";
 
-const zenMaruGothic = Zen_Maru_Gothic({
+const mplusRounded = M_PLUS_Rounded_1c({
   subsets: ["latin"],
-  weight: ["400", "500", "700", "900"],
+  weight: ["400", "500", "700", "800"],
   variable: "--font-zen",
 });
 
@@ -37,7 +37,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ja" className={zenMaruGothic.variable}>
+    <html lang="ja" className={mplusRounded.variable}>
       <body className="font-zen min-h-screen flex flex-col">
         <InterestProvider>
           <Header />

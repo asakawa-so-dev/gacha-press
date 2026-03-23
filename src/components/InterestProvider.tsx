@@ -39,30 +39,37 @@ export function InterestProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const supabase = createClient();
-    supabase.auth.getUser().then(({ data: { user } }) => {
-      if (user) {
-        userIdRef.current = user.id;
-        setLoggedIn(true);
-        supabase
-          .from("user_interests")
-          .select("product_id")
-          .eq("user_id", user.id)
-          .then(({ data }) => {
-            setLikedIds(
-              new Set(
-                (data ?? []).map(
-                  (d: { product_id: number }) => d.product_id
+    supabase.auth
+      .getUser()
+      .then(({ data: { user } }) => {
+        if (user) {
+          userIdRef.current = user.id;
+          setLoggedIn(true);
+          return supabase
+            .from("user_interests")
+            .select("product_id")
+            .eq("user_id", user.id)
+            .then(({ data }) => {
+              setLikedIds(
+                new Set(
+                  (data ?? []).map(
+                    (d: { product_id: number }) => d.product_id
+                  )
                 )
-              )
-            );
-            setReady(true);
-          });
-      } else {
+              );
+            });
+        } else {
+          setLoggedIn(false);
+          setLikedIds(new Set(getAnonInterests()));
+        }
+      })
+      .catch(() => {
         setLoggedIn(false);
         setLikedIds(new Set(getAnonInterests()));
+      })
+      .finally(() => {
         setReady(true);
-      }
-    });
+      });
   }, []);
 
   const toggle = useCallback((productId: number) => {

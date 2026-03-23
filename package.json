@@ -22,8 +22,9 @@
     "@types/node": "^22.15.3",
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
+    "puppeteer": "^24.39.1",
     "tailwindcss": "^4.1.4",
-    "typescript": "^5.8.3",
-    "tsx": "^4.19.4"
+    "tsx": "^4.19.4",
+    "typescript": "^5.8.3"
   }
 }
