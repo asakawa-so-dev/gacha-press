@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="600" height="600">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f0f4ff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e8eeff;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="capsuleTop" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#ff6b9d;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e84393;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="capsuleBottom" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f0f0f0;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="130%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="16" flood-color="#00000020"/>
+    </filter>
+    <filter id="innerShadow">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="3" result="blur"/>
+      <feOffset dx="0" dy="2" result="offset"/>
+      <feComposite in="SourceGraphic" in2="offset" operator="over"/>
+    </filter>
+  </defs>
+
+  <rect width="600" height="600" fill="url(#bg)" rx="0"/>
+
+  <g transform="translate(300, 260)" filter="url(#shadow)">
+    <ellipse cx="0" cy="140" rx="100" ry="16" fill="#00000010"/>
+
+    <path d="M-90,0 Q-90,-110 0,-110 Q90,-110 90,0 Z" fill="url(#capsuleTop)"/>
+    <ellipse cx="-30" cy="-60" rx="20" ry="30" fill="#ffffff30" transform="rotate(-20, -30, -60)"/>
+
+    <rect x="-90" y="-2" width="180" height="4" fill="#e0e0e0"/>
+
+    <path d="M-90,0 Q-90,110 0,110 Q90,110 90,0 Z" fill="url(#capsuleBottom)"/>
+    <ellipse cx="20" cy="50" rx="15" ry="20" fill="#00000008" transform="rotate(10, 20, 50)"/>
+  </g>
+
+  <g transform="translate(300, 460)">
+    <rect x="-130" y="-22" width="260" height="44" rx="22" fill="#3daae0"/>
+    <text x="0" y="7" font-family="'M PLUS Rounded 1c', 'Hiragino Sans', sans-serif" font-size="18" font-weight="700" fill="white" text-anchor="middle">²	¤áü¸µó×ë</text>
+  </g>
+
+  <g transform="translate(300, 520)">
+    <text x="0" y="0" font-family="'M PLUS Rounded 1c', 'Hiragino Sans', sans-serif" font-size="13" fill="#8888aa" text-anchor="middle">;Ÿ›nFÁ;Ïoáü«ü1þŒk²	</text>
+  </g>
+
+  <g transform="translate(80, 50)">
+    <rect x="-12" y="-12" width="90" height="28" rx="14" fill="#ff6b9d"/>
+    <text x="33" y="5" font-family="'M PLUS Rounded 1c', sans-serif" font-size="13" font-weight="700" fill="white" text-anchor="middle">SAMPLE</text>
+  </g>
+</svg>
