@@ -1,10 +1,10 @@
 import { createClient } from "@/lib/supabase/server";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import type { Product, ProductStats } from "@/lib/types";
 import ProductDetailClient from "./ProductDetailClient";
+import ProductImage from "@/components/ProductImage";
 
 type Props = { params: Promise<{ id: string }> };
 
@@ -97,26 +97,37 @@ export default async function ProductDetailPage({ params }: Props) {
 
         <article className="rounded-2xl bg-white shadow-sm overflow-hidden border border-[var(--color-border)]">
           <div className="relative aspect-square bg-[var(--color-surface-alt)]">
-            {product.image_url ? (
-              <Image
-                src={product.image_url.startsWith("http") ? product.image_url : `/${product.image_url}`}
-                alt={product.name}
-                fill
-                sizes="(max-width: 768px) 100vw, 672px"
-                className="object-contain p-2"
-                priority
-              />
-            ) : (
-              <div className="flex h-full w-full items-center justify-center text-[var(--color-ink-muted)]">
-                画像なし
-              </div>
-            )}
+            <ProductImage
+              src={product.image_url}
+              alt={product.name}
+              fill
+              sizes="(max-width: 768px) 100vw, 672px"
+              className="object-contain p-2"
+              priority
+            />
             {product.is_new && (
               <span className="absolute left-3 top-3 rounded-md bg-[#3daae0] px-2 py-1 text-xs font-medium text-white">
                 NEW
               </span>
             )}
           </div>
+          {product.image_url?.startsWith("http") && (
+            <div className="flex items-center gap-1.5 border-t border-[var(--color-border)] bg-[var(--color-surface-alt)] px-4 py-2 text-xs text-[var(--color-ink-muted)]">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="h-3 w-3 shrink-0">
+                <path d="M8.914 6.025a.75.75 0 0 1 1.06 0 3.5 3.5 0 0 1 0 4.95l-2 2a3.5 3.5 0 0 1-5.396-4.402.75.75 0 0 1 1.251.827 2 2 0 0 0 3.085 2.514l2-2a2 2 0 0 0 0-2.828.75.75 0 0 1 0-1.06Z" />
+                <path d="M7.086 9.975a.75.75 0 0 1-1.06 0 3.5 3.5 0 0 1 0-4.95l2-2a3.5 3.5 0 0 1 5.396 4.402.75.75 0 0 1-1.251-.827 2 2 0 0 0-3.085-2.514l-2 2a2 2 0 0 0 0 2.828.75.75 0 0 1 0 1.06Z" />
+              </svg>
+              <span>画像出典：</span>
+              <a
+                href={product.image_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="truncate text-[var(--color-brand-blue)] hover:underline"
+              >
+                {(() => { try { return new URL(product.image_url).hostname.replace(/^www\./, ""); } catch { return product.image_url; } })()}
+              </a>
+            </div>
+          )}
 
           <div className="p-4">
             <h1 className="text-xl font-bold text-[var(--color-ink)]">{product.name}</h1>
