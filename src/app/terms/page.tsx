@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "利用規約 | カプる。",
-  description: "カプる。の利用規約",
+  title: "利用規約 | marupaka",
+  description: "marupakaの利用規約",
 };
 
 export default function TermsPage() {
@@ -21,7 +21,7 @@ export default function TermsPage() {
             利用規約
           </h1>
           <p className="text-sm text-[var(--color-ink-secondary)] mb-4">
-            この利用規約（以下「本規約」）は、カプる。（以下「本サービス」）の利用条件を定めるものです。本サービスをご利用いただく前に、本規約をご一読ください。
+            この利用規約（以下「本規約」）は、marupaka（以下「本サービス」）の利用条件を定めるものです。本サービスをご利用いただく前に、本規約をご一読ください。
           </p>
 
           <h2 className="text-lg font-bold text-[var(--color-ink)] mt-6 mb-2">

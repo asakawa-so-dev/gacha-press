@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import AuthForm from "@/components/AuthForm";
+import OnboardingModal from "@/components/OnboardingModal";
+import ScrollReveal from "@/components/ScrollReveal";
 import type { User } from "@supabase/supabase-js";
 
 const ANON_KEY = "anon_interests";
@@ -59,7 +61,7 @@ function TrophyNavIcon() {
 
 function ChevronRight() {
   return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-[var(--color-ink-muted)]">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-[#9b9bab]">
       <path d="m9 18 6-6-6-6" />
     </svg>
   );
@@ -71,12 +73,27 @@ export default function MypagePage() {
   const [loading, setLoading] = useState(true);
   const [interestCount, setInterestCount] = useState<number | null>(null);
   const [playedCount, setPlayedCount] = useState<number | null>(null);
+  const [showOnboarding, setShowOnboarding] = useState(false);
+
+  const checkOnboarding = useCallback(async (uid: string) => {
+    const supabase = createClient();
+    const { data } = await supabase
+      .from("profiles")
+      .select("onboarding_done")
+      .eq("id", uid)
+      .single();
+    const profile = data as { onboarding_done: boolean } | null;
+    if (profile && !profile.onboarding_done) {
+      setShowOnboarding(true);
+    }
+  }, []);
 
   const handleAuthChange = useCallback(async (newUser: User) => {
     setUser(newUser);
     const supabase = createClient();
     await mergeAnonInterests(supabase, newUser.id);
-  }, []);
+    await checkOnboarding(newUser.id);
+  }, [checkOnboarding]);
 
   useEffect(() => {
     const supabase = createClient();
@@ -125,10 +142,10 @@ export default function MypagePage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-[#e8f4fc] to-[var(--color-surface-alt)] flex min-h-[50vh] items-center justify-center">
+      <div className="min-h-screen bg-[#fafafa] flex min-h-[50vh] items-center justify-center">
         <div className="flex flex-col items-center gap-3">
           <div className="h-10 w-10 animate-spin rounded-full border-[3px] border-[#3daae0] border-t-transparent" />
-          <p className="text-sm font-bold text-[var(--color-ink-muted)]">読み込み中...</p>
+          <p className="text-sm font-bold text-[#9b9bab]">読み込み中...</p>
         </div>
       </div>
     );
@@ -136,9 +153,17 @@ export default function MypagePage() {
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-[#fce7f3]/40 via-[var(--color-surface-alt)] to-[#e8f4fc]/30">
+      <div className="min-h-screen bg-[#fafafa]">
         <div className="mx-auto max-w-md px-4 py-8">
-          <AuthForm />
+          <ScrollReveal>
+            <h1 className="section-header text-center">/MYPAGE</h1>
+            <p className="section-header-sub text-center">マイページ</p>
+          </ScrollReveal>
+          <ScrollReveal delay={150}>
+            <div className="mt-6">
+              <AuthForm />
+            </div>
+          </ScrollReveal>
         </div>
       </div>
     );
@@ -157,112 +182,123 @@ export default function MypagePage() {
       title: "気になるリスト",
       desc: "まわした記録・ランクをチェック",
       icon: <HeartNavIcon />,
-      bg: "from-[#fce7f3] to-white",
-      border: "border-[#ec4899]/15",
     },
     {
       href: "/",
       title: "さがす",
       desc: "新しいガチャを見つける",
       icon: <SearchNavIcon />,
-      bg: "from-[#e8f4fc] to-white",
-      border: "border-[#3daae0]/15",
     },
     {
       href: "/ranking",
       title: "ランキング",
       desc: "人気のガチャをチェック",
       icon: <TrophyNavIcon />,
-      bg: "from-[#fffbe6] to-white",
-      border: "border-[#f5c800]/25",
     },
   ] as const;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#e8f4fc]/80 via-[var(--color-surface-alt)] to-[#fce7f3]/20 pb-8">
+    <div className="min-h-screen bg-gradient-to-b from-[#e8f4fc]/80 via-[#fafafa] to-[#fce7f3]/20 pb-8">
+      {showOnboarding && (
+        <OnboardingModal
+          userId={user.id}
+          onComplete={() => setShowOnboarding(false)}
+        />
+      )}
       <div className="mx-auto max-w-lg px-4 pt-4 pb-6">
         {/* Profile hero */}
-        <div className="relative overflow-hidden rounded-3xl border border-white/60 bg-gradient-to-br from-[#3daae0] via-[#5bc0eb] to-[#a78bfa] p-6 text-white shadow-lg shadow-[#3daae0]/20">
-          <div className="pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full bg-white/10" />
-          <div className="pointer-events-none absolute -bottom-6 left-1/4 h-24 w-24 rounded-full bg-white/10" />
-          <div className="relative flex items-start gap-4">
-            <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-white/95 text-2xl font-black text-[#3daae0] shadow-md">
-              {initial}
+        <ScrollReveal variant="scale">
+          <div className="relative overflow-hidden rounded-3xl border border-white/60 bg-gradient-to-br from-[#3daae0] via-[#5bc0eb] to-[#a78bfa] p-6 text-white shadow-lg shadow-[#3daae0]/20">
+            <div className="pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full bg-white/10" />
+            <div className="pointer-events-none absolute -bottom-6 left-1/4 h-24 w-24 rounded-full bg-white/10" />
+            <div className="relative flex items-start gap-4">
+              <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-white/95 text-2xl font-black text-[#3daae0] shadow-md">
+                {initial}
+              </div>
+              <div className="min-w-0 flex-1 pt-0.5">
+                <p className="text-xs font-bold uppercase tracking-wider text-white/80">マイページ</p>
+                <h1 className="mt-0.5 truncate text-xl font-black leading-tight">{displayName}</h1>
+                <p className="mt-1 truncate text-sm text-white/90">{email}</p>
+                <p className="mt-2 inline-flex items-center gap-1 rounded-full bg-white/20 px-2.5 py-0.5 text-[11px] font-bold backdrop-blur-sm">
+                  <span className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-300" />
+                  ログイン中
+                </p>
+              </div>
             </div>
-            <div className="min-w-0 flex-1 pt-0.5">
-              <p className="text-xs font-bold uppercase tracking-wider text-white/80">マイページ</p>
-              <h1 className="mt-0.5 truncate text-xl font-black leading-tight">{displayName}</h1>
-              <p className="mt-1 truncate text-sm text-white/90">{email}</p>
-              <p className="mt-2 inline-flex items-center gap-1 rounded-full bg-white/20 px-2.5 py-0.5 text-[11px] font-bold backdrop-blur-sm">
-                <span className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-300" />
-                ログイン中
-              </p>
+
+            {/* Stats */}
+            <div className="relative mt-5 grid grid-cols-2 gap-3">
+              <div className="rounded-2xl bg-white/15 px-4 py-3 backdrop-blur-sm">
+                <p className="text-[11px] font-bold uppercase tracking-wide text-white/75">気になる</p>
+                <p className="mt-1 text-2xl font-black tabular-nums">
+                  {interestCount === null ? "—" : interestCount}
+                  <span className="ml-0.5 text-sm font-bold text-white/80">件</span>
+                </p>
+              </div>
+              <div className="rounded-2xl bg-white/15 px-4 py-3 backdrop-blur-sm">
+                <p className="text-[11px] font-bold uppercase tracking-wide text-white/75">まわした</p>
+                <p className="mt-1 text-2xl font-black tabular-nums">
+                  {playedCount === null ? "—" : playedCount}
+                  <span className="ml-0.5 text-sm font-bold text-white/80">回</span>
+                </p>
+              </div>
             </div>
           </div>
+        </ScrollReveal>
 
-          {/* Stats */}
-          <div className="relative mt-5 grid grid-cols-2 gap-3">
-            <div className="rounded-2xl bg-white/15 px-4 py-3 backdrop-blur-sm">
-              <p className="text-[11px] font-bold uppercase tracking-wide text-white/75">気になる</p>
-              <p className="mt-1 text-2xl font-black tabular-nums">
-                {interestCount === null ? "—" : interestCount}
-                <span className="ml-0.5 text-sm font-bold text-white/80">件</span>
-              </p>
-            </div>
-            <div className="rounded-2xl bg-white/15 px-4 py-3 backdrop-blur-sm">
-              <p className="text-[11px] font-bold uppercase tracking-wide text-white/75">まわした</p>
-              <p className="mt-1 text-2xl font-black tabular-nums">
-                {playedCount === null ? "—" : playedCount}
-                <span className="ml-0.5 text-sm font-bold text-white/80">回</span>
-              </p>
-            </div>
-          </div>
-        </div>
+        <ScrollReveal delay={200}>
+          <p className="mt-5 px-1 text-xs font-bold uppercase tracking-wider text-[#9b9bab]">
+            メニュー
+          </p>
+          <nav className="mt-2 space-y-3">
+            {navItems.map((item, i) => (
+              <div
+                key={item.href}
+                className="animate-[fade-up-in_0.4s_ease_forwards] opacity-0"
+                style={{ animationDelay: `${300 + i * 80}ms` }}
+              >
+                <Link
+                  href={item.href}
+                  className="flex items-center gap-4 rounded-2xl border border-[#e4e4ea] bg-white p-4 shadow-sm card-hover"
+                >
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#f5f5f7] shadow-sm">
+                    {item.icon}
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="font-black text-[#1c1c28]">{item.title}</p>
+                    <p className="mt-0.5 text-xs font-bold text-[#9b9bab]">{item.desc}</p>
+                  </div>
+                  <ChevronRight />
+                </Link>
+              </div>
+            ))}
+          </nav>
+        </ScrollReveal>
 
-        <p className="mt-5 px-1 text-xs font-bold uppercase tracking-wider text-[var(--color-ink-muted)]">
-          メニュー
-        </p>
-        <nav className="mt-2 space-y-3">
-          {navItems.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={`flex items-center gap-4 rounded-2xl border bg-gradient-to-br ${item.bg} ${item.border} p-4 shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5 active:scale-[0.99]`}
-            >
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-white shadow-sm">
-                {item.icon}
-              </div>
-              <div className="min-w-0 flex-1">
-                <p className="font-black text-[var(--color-ink)]">{item.title}</p>
-                <p className="mt-0.5 text-xs font-bold text-[var(--color-ink-muted)]">{item.desc}</p>
-              </div>
-              <ChevronRight />
+        <ScrollReveal delay={500}>
+          <button
+            type="button"
+            onClick={handleLogout}
+            className="mt-6 flex w-full items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-[#e4e4ea] bg-white/60 py-3.5 text-sm font-bold text-[#5c5c6f] transition-all duration-300 hover:border-[#9b9bab] hover:bg-[#f5f5f7]"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+              <polyline points="16 17 21 12 16 7" />
+              <line x1="21" x2="9" y1="12" y2="12" />
+            </svg>
+            ログアウト
+          </button>
+
+          <p className="mt-8 text-center text-xs font-bold text-[#9b9bab]">
+            <Link href="/terms" className="text-[#3daae0] link-underline">
+              利用規約
             </Link>
-          ))}
-        </nav>
-
-        <button
-          type="button"
-          onClick={handleLogout}
-          className="mt-6 flex w-full items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-[var(--color-border)] bg-white/60 py-3.5 text-sm font-bold text-[var(--color-ink-secondary)] transition hover:border-[#9b9bab] hover:bg-white"
-        >
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-            <polyline points="16 17 21 12 16 7" />
-            <line x1="21" x2="9" y1="12" y2="12" />
-          </svg>
-          ログアウト
-        </button>
-
-        <p className="mt-8 text-center text-xs font-bold text-[var(--color-ink-muted)]">
-          <Link href="/terms" className="text-[#3daae0] hover:underline">
-            利用規約
-          </Link>
-          {" · "}
-          <Link href="/privacy" className="text-[#3daae0] hover:underline">
-            プライバシーポリシー
-          </Link>
-        </p>
+            {" · "}
+            <Link href="/privacy" className="text-[#3daae0] link-underline">
+              プライバシーポリシー
+            </Link>
+          </p>
+        </ScrollReveal>
       </div>
     </div>
   );

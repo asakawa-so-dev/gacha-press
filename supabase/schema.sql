@@ -1,5 +1,5 @@
 -- ==========================================
--- カプる。 Supabase Schema
+-- まるぱか Supabase Schema
 -- ==========================================
 
 -- Products table
@@ -22,7 +22,9 @@ create table if not exists public.profiles (
   id uuid primary key references auth.users on delete cascade,
   display_name text,
   avatar_url text,
-  onboarding_done boolean not null default false
+  onboarding_done boolean not null default false,
+  gender text,
+  age_group text
 );
 
 -- User interests (favorites)

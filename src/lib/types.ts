@@ -17,6 +17,15 @@ export type Profile = {
   display_name: string | null;
   avatar_url: string | null;
   onboarding_done: boolean;
+  gender: string | null;
+  age_group: string | null;
+};
+
+export type ProductDemographics = {
+  total_spins: number;
+  total_interests: number;
+  gender_breakdown: { gender: string; count: number }[];
+  age_breakdown: { age_group: string; count: number }[];
 };
 
 export type UserInterest = {
@@ -62,8 +71,21 @@ export type Database = {
       };
       profiles: {
         Row: Profile;
-        Insert: Profile;
-        Update: Partial<Omit<Profile, "id">>;
+        Insert: {
+          id: string;
+          display_name?: string | null;
+          avatar_url?: string | null;
+          onboarding_done?: boolean;
+          gender?: string | null;
+          age_group?: string | null;
+        };
+        Update: {
+          display_name?: string | null;
+          avatar_url?: string | null;
+          onboarding_done?: boolean;
+          gender?: string | null;
+          age_group?: string | null;
+        };
       };
       user_interests: {
         Row: UserInterest;
@@ -87,7 +109,12 @@ export type Database = {
       };
     };
     Views: Record<string, never>;
-    Functions: Record<string, never>;
+    Functions: {
+      get_product_demographics: {
+        Args: { p_product_id: number };
+        Returns: ProductDemographics;
+      };
+    };
     Enums: Record<string, never>;
   };
 };

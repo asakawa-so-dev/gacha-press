@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "プライバシーポリシー | カプる。",
-  description: "カプる。のプライバシーポリシー",
+  title: "プライバシーポリシー | marupaka",
+  description: "marupakaのプライバシーポリシー",
 };
 
 export default function PrivacyPage() {
@@ -21,7 +21,7 @@ export default function PrivacyPage() {
             プライバシーポリシー
           </h1>
           <p className="text-sm text-[var(--color-ink-secondary)] mb-4">
-            カプる。（以下「本サービス」）は、利用者のプライバシーを尊重し、個人情報の取り扱いについて以下の方針に基づき運営します。
+            marupaka（以下「本サービス」）は、利用者のプライバシーを尊重し、個人情報の取り扱いについて以下の方針に基づき運営します。
           </p>
 
           <h2 className="text-lg font-bold text-[var(--color-ink)] mt-6 mb-2">

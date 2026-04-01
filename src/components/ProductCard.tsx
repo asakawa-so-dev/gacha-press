@@ -13,7 +13,7 @@ export default function ProductCard({ product }: ProductCardProps) {
   return (
     <Link
       href={`/detail/${product.id}`}
-      className="block bg-white rounded-xl shadow-sm border border-[#e4e4ea] overflow-hidden hover:shadow-md hover:border-[#3daae0]/30 transition-all duration-200 active:scale-[0.98]"
+      className="block bg-white rounded-xl shadow-sm border border-[#e4e4ea] overflow-hidden card-hover"
     >
       <div className="relative aspect-square bg-[#f5f5f7]">
         <ProductImage

@@ -13,20 +13,20 @@ const mplusRounded = M_PLUS_Rounded_1c({
 });
 
 export const metadata: Metadata = {
-  title: "カプる。 - ガチャ発売カレンダー",
+  title: "marupaka - ガチャ発売カレンダー",
   description:
-    "カプる。は最新のガチャガチャの発売情報をお届けするガチャ活メディアです。発売予定カレンダー、ランキング、気になるリストでガチャ活を楽しもう。",
+    "marupaka（まるぱか）は最新のガチャガチャの発売情報をお届けするガチャ活メディアです。発売予定カレンダー、ランキング、気になるリストでガチャ活を楽しもう。",
   openGraph: {
-    title: "カプる。 - ガチャ発売カレンダー",
+    title: "marupaka - ガチャ発売カレンダー",
     description:
-      "カプる。は最新のガチャガチャの発売情報をお届けするガチャ活メディアです。",
+      "marupaka（まるぱか）は最新のガチャガチャの発売情報をお届けするガチャ活メディアです。",
     images: ["/images/ogp.png"],
   },
   twitter: {
     card: "summary_large_image",
-    title: "カプる。 - ガチャ発売カレンダー",
+    title: "marupaka - ガチャ発売カレンダー",
     description:
-      "カプる。は最新のガチャガチャの発売情報をお届けするガチャ活メディアです。",
+      "marupaka（まるぱか）は最新のガチャガチャの発売情報をお届けするガチャ活メディアです。",
     images: ["/images/ogp.png"],
   },
 };

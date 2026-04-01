@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { createClient } from "@/lib/supabase/client";
+import ScrollReveal from "@/components/ScrollReveal";
 import type { Product, ProductStats } from "@/lib/types";
 
 type RankingItem = {
@@ -22,6 +23,23 @@ const TIME_PERIODS: { value: TimePeriod; label: string }[] = [
   { value: "year", label: "今年" },
 ];
 
+const GENDER_FILTERS = [
+  { value: null, label: "すべて" },
+  { value: "男", label: "男" },
+  { value: "女", label: "女" },
+  { value: "その他", label: "その他" },
+] as const;
+
+const AGE_FILTERS = [
+  { value: null, label: "すべて" },
+  { value: "10代", label: "10代" },
+  { value: "20代", label: "20代" },
+  { value: "30代", label: "30代" },
+  { value: "40代", label: "40代" },
+  { value: "50代", label: "50代" },
+  { value: "60代〜", label: "60代〜" },
+] as const;
+
 const RANK_STYLES: Record<number, string> = {
   1: "bg-gradient-to-br from-amber-400 to-amber-600 text-white shadow-md",
   2: "bg-gradient-to-br from-gray-300 to-gray-500 text-white shadow-md",
@@ -30,15 +48,7 @@ const RANK_STYLES: Record<number, string> = {
 
 function HeartIcon({ className }: { className?: string }) {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="14"
-      height="14"
-      viewBox="0 0 24 24"
-      fill="currentColor"
-      stroke="none"
-      className={className}
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="none" className={className}>
       <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
     </svg>
   );
@@ -46,20 +56,45 @@ function HeartIcon({ className }: { className?: string }) {
 
 function CheckIcon({ className }: { className?: string }) {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="14"
-      height="14"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className={className}>
       <polyline points="20 6 9 17 4 12" />
     </svg>
+  );
+}
+
+function FilterSection({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div className="mt-3">
+      <p className="mb-1.5 ml-1 text-[10px] font-bold text-[#9b9bab] uppercase tracking-wider">{label}</p>
+      <div className="flex gap-2 overflow-x-auto pb-1 -mx-4 px-4">
+        {children}
+      </div>
+    </div>
+  );
+}
+
+function FilterPill({
+  active,
+  onClick,
+  children,
+}: {
+  active: boolean;
+  onClick: () => void;
+  children: React.ReactNode;
+  color?: string;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={`shrink-0 rounded-full px-3 py-1.5 text-xs font-medium transition-all duration-200 ${
+        active
+          ? "bg-[#3daae0] text-white shadow-sm"
+          : "bg-white text-[#5c5c6f] border border-[#e4e4ea] hover:border-[#9b9bab]"
+      }`}
+    >
+      {children}
+    </button>
   );
 }
 
@@ -94,9 +129,13 @@ export default function RankingPage() {
   const [tab, setTab] = useState<RankingTab>("interest");
   const [period, setPeriod] = useState<TimePeriod>("all");
   const [genre, setGenre] = useState<string | null>(null);
+  const [genderFilter, setGenderFilter] = useState<string | null>(null);
+  const [ageFilter, setAgeFilter] = useState<string | null>(null);
   const [genres, setGenres] = useState<string[]>([]);
   const [items, setItems] = useState<RankingItem[]>([]);
   const [loading, setLoading] = useState(true);
+
+  const hasDemographicFilter = genderFilter !== null || ageFilter !== null;
 
   useEffect(() => {
     const supabase = createClient();
@@ -117,7 +156,7 @@ export default function RankingPage() {
     setLoading(true);
     const supabase = createClient();
 
-    if (period === "all") {
+    if (period === "all" && !hasDemographicFilter) {
       const countCol =
         tab === "interest" ? "interest_count" : "purchased_count";
       const { data: statsData = [] } = await supabase
@@ -175,6 +214,8 @@ export default function RankingPage() {
       const { data: rpcData } = await (supabase.rpc as any)(rpcName, {
         p_genre: genre,
         p_since: since,
+        p_gender: genderFilter,
+        p_age_group: ageFilter,
       });
 
       if (!rpcData || rpcData.length === 0) {
@@ -199,7 +240,6 @@ export default function RankingPage() {
       const productMap = new Map(
         (productsData as Product[]).map((p) => [p.id, p])
       );
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const countMap = new Map<number, number>(
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         rpcData.map((r: any) => [Number(r.product_id), Number(r.cnt)] as [number, number])
@@ -217,46 +257,49 @@ export default function RankingPage() {
     }
 
     setLoading(false);
-  }, [tab, period, genre]);
+  }, [tab, period, genre, genderFilter, ageFilter, hasDemographicFilter]);
 
   useEffect(() => {
     fetchRanking();
   }, [fetchRanking]);
 
   return (
-    <div className="min-h-screen bg-[var(--color-surface-alt)]">
+    <div className="min-h-screen bg-[#fafafa]">
       <div className="mx-auto max-w-2xl px-4 py-6">
-        <h1 className="mb-4 text-2xl font-bold text-[var(--color-ink)]">
-          ランキング
-        </h1>
+        <ScrollReveal>
+          <h1 className="section-header">/RANKING</h1>
+          <p className="section-header-sub">ランキング</p>
+        </ScrollReveal>
 
         {/* Tab switcher */}
-        <div className="flex rounded-xl bg-white border border-[var(--color-border)] p-1">
-          <button
-            type="button"
-            onClick={() => setTab("interest")}
-            className={`flex flex-1 items-center justify-center gap-1.5 rounded-lg py-2.5 text-sm font-medium transition-all ${
-              tab === "interest"
-                ? "bg-[#ec4899]/10 text-[#ec4899] shadow-sm"
-                : "text-[var(--color-ink-muted)]"
-            }`}
-          >
-            <HeartIcon />
-            気になる
-          </button>
-          <button
-            type="button"
-            onClick={() => setTab("purchased")}
-            className={`flex flex-1 items-center justify-center gap-1.5 rounded-lg py-2.5 text-sm font-medium transition-all ${
-              tab === "purchased"
-                ? "bg-[#3daae0]/10 text-[#3daae0] shadow-sm"
-                : "text-[var(--color-ink-muted)]"
-            }`}
-          >
-            <CheckIcon />
-            買った
-          </button>
-        </div>
+        <ScrollReveal delay={100}>
+          <div className="mt-5 flex rounded-xl bg-white border border-[#e4e4ea] p-1 shadow-sm">
+            <button
+              type="button"
+              onClick={() => setTab("interest")}
+              className={`flex flex-1 items-center justify-center gap-1.5 rounded-lg py-2.5 text-sm font-medium transition-all duration-300 ${
+                tab === "interest"
+                  ? "bg-[#ec4899]/10 text-[#ec4899] shadow-sm"
+                  : "text-[#9b9bab] hover:text-[#5c5c6f]"
+              }`}
+            >
+              <HeartIcon />
+              気になる
+            </button>
+            <button
+              type="button"
+              onClick={() => setTab("purchased")}
+              className={`flex flex-1 items-center justify-center gap-1.5 rounded-lg py-2.5 text-sm font-medium transition-all duration-300 ${
+                tab === "purchased"
+                  ? "bg-[#3daae0]/10 text-[#3daae0] shadow-sm"
+                  : "text-[#9b9bab] hover:text-[#5c5c6f]"
+              }`}
+            >
+              <CheckIcon />
+              買った
+            </button>
+          </div>
+        </ScrollReveal>
 
         {/* Time period */}
         <div className="mt-4 flex gap-2 overflow-x-auto pb-1 -mx-4 px-4">
@@ -265,10 +308,10 @@ export default function RankingPage() {
               key={tp.value}
               type="button"
               onClick={() => setPeriod(tp.value)}
-              className={`shrink-0 rounded-full px-4 py-2 text-sm font-medium transition-all ${
+              className={`shrink-0 rounded-full px-4 py-2 text-sm font-medium transition-all duration-200 ${
                 period === tp.value
-                  ? "bg-[var(--color-ink)] text-white"
-                  : "bg-white text-[var(--color-ink-secondary)] border border-[var(--color-border)]"
+                  ? "bg-[#1c1c28] text-white"
+                  : "bg-white text-[#5c5c6f] border border-[#e4e4ea] hover:border-[#9b9bab]"
               }`}
             >
               {tp.label}
@@ -277,33 +320,44 @@ export default function RankingPage() {
         </div>
 
         {/* Genre */}
-        <div className="mt-3 flex gap-2 overflow-x-auto pb-1 -mx-4 px-4">
-          <button
-            type="button"
-            onClick={() => setGenre(null)}
-            className={`shrink-0 rounded-full px-3 py-1.5 text-xs font-medium transition-all ${
-              genre === null
-                ? "bg-[#3daae0] text-white"
-                : "bg-white text-[var(--color-ink-secondary)] border border-[var(--color-border)]"
-            }`}
-          >
+        <FilterSection label="ジャンル">
+          <FilterPill active={genre === null} onClick={() => setGenre(null)} color="#3daae0">
             すべて
-          </button>
+          </FilterPill>
           {genres.map((g) => (
-            <button
-              key={g}
-              type="button"
-              onClick={() => setGenre(g)}
-              className={`shrink-0 rounded-full px-3 py-1.5 text-xs font-medium transition-all ${
-                genre === g
-                  ? "bg-[#3daae0] text-white"
-                  : "bg-white text-[var(--color-ink-secondary)] border border-[var(--color-border)]"
-              }`}
-            >
+            <FilterPill key={g} active={genre === g} onClick={() => setGenre(g)} color="#3daae0">
               {g}
-            </button>
+            </FilterPill>
           ))}
-        </div>
+        </FilterSection>
+
+        {/* Gender */}
+        <FilterSection label="性別">
+          {GENDER_FILTERS.map((f) => (
+            <FilterPill
+              key={f.value ?? "all"}
+              active={genderFilter === f.value}
+              onClick={() => setGenderFilter(f.value)}
+              color="#ec4899"
+            >
+              {f.label}
+            </FilterPill>
+          ))}
+        </FilterSection>
+
+        {/* Age group */}
+        <FilterSection label="年代">
+          {AGE_FILTERS.map((f) => (
+            <FilterPill
+              key={f.value ?? "all"}
+              active={ageFilter === f.value}
+              onClick={() => setAgeFilter(f.value)}
+              color="#a78bfa"
+            >
+              {f.label}
+            </FilterPill>
+          ))}
+        </FilterSection>
 
         {/* Results */}
         <div className="mt-5">
@@ -312,22 +366,28 @@ export default function RankingPage() {
               <div className="h-8 w-8 animate-spin rounded-full border-2 border-[#3daae0] border-t-transparent" />
             </div>
           ) : items.length === 0 ? (
-            <div className="flex min-h-[200px] flex-col items-center justify-center rounded-2xl bg-white border border-[var(--color-border)] p-8 text-center">
+            <div className="flex min-h-[200px] flex-col items-center justify-center rounded-2xl bg-white border border-[#e4e4ea] p-8 text-center">
               <span className="mb-3 text-4xl">
                 {tab === "interest" ? "💗" : "🏆"}
               </span>
-              <p className="text-[var(--color-ink-secondary)]">
-                {period === "all"
+              <p className="text-[#5c5c6f]">
+                {hasDemographicFilter
+                  ? "この条件に一致するデータがありません"
+                  : period === "all"
                   ? "まだランキングデータがありません"
                   : "この期間のデータはまだありません"}
               </p>
-              {period !== "all" && (
+              {(period !== "all" || hasDemographicFilter) && (
                 <button
                   type="button"
-                  onClick={() => setPeriod("all")}
-                  className="mt-3 text-sm text-[#3daae0] font-medium"
+                  onClick={() => {
+                    setPeriod("all");
+                    setGenderFilter(null);
+                    setAgeFilter(null);
+                  }}
+                  className="mt-3 text-sm text-[#3daae0] font-medium link-underline"
                 >
-                  全期間で見る
+                  フィルターをリセット
                 </button>
               )}
             </div>
@@ -336,16 +396,19 @@ export default function RankingPage() {
               {items.map((item, index) => {
                 const rank = index + 1;
                 const rankStyle =
-                  RANK_STYLES[rank] ??
-                  "bg-[var(--color-surface-alt)] text-[var(--color-ink-secondary)]";
+                  RANK_STYLES[rank] ?? "bg-[#f5f5f7] text-[#5c5c6f]";
                 const accentColor =
                   tab === "interest" ? "#ec4899" : "#3daae0";
 
                 return (
-                  <li key={item.product.id}>
+                  <li
+                    key={item.product.id}
+                    className="animate-[fade-up-in_0.4s_ease_forwards] opacity-0"
+                    style={{ animationDelay: `${index * 60}ms` }}
+                  >
                     <Link
                       href={`/detail/${item.product.id}`}
-                      className="flex items-center gap-3 rounded-xl bg-white p-3 shadow-sm border border-[var(--color-border)] hover:border-[#3daae0]/40 hover:shadow-md transition-all"
+                      className="flex items-center gap-3 rounded-xl bg-white p-3 shadow-sm border border-[#e4e4ea] card-hover"
                     >
                       <span
                         className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-sm font-bold ${rankStyle}`}
@@ -366,16 +429,16 @@ export default function RankingPage() {
                             className="object-contain p-0.5"
                           />
                         ) : (
-                          <div className="flex h-full w-full items-center justify-center text-[var(--color-ink-muted)] text-xs">
+                          <div className="flex h-full w-full items-center justify-center text-[#9b9bab] text-xs">
                             画像なし
                           </div>
                         )}
                       </div>
                       <div className="min-w-0 flex-1">
-                        <p className="truncate font-medium text-[var(--color-ink)]">
+                        <p className="truncate font-medium text-[#1c1c28]">
                           {item.product.name}
                         </p>
-                        <p className="text-xs text-[var(--color-ink-muted)]">
+                        <p className="text-xs text-[#9b9bab]">
                           {item.product.maker} · ¥
                           {item.product.price.toLocaleString()}
                         </p>
@@ -384,11 +447,7 @@ export default function RankingPage() {
                         className="shrink-0 flex items-center gap-1 text-sm font-bold"
                         style={{ color: accentColor }}
                       >
-                        {tab === "interest" ? (
-                          <HeartIcon />
-                        ) : (
-                          <CheckIcon />
-                        )}
+                        {tab === "interest" ? <HeartIcon /> : <CheckIcon />}
                         {item.count}
                       </div>
                     </Link>
@@ -402,3 +461,4 @@ export default function RankingPage() {
     </div>
   );
 }
+

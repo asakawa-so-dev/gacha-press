@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useRef, useCallback } from "react";
 import ProductCard from "@/components/ProductCard";
 import type { Product } from "@/lib/types";
 
@@ -44,6 +44,57 @@ const FILTER_DEFS: { key: FilterKey; icon: string; label: string }[] = [
 type ProductListProps = {
   products: Product[];
 };
+
+function StaggerGrid({ children }: { children: React.ReactNode }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const hasRevealed = useRef(false);
+
+  const reveal = useCallback(() => {
+    const el = ref.current;
+    if (!el || hasRevealed.current) return;
+    hasRevealed.current = true;
+    el.classList.add("is-visible");
+  }, []);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight && rect.bottom > 0) {
+      requestAnimationFrame(reveal);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          reveal();
+          observer.unobserve(el);
+        }
+      },
+      { threshold: 0.01 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [reveal]);
+
+  useEffect(() => {
+    if (hasRevealed.current) {
+      const el = ref.current;
+      if (el) {
+        el.classList.remove("is-visible");
+        requestAnimationFrame(() => el.classList.add("is-visible"));
+      }
+    }
+  }, [children]);
+
+  return (
+    <div ref={ref} className="mt-3 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 stagger-children">
+      {children}
+    </div>
+  );
+}
 
 export default function ProductList({ products }: ProductListProps) {
   const [searchQuery, setSearchQuery] = useState("");
@@ -159,7 +210,7 @@ export default function ProductList({ products }: ProductListProps) {
           placeholder="商品名・メーカー・ジャンルで検索"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full pl-10 pr-10 py-3 rounded-xl border border-[#e4e4ea] bg-white text-ink placeholder:text-[#9b9bab] focus:outline-none focus:ring-2 focus:ring-[#3daae0]/40 focus:border-[#3daae0] transition-shadow"
+          className="w-full pl-10 pr-10 py-3 rounded-xl border border-[#e4e4ea] bg-white text-[#1c1c28] placeholder:text-[#9b9bab] focus:outline-none focus:ring-2 focus:ring-[#3daae0]/40 focus:border-[#3daae0] transition-shadow"
         />
         {searchQuery && (
           <button
@@ -182,12 +233,12 @@ export default function ProductList({ products }: ProductListProps) {
               key={f.key}
               type="button"
               onClick={() => setOpenFilter(isOpen ? null : f.key)}
-              className={`flex-shrink-0 flex items-center gap-1.5 rounded-full px-3.5 py-2 text-sm font-bold transition-all active:scale-95 ${
+              className={`flex-shrink-0 flex items-center gap-1.5 rounded-full px-3.5 py-2 text-sm font-bold transition-all duration-200 active:scale-95 ${
                 active
                   ? "bg-[#3daae0] text-white shadow-sm"
                   : isOpen
                     ? "bg-[#3daae0]/10 text-[#3daae0] border border-[#3daae0]/30"
-                    : "bg-white text-[var(--color-ink-secondary)] border border-[#e4e4ea]"
+                    : "bg-white text-[#5c5c6f] border border-[#e4e4ea] hover:border-[#9b9bab]"
               }`}
             >
               <span className="text-base leading-none">{f.icon}</span>
@@ -270,19 +321,28 @@ export default function ProductList({ products }: ProductListProps) {
         </div>
       )}
 
-      {/* Count */}
-      <div className="mt-3">
+      {/* Count + Sort */}
+      <div className="mt-3 flex items-center justify-between">
         <p className="text-sm font-bold text-[#5c5c6f]">
           {filteredProducts.length}件
         </p>
+        <select
+          value={sortBy}
+          onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
+          className="rounded-lg border border-[#e4e4ea] bg-white px-2 py-1 text-xs text-[#5c5c6f] outline-none"
+        >
+          {SORT_OPTIONS.map((opt) => (
+            <option key={opt.value} value={opt.value}>{opt.label}</option>
+          ))}
+        </select>
       </div>
 
-      {/* Product grid */}
-      <div className="mt-3 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+      {/* Product grid with stagger animation */}
+      <StaggerGrid>
         {filteredProducts.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}
-      </div>
+      </StaggerGrid>
     </div>
   );
 }
@@ -300,10 +360,10 @@ function FilterChip({
     <button
       type="button"
       onClick={onClick}
-      className={`px-3.5 py-2 rounded-full text-sm font-bold transition-all active:scale-95 ${
+      className={`px-3.5 py-2 rounded-full text-sm font-bold transition-all duration-200 active:scale-95 ${
         active
           ? "bg-[#3daae0] text-white shadow-sm"
-          : "bg-[#f5f5f7] text-[var(--color-ink-secondary)] hover:bg-[#e4e4ea]"
+          : "bg-[#f5f5f7] text-[#5c5c6f] hover:bg-[#e4e4ea]"
       }`}
     >
       {label}
