@@ -53,6 +53,9 @@ export default function RootLayout({
         <div className="mesh-bg" aria-hidden="true">
           <div className="mesh-orb-1" />
           <div className="mesh-orb-2" />
+          <div className="mesh-orb-3" />
+          <div className="mesh-orb-4" />
+          <div className="mesh-orb-5" />
         </div>
         <InterestProvider>
           <Header />
