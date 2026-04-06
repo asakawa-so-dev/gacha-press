@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type Props = {
   children: React.ReactNode;
@@ -18,29 +18,30 @@ export default function ScrollReveal({
   threshold = 0.15,
 }: Props) {
   const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
 
-    const addVisible = () => {
+    const show = () => {
       if (delay > 0) {
-        setTimeout(() => el.classList.add("is-visible"), delay);
+        setTimeout(() => setVisible(true), delay);
       } else {
-        el.classList.add("is-visible");
+        setVisible(true);
       }
     };
 
     const rect = el.getBoundingClientRect();
     if (rect.top < window.innerHeight + 40 && rect.bottom > 0) {
-      requestAnimationFrame(addVisible);
+      requestAnimationFrame(show);
       return;
     }
 
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          addVisible();
+          show();
           observer.unobserve(el);
         }
       },
@@ -60,7 +61,7 @@ export default function ScrollReveal({
   }[variant];
 
   return (
-    <div ref={ref} className={`${variantClass} ${className}`}>
+    <div ref={ref} className={`${variantClass}${visible ? " is-visible" : ""} ${className}`}>
       {children}
     </div>
   );

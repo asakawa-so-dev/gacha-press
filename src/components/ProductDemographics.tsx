@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import {
   BarChart,
   Bar,
@@ -9,9 +10,13 @@ import {
   Tooltip,
   ResponsiveContainer,
   Cell,
+  AreaChart,
+  Area,
+  CartesianGrid,
 } from "recharts";
 import { createClient } from "@/lib/supabase/client";
-import type { ProductDemographics as DemoData } from "@/lib/types";
+import ProductImage from "@/components/ProductImage";
+import type { ProductDemographics as DemoData, RelatedProduct, ProductTrendDay } from "@/lib/types";
 
 const GENDER_COLORS: Record<string, string> = {
   "男": "#7cb9e8",
@@ -52,7 +57,7 @@ function OtherPictogram({ size = 16, color = "currentColor" }: { size?: number; 
 }
 
 function GenderIcon({ gender, size = 16, color }: { gender: string; size?: number; color?: string }) {
-  const c = color ?? GENDER_COLORS[gender] ?? "#9b9bab";
+  const c = color ?? GENDER_COLORS[gender] ?? "#7a7a90";
   switch (gender) {
     case "男": case "男性": return <MalePictogram size={size} color={c} />;
     case "女": case "女性": return <FemalePictogram size={size} color={c} />;
@@ -100,7 +105,7 @@ function CustomTooltip({ active, payload }: any) {
   if (!active || !payload?.length) return null;
   const d = payload[0].payload;
   return (
-    <div className="rounded-lg bg-white/95 px-3 py-2 text-xs shadow-lg border border-[#e4e4ea] backdrop-blur-sm">
+    <div className="rounded-lg glass-card px-3 py-2 text-xs border border-white/25">
       <span className="font-bold text-[var(--color-ink)]">{d.name}</span>
       <span className="ml-2 text-[var(--color-ink-muted)]">{d.count}人</span>
     </div>
@@ -115,7 +120,7 @@ function GenderBar({ genderData }: { genderData: { gender: string; count: number
     gender: g.gender,
     count: g.count,
     pct: Math.round((g.count / total) * 100),
-    color: GENDER_COLORS[g.gender] ?? "#9b9bab",
+    color: GENDER_COLORS[g.gender] ?? "#7a7a90",
   }));
 
   return (
@@ -158,15 +163,45 @@ function GenderBar({ genderData }: { genderData: { gender: string; count: number
   );
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function TrendTooltip({ active, payload, label }: any) {
+  if (!active || !payload?.length) return null;
+  const d = new Date(label);
+  const dateStr = `${d.getMonth() + 1}/${d.getDate()}`;
+  return (
+    <div className="rounded-lg glass-card px-3 py-2 text-xs border border-white/25">
+      <p className="font-bold text-[var(--color-ink)]">{dateStr}</p>
+      {payload.map((p: { dataKey: string; value: number; color: string }) => (
+        <p key={p.dataKey} className="flex items-center gap-1.5 mt-0.5">
+          <span className="inline-block h-2 w-2 rounded-full" style={{ backgroundColor: p.color }} />
+          <span className="text-[var(--color-ink-muted)]">
+            {p.dataKey === "purchase_count" ? "回した" : "気になる"}: {p.value}
+          </span>
+        </p>
+      ))}
+    </div>
+  );
+}
+
 export default function ProductDemographics({ productId, initialPurchasedCount }: Props) {
   const [data, setData] = useState<DemoData | null>(null);
+  const [related, setRelated] = useState<RelatedProduct[]>([]);
+  const [trend, setTrend] = useState<ProductTrendDay[]>([]);
 
   useEffect(() => {
     const supabase = createClient();
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (supabase.rpc as any)("get_product_demographics", { p_product_id: productId }).then(({ data: d }: { data: DemoData | null }) => {
-      if (d) setData(d);
-    });
+    (supabase.rpc as any)("get_product_demographics", { p_product_id: productId })
+      .then(({ data: d }: { data: DemoData | null }) => { if (d) setData(d); });
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (supabase.rpc as any)("get_related_products", { p_product_id: productId })
+      .then(({ data: d }: { data: RelatedProduct[] | null }) => { if (d) setRelated(d); });
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (supabase.rpc as any)("get_product_trend", { p_product_id: productId })
+      .then(({ data: d }: { data: ProductTrendDay[] | null }) => { if (d) setTrend(d); });
   }, [productId]);
 
   const totalSpins = data?.total_spins ?? initialPurchasedCount;
@@ -177,15 +212,22 @@ export default function ProductDemographics({ productId, initialPurchasedCount }
 
   const hasGenderData = genderData.length > 0;
   const hasAgeData = ageData.length > 0;
+  const hasTrend = trend.length > 1;
+  const hasRelated = related.length > 0;
 
   const ageBarData = ageData.map((a) => ({
     name: a.age_group,
     count: a.count,
-    fill: AGE_COLORS[a.age_group] ?? "#9b9bab",
+    fill: AGE_COLORS[a.age_group] ?? "#7a7a90",
+  }));
+
+  const trendData = trend.map((t) => ({
+    ...t,
+    label: `${new Date(t.day).getMonth() + 1}/${new Date(t.day).getDate()}`,
   }));
 
   return (
-    <div className="mt-6 space-y-4">
+    <div className="mt-6 lg:mt-0 space-y-4">
       {/* Section title */}
       <div className="flex items-center gap-2">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3daae0" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -199,7 +241,7 @@ export default function ProductDemographics({ productId, initialPurchasedCount }
       </div>
 
       {/* Total spins */}
-      <div className="rounded-2xl border border-[#e4e4ea] bg-gradient-to-br from-[#e8f4fc] to-white p-5 text-center">
+      <div className="rounded-2xl border border-white/25 glass-card p-5 text-center bg-gradient-to-br from-[#e8f4fc]/40 to-transparent">
         <p className="text-xs font-bold text-[var(--color-ink-muted)] uppercase tracking-wider">みんなが回した数</p>
         <p className="mt-2 text-4xl font-black text-[#3daae0] tabular-nums">
           <CountUpNumber value={totalSpins} />
@@ -207,9 +249,74 @@ export default function ProductDemographics({ productId, initialPurchasedCount }
         </p>
       </div>
 
+      {/* Trend chart */}
+      <div className="rounded-2xl border border-white/25 glass-card p-4">
+        <p className="text-xs font-bold text-[#7a7a90] uppercase tracking-wider mb-1">盛り上がりトレンド</p>
+        <p className="text-[10px] text-[var(--color-ink-muted)] mb-3">直近30日間の推移</p>
+        {hasTrend ? (
+          <div>
+            <ResponsiveContainer width="100%" height={140}>
+              <AreaChart data={trendData} margin={{ top: 5, right: 5, left: -20, bottom: 0 }}>
+                <defs>
+                  <linearGradient id="gradPurchase" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#3daae0" stopOpacity={0.3} />
+                    <stop offset="100%" stopColor="#3daae0" stopOpacity={0} />
+                  </linearGradient>
+                  <linearGradient id="gradInterest" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#ec4899" stopOpacity={0.2} />
+                    <stop offset="100%" stopColor="#ec4899" stopOpacity={0} />
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f4" />
+                <XAxis
+                  dataKey="label"
+                  tick={{ fontSize: 9, fill: "var(--color-ink-muted)" }}
+                  axisLine={false}
+                  tickLine={false}
+                  interval="preserveStartEnd"
+                />
+                <YAxis
+                  tick={{ fontSize: 9, fill: "var(--color-ink-muted)" }}
+                  axisLine={false}
+                  tickLine={false}
+                  allowDecimals={false}
+                />
+                <Tooltip content={<TrendTooltip />} />
+                <Area
+                  type="monotone"
+                  dataKey="purchase_count"
+                  stroke="#3daae0"
+                  strokeWidth={2}
+                  fill="url(#gradPurchase)"
+                />
+                <Area
+                  type="monotone"
+                  dataKey="interest_count"
+                  stroke="#ec4899"
+                  strokeWidth={2}
+                  fill="url(#gradInterest)"
+                />
+              </AreaChart>
+            </ResponsiveContainer>
+            <div className="mt-2 flex justify-center gap-4 text-[10px] text-[var(--color-ink-muted)]">
+              <span className="flex items-center gap-1">
+                <span className="inline-block h-2 w-2 rounded-full bg-[#3daae0]" />回した
+              </span>
+              <span className="flex items-center gap-1">
+                <span className="inline-block h-2 w-2 rounded-full bg-[#ec4899]" />気になる
+              </span>
+            </div>
+          </div>
+        ) : (
+          <div className="flex h-[140px] items-center justify-center">
+            <p className="text-sm text-[var(--color-ink-muted)]">データ収集中...</p>
+          </div>
+        )}
+      </div>
+
       {/* Gender bar */}
-      <div className="rounded-2xl border border-[#e4e4ea] bg-white p-4">
-        <p className="text-xs font-bold text-[#9b9bab] uppercase tracking-wider mb-3">男女比</p>
+      <div className="rounded-2xl border border-white/25 glass-card p-4">
+        <p className="text-xs font-bold text-[#7a7a90] uppercase tracking-wider mb-3">男女比</p>
         {hasGenderData ? (
           <GenderBar genderData={genderData} />
         ) : (
@@ -220,8 +327,8 @@ export default function ProductDemographics({ productId, initialPurchasedCount }
       </div>
 
       {/* Age distribution */}
-      <div className="rounded-2xl border border-[#e4e4ea] bg-white p-4">
-        <p className="text-xs font-bold text-[#9b9bab] uppercase tracking-wider mb-3">年代分布</p>
+      <div className="rounded-2xl border border-white/25 glass-card p-4">
+        <p className="text-xs font-bold text-[#7a7a90] uppercase tracking-wider mb-3">年代分布</p>
         {hasAgeData ? (
           <div>
             <ResponsiveContainer width="100%" height={160}>
@@ -249,6 +356,61 @@ export default function ProductDemographics({ productId, initialPurchasedCount }
           </div>
         ) : (
           <div className="flex h-[160px] items-center justify-center">
+            <p className="text-sm text-[var(--color-ink-muted)]">データ収集中...</p>
+          </div>
+        )}
+      </div>
+
+      {/* Related products - 沼つながり */}
+      <div className="rounded-2xl border border-white/25 glass-card p-4">
+        <div className="flex items-center gap-2 mb-3">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+            <circle cx="9" cy="7" r="4" />
+            <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+          </svg>
+          <p className="text-xs font-bold text-[#7a7a90] uppercase tracking-wider">沼つながり</p>
+        </div>
+        <p className="text-[10px] text-[var(--color-ink-muted)] -mt-1 mb-3">これを回した人はこんなガチャも回してる</p>
+        {hasRelated ? (
+          <div className="space-y-2.5">
+            {related.map((item, i) => (
+              <Link
+                key={item.product_id}
+                href={`/detail/${item.product_id}`}
+                className="flex items-center gap-3 rounded-xl bg-white/10 p-2.5 transition-all duration-200 hover:bg-white/20 hover:scale-[1.01] group"
+              >
+                <div className="relative flex items-center justify-center">
+                  <span className="absolute -left-1 -top-1 z-10 flex h-5 w-5 items-center justify-center rounded-full bg-[#a78bfa] text-[10px] font-black text-white shadow-sm">
+                    {i + 1}
+                  </span>
+                  <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-lg bg-white/15 backdrop-blur-md border border-white/25">
+                    <ProductImage
+                      src={item.image_url}
+                      alt={item.name}
+                      fill
+                      sizes="56px"
+                      className="object-contain p-0.5"
+                    />
+                  </div>
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="text-xs font-bold text-[var(--color-ink)] line-clamp-2 leading-snug group-hover:text-[#3daae0] transition-colors">
+                    {item.name}
+                  </p>
+                  <p className="mt-0.5 text-[10px] text-[var(--color-ink-muted)]">
+                    ¥{item.price.toLocaleString()} · {item.overlap_count}人が両方回してる
+                  </p>
+                </div>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 text-[#7a7a90] group-hover:text-[#3daae0] transition-colors">
+                  <path d="M9 18l6-6-6-6" />
+                </svg>
+              </Link>
+            ))}
+          </div>
+        ) : (
+          <div className="flex h-20 items-center justify-center">
             <p className="text-sm text-[var(--color-ink-muted)]">データ収集中...</p>
           </div>
         )}

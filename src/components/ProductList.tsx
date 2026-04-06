@@ -210,7 +210,7 @@ export default function ProductList({ products }: ProductListProps) {
           placeholder="商品名・メーカー・ジャンルで検索"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full pl-10 pr-10 py-3 rounded-xl border border-[#e4e4ea] bg-white text-[#1c1c28] placeholder:text-[#9b9bab] focus:outline-none focus:ring-2 focus:ring-[#3daae0]/40 focus:border-[#3daae0] transition-shadow"
+          className="w-full pl-10 pr-10 py-3 rounded-xl glass text-[#1c1c28] placeholder:text-[#7a7a90] focus:outline-none focus:ring-2 focus:ring-[#3daae0]/40 transition-shadow"
         />
         {searchQuery && (
           <button
@@ -238,7 +238,7 @@ export default function ProductList({ products }: ProductListProps) {
                   ? "bg-[#3daae0] text-white shadow-sm"
                   : isOpen
                     ? "bg-[#3daae0]/10 text-[#3daae0] border border-[#3daae0]/30"
-                    : "bg-white text-[#5c5c6f] border border-[#e4e4ea] hover:border-[#9b9bab]"
+                    : "glass-subtle text-[#4a4a5c] hover:bg-white/20"
               }`}
             >
               <span className="text-base leading-none">{f.icon}</span>
@@ -279,7 +279,7 @@ export default function ProductList({ products }: ProductListProps) {
 
       {/* Expandable filter options */}
       {openFilter && (
-        <div className="mt-2 rounded-xl border border-[#e4e4ea] bg-white p-3 shadow-sm animate-[fade-up-in_0.2s_ease]">
+        <div className="mt-2 rounded-xl glass p-3 animate-[fade-up-in_0.2s_ease]">
           <div className="flex flex-wrap gap-2">
             {openFilter === "genre" &&
               GENRES.map((g) => (
@@ -329,7 +329,7 @@ export default function ProductList({ products }: ProductListProps) {
         <select
           value={sortBy}
           onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
-          className="rounded-lg border border-[#e4e4ea] bg-white px-2 py-1 text-xs text-[#5c5c6f] outline-none"
+          className="rounded-lg glass-subtle px-2 py-1 text-xs text-[#4a4a5c] outline-none"
         >
           {SORT_OPTIONS.map((opt) => (
             <option key={opt.value} value={opt.value}>{opt.label}</option>
@@ -362,8 +362,8 @@ function FilterChip({
       onClick={onClick}
       className={`px-3.5 py-2 rounded-full text-sm font-bold transition-all duration-200 active:scale-95 ${
         active
-          ? "bg-[#3daae0] text-white shadow-sm"
-          : "bg-[#f5f5f7] text-[#5c5c6f] hover:bg-[#e4e4ea]"
+          ? "bg-[#3daae0]/80 backdrop-blur-sm text-white shadow-sm"
+          : "glass-subtle text-[#4a4a5c] hover:bg-white/20"
       }`}
     >
       {label}

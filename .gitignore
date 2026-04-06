@@ -42,3 +42,4 @@ android/capacitor-cordova-android-plugins/build/
 *.zip
 screenshots/
 scripts/full_check*
+.vercel

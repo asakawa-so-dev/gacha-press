@@ -38,7 +38,7 @@ export default function InterestButton({
       className={`flex items-center gap-2 rounded-full px-4 py-2.5 font-medium transition-all ${
         liked
           ? "bg-[#ec4899]/15 text-[#ec4899]"
-          : "bg-[#f5f5f7] text-[#5c5c6f] hover:bg-[#e4e4ea]"
+          : "bg-white/15 backdrop-blur-md text-[#4a4a5c] hover:bg-white/25"
       } ${isAnimating ? "heart-active" : ""}`}
       aria-label={liked ? "気になるを取り消す" : "気になる"}
     >

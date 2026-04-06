@@ -58,7 +58,7 @@ export default function PurchasedButton({
       disabled={purchased || isLoading}
       className={`flex items-center gap-2 rounded-full px-4 py-2.5 font-medium transition-all ${
         purchased
-          ? "bg-[#3daae0]/15 text-[#3daae0] cursor-default"
+          ? "bg-[#3daae0]/15 backdrop-blur-md text-[#3daae0] cursor-default"
           : "bg-[#3daae0] text-white hover:bg-[#2888c0] disabled:opacity-50"
       }`}
       aria-label={purchased ? "買った済み" : "買った"}

@@ -8,6 +8,7 @@ import { useInterests } from "@/components/InterestProvider";
 import ProductCard from "@/components/ProductCard";
 import { getAnonPlayedMap, persistAnonPlayedMap } from "@/lib/interests";
 import type { Product } from "@/lib/types";
+import { APPROVED_MAKERS } from "@/lib/constants";
 
 /* ═══════════════════════════════════════
    Gacha Rank System
@@ -65,8 +66,8 @@ function TapAnimation() {
   return (
     <div className="flex flex-col items-center gap-3">
       {/* Mock card */}
-      <div className="w-48 rounded-xl border border-[#e4e4ea] bg-white shadow-sm overflow-hidden transition-all duration-500" style={{ borderColor: phase >= 3 ? "#34d399" : "#e4e4ea" }}>
-        <div className="h-20 bg-[#f5f5f7] flex items-center justify-center relative">
+      <div className="w-48 rounded-xl border border-white/25 glass-card overflow-hidden transition-all duration-500" style={{ borderColor: phase >= 3 ? "#34d399" : "rgba(255,255,255,0.25)" }}>
+        <div className="h-20 bg-white/10 flex items-center justify-center relative">
           <span className="text-3xl">🎰</span>
           {phase >= 3 && (
             <div className="absolute inset-0 flex items-center justify-center animate-[scale-in_0.3s_ease-out]">
@@ -79,7 +80,7 @@ function TapAnimation() {
           )}
         </div>
         <div className="p-2">
-          <div className="h-2.5 w-3/4 rounded bg-[#e4e4ea]" />
+          <div className="h-2.5 w-3/4 rounded bg-white/25" />
           <div className="mt-1 h-2 w-1/2 rounded bg-[#f0f0f4]" />
         </div>
         {/* Animated button */}
@@ -88,8 +89,8 @@ function TapAnimation() {
             className={`flex items-center justify-center rounded-lg py-2 text-xs font-medium transition-all duration-500 ${
               phase >= 2
                 ? "bg-[#34d399]/15 text-[#059669]"
-                : "bg-[#f5f5f7] text-[#6b6b7b]"
-            } ${phase === 1 ? "scale-95 bg-[#e4e4ea]" : ""}`}
+                : "bg-white/15 backdrop-blur-md text-[#6b6b7b]"
+            } ${phase === 1 ? "scale-95 bg-white/25" : ""}`}
           >
             {phase >= 2 ? (
               <span className="flex items-center gap-1">
@@ -158,7 +159,7 @@ function RankUpAnimation() {
       </div>
 
       {/* Progress bar */}
-      <div className="w-40 h-2 rounded-full bg-[#e4e4ea] overflow-hidden">
+      <div className="w-40 h-2 rounded-full bg-white/25 overflow-hidden">
         <div
           className="h-full rounded-full transition-all duration-700 ease-out"
           style={{
@@ -210,12 +211,12 @@ function MylistOnboarding() {
   const isLast = slide === ONBOARDING_SLIDES.length - 1;
 
   return (
-    <div className="mb-5 rounded-2xl border border-[#ec4899]/20 bg-gradient-to-br from-[#fce7f3] via-white to-[#ecfdf5] shadow-sm relative overflow-hidden">
+    <div className="mb-5 rounded-2xl border border-[#ec4899]/20 glass-card relative overflow-hidden bg-gradient-to-br from-[#fce7f3]/35 via-white/15 to-[#ecfdf5]/35">
       {/* Close button */}
       <button
         type="button"
         onClick={dismiss}
-        className="absolute top-3 right-3 z-10 flex h-7 w-7 items-center justify-center rounded-full bg-white/80 text-[var(--color-ink-muted)] hover:bg-white hover:text-[var(--color-ink)] transition-colors shadow-sm"
+        className="absolute top-3 right-3 z-10 flex h-7 w-7 items-center justify-center rounded-full bg-white/15 backdrop-blur-md text-[var(--color-ink-muted)] hover:bg-white/25 hover:text-[var(--color-ink)] transition-colors"
         aria-label="スキップ"
       >
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
@@ -245,7 +246,7 @@ function MylistOnboarding() {
               type="button"
               onClick={() => setSlide(i)}
               className={`h-2 rounded-full transition-all duration-300 ${
-                i === slide ? "w-6 bg-[#ec4899]" : "w-2 bg-[#e4e4ea]"
+                i === slide ? "w-6 bg-[#ec4899]" : "w-2 bg-white/25"
               }`}
               aria-label={`スライド ${i + 1}`}
             />
@@ -304,7 +305,7 @@ function ProgressRing({
           cy={size / 2}
           r={radius}
           fill="none"
-          stroke="#e4e4ea"
+          stroke="rgba(255,255,255,0.25)"
           strokeWidth={stroke}
         />
         <circle
@@ -366,14 +367,14 @@ function MylistCard({
 
   return (
     <div
-      className={`relative rounded-xl border bg-white shadow-sm overflow-hidden transition-all duration-300 ${
+      className={`relative rounded-xl border glass-card overflow-hidden transition-all duration-300 ${
         isPlayed
-          ? "border-[#34d399]/50 bg-gradient-to-b from-[#ecfdf5] to-white"
-          : "border-[#e4e4ea]"
+          ? "border-[#34d399]/50 bg-gradient-to-b from-[#ecfdf5]/40 to-transparent"
+          : "border-white/25"
       }`}
     >
       <Link href={`/detail/${product.id}`}>
-        <div className="relative aspect-square bg-[#f5f5f7]">
+        <div className="relative aspect-square bg-white/10">
           {product.image_url ? (
             <Image
               src={product.image_url}
@@ -386,7 +387,7 @@ function MylistCard({
             />
           ) : (
             <div className="absolute inset-0 product-image-placeholder flex items-center justify-center">
-              <span className="text-[#9b9bab] text-sm">No Image</span>
+              <span className="text-[#7a7a90] text-sm">No Image</span>
             </div>
           )}
           {isPlayed && (
@@ -432,7 +433,7 @@ function MylistCard({
           className={`relative w-full rounded-lg py-2.5 text-sm font-medium transition-all active:scale-95 ${
             isPlayed
               ? "bg-[#34d399]/15 text-[#059669]"
-              : "bg-[#f5f5f7] text-[var(--color-ink-secondary)] hover:bg-[#e4e4ea]"
+              : "bg-white/15 backdrop-blur-md text-[var(--color-ink-secondary)] hover:bg-white/25"
           }`}
         >
           <ConfettiBurst active={confetti} />
@@ -488,7 +489,7 @@ function FrustratedPersonIllustration() {
         <rect x="0" y="0" width="40" height="22" rx="11" fill="white" stroke="#e4e4ea" strokeWidth="1.5" />
         <circle cx="0" cy="24" r="3" fill="white" stroke="#e4e4ea" strokeWidth="1" />
         <circle cx="-4" cy="28" r="1.5" fill="white" stroke="#e4e4ea" strokeWidth="1" />
-        <text x="6" y="15" fontSize="10" fill="#9b9bab" fontFamily="sans-serif">どれ…?</text>
+        <text x="6" y="15" fontSize="10" fill="#7a7a90" fontFamily="sans-serif">どれ…?</text>
       </g>
     </svg>
   );
@@ -564,7 +565,7 @@ function OnboardingCarousel() {
 
   const slide = SLIDES[current];
   return (
-    <div className="relative overflow-hidden rounded-2xl bg-gradient-to-b from-[#fce7f3] to-white p-6" onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
+    <div className="relative overflow-hidden rounded-2xl glass-card border border-white/25 p-6 bg-gradient-to-b from-[#fce7f3]/35 to-transparent" onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
       <div key={current} className="flex flex-col items-center text-center carousel-fade-in">
         <div className="mb-4">{slide.illustration}</div>
         <h3 className="text-base font-bold text-[var(--color-ink)] whitespace-pre-line leading-relaxed">{slide.title}</h3>
@@ -572,7 +573,7 @@ function OnboardingCarousel() {
       </div>
       <div className="mt-5 flex items-center justify-center gap-2">
         {SLIDES.map((_, i) => (
-          <button key={i} type="button" onClick={() => setCurrent(i)} className={`h-2 rounded-full transition-all duration-300 ${i === current ? "w-6 bg-[#ec4899]" : "w-2 bg-[#e4e4ea]"}`} aria-label={`スライド ${i + 1}`} />
+          <button key={i} type="button" onClick={() => setCurrent(i)} className={`h-2 rounded-full transition-all duration-300 ${i === current ? "w-6 bg-[#ec4899]" : "w-2 bg-white/25"}`} aria-label={`スライド ${i + 1}`} />
         ))}
       </div>
     </div>
@@ -619,7 +620,8 @@ export default function MylistPage() {
             const { data: productsData = [] } = await supabase
               .from("products")
               .select("*")
-              .in("id", productIds);
+              .in("id", productIds)
+              .in("maker", APPROVED_MAKERS as unknown as string[]);
             setProducts(productsData as Product[]);
 
             const { data: purchases } = await supabase
@@ -641,7 +643,8 @@ export default function MylistPage() {
             const { data: productsData = [] } = await supabase
               .from("products")
               .select("*")
-              .in("id", anonIds);
+              .in("id", anonIds)
+              .in("maker", APPROVED_MAKERS as unknown as string[]);
             setProducts(productsData as Product[]);
           }
           const anonMap = getAnonPlayedMap();
@@ -716,11 +719,11 @@ export default function MylistPage() {
   /* ── Not logged in ── */
   if (!isLoggedIn) {
     return (
-      <div className="min-h-screen bg-[var(--color-surface-alt)]">
+      <div className="min-h-screen">
         <div className="mx-auto max-w-6xl px-4 py-6">
           <h1 className="mb-6 text-2xl font-bold text-[var(--color-ink)]">気になるリスト</h1>
           <OnboardingCarousel />
-          <div className="mt-6 rounded-2xl border border-[var(--color-border)] bg-white p-6 text-center shadow-sm">
+          <div className="mt-6 rounded-2xl border border-white/25 glass-card p-6 text-center">
             <p className="text-sm font-medium text-[var(--color-ink)]">「あれ回したかったのに…」をゼロにしよう</p>
             <p className="mt-1 text-xs text-[var(--color-ink-muted)]">気になるガチャをリストに保存。お店でサッと確認できます</p>
             <Link href="/mypage" className="mt-4 inline-flex items-center justify-center rounded-full bg-[#ec4899] px-8 py-3 font-medium text-white shadow-sm transition-colors hover:bg-[#db2777]">無料で気になるリストを使う</Link>
@@ -734,11 +737,11 @@ export default function MylistPage() {
                 </div>
               ) : (
                 <div className="grid grid-cols-2 gap-4">
-                  {Array.from({ length: 4 }).map((_, i) => (<div key={i} className="rounded-xl border border-[#e4e4ea] bg-white overflow-hidden"><div className="aspect-square bg-[#f5f5f7]" /><div className="p-3 space-y-2"><div className="h-4 rounded bg-[#e4e4ea] w-3/4" /><div className="h-3 rounded bg-[#f0f0f4] w-1/2" /></div></div>))}
+                  {Array.from({ length: 4 }).map((_, i) => (<div key={i} className="rounded-xl border border-white/25 glass-card overflow-hidden"><div className="aspect-square bg-white/10" /><div className="p-3 space-y-2"><div className="h-4 rounded bg-white/25 w-3/4" /><div className="h-3 rounded bg-white/15 w-1/2" /></div></div>))}
                 </div>
               )}
             </div>
-            <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[var(--color-surface-alt)] to-transparent" />
+            <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/20 to-transparent" />
           </div>
         </div>
       </div>
@@ -748,10 +751,10 @@ export default function MylistPage() {
   /* ── Logged in: Empty ── */
   if (products.length === 0) {
     return (
-      <div className="min-h-screen bg-[var(--color-surface-alt)]">
+      <div className="min-h-screen">
         <div className="mx-auto max-w-6xl px-4 py-6">
           <h1 className="mb-6 text-2xl font-bold text-[var(--color-ink)]">気になるリスト</h1>
-          <div className="flex min-h-[280px] flex-col items-center justify-center rounded-2xl border border-[var(--color-border)] bg-white p-8 text-center shadow-sm">
+          <div className="flex min-h-[280px] flex-col items-center justify-center rounded-2xl border border-white/25 glass-card p-8 text-center">
             <span className="mb-4 text-5xl">🎯</span>
             <p className="font-medium text-[var(--color-ink)]">まだ気になるガチャがありません</p>
             <p className="mt-2 text-sm text-[var(--color-ink-muted)]">さがすやランキングでハートをタップして追加しよう</p>
@@ -764,7 +767,7 @@ export default function MylistPage() {
 
   /* ── Logged in: With items ── */
   return (
-    <div className="min-h-screen bg-[var(--color-surface-alt)]">
+    <div className="min-h-screen">
       <div className="mx-auto max-w-6xl px-4 py-6">
         <h1 className="mb-4 text-2xl font-bold text-[var(--color-ink)]">気になるリスト</h1>
 
@@ -772,7 +775,7 @@ export default function MylistPage() {
         <MylistOnboarding />
 
         {/* ── Stats / Progress card ── */}
-        <div className="mb-5 rounded-2xl border border-[var(--color-border)] bg-white p-4 shadow-sm">
+        <div className="mb-5 rounded-2xl border border-white/25 glass-card p-4">
           <div className="flex items-center gap-4">
             <ProgressRing played={playedCount} total={totalCount} />
             <div className="flex-1 min-w-0">
@@ -804,7 +807,7 @@ export default function MylistPage() {
                 </p>
               )}
               {/* Progress bar */}
-              <div className="mt-2 h-2 rounded-full bg-[#e4e4ea] overflow-hidden">
+              <div className="mt-2 h-2 rounded-full bg-white/25 overflow-hidden">
                 <div
                   className="h-full rounded-full transition-all duration-500 ease-out"
                   style={{
@@ -818,7 +821,7 @@ export default function MylistPage() {
         </div>
 
         {/* ── Filter tabs ── */}
-        <div className="mb-4 flex rounded-xl bg-white border border-[var(--color-border)] p-1">
+        <div className="mb-4 flex rounded-xl glass-card border border-white/25 p-1">
           {(
             [
               { key: "all" as FilterTab, label: `すべて (${totalCount})` },
@@ -847,7 +850,7 @@ export default function MylistPage() {
 
         {/* ── Product grid ── */}
         {filtered.length === 0 ? (
-          <div className="flex min-h-[160px] flex-col items-center justify-center rounded-2xl bg-white border border-[var(--color-border)] p-6 text-center">
+          <div className="flex min-h-[160px] flex-col items-center justify-center rounded-2xl glass-card border border-white/25 p-6 text-center">
             <p className="text-sm text-[var(--color-ink-muted)]">
               {filter === "played"
                 ? "まだ回したガチャがありません。回したら「まわした！」をタップ！"
@@ -875,7 +878,7 @@ export default function MylistPage() {
           onClick={() => setShowComplete(false)}
         >
           <div
-            className="mx-4 max-w-sm rounded-2xl bg-white p-8 text-center shadow-2xl celebrate-pulse"
+            className="mx-4 max-w-sm rounded-2xl glass-strong border border-white/25 p-8 text-center celebrate-pulse"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="text-6xl mb-4">🎊</div>
@@ -891,7 +894,7 @@ export default function MylistPage() {
               <button
                 type="button"
                 onClick={() => setShowComplete(false)}
-                className="flex-1 rounded-full bg-[#f5f5f7] py-2.5 text-sm font-medium text-[var(--color-ink-secondary)]"
+                className="flex-1 rounded-full bg-white/15 backdrop-blur-md py-2.5 text-sm font-medium text-[var(--color-ink-secondary)]"
               >
                 閉じる
               </button>

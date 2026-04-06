@@ -61,7 +61,7 @@ function TrophyNavIcon() {
 
 function ChevronRight() {
   return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-[#9b9bab]">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-[#7a7a90]">
       <path d="m9 18 6-6-6-6" />
     </svg>
   );
@@ -142,10 +142,10 @@ export default function MypagePage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#fafafa] flex min-h-[50vh] items-center justify-center">
+      <div className="min-h-screen flex min-h-[50vh] items-center justify-center">
         <div className="flex flex-col items-center gap-3">
           <div className="h-10 w-10 animate-spin rounded-full border-[3px] border-[#3daae0] border-t-transparent" />
-          <p className="text-sm font-bold text-[#9b9bab]">読み込み中...</p>
+          <p className="text-sm font-bold text-[#7a7a90]">読み込み中...</p>
         </div>
       </div>
     );
@@ -153,7 +153,7 @@ export default function MypagePage() {
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-[#fafafa]">
+      <div className="min-h-screen">
         <div className="mx-auto max-w-md px-4 py-8">
           <ScrollReveal>
             <h1 className="section-header text-center">/MYPAGE</h1>
@@ -198,7 +198,7 @@ export default function MypagePage() {
   ] as const;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#e8f4fc]/80 via-[#fafafa] to-[#fce7f3]/20 pb-8">
+    <div className="min-h-screen bg-gradient-to-b from-[#e8f4fc]/50 via-transparent to-[#fce7f3]/25 pb-8">
       {showOnboarding && (
         <OnboardingModal
           userId={user.id}
@@ -247,7 +247,7 @@ export default function MypagePage() {
         </ScrollReveal>
 
         <ScrollReveal delay={200}>
-          <p className="mt-5 px-1 text-xs font-bold uppercase tracking-wider text-[#9b9bab]">
+          <p className="mt-5 px-1 text-xs font-bold uppercase tracking-wider text-[#7a7a90]">
             メニュー
           </p>
           <nav className="mt-2 space-y-3">
@@ -259,14 +259,14 @@ export default function MypagePage() {
               >
                 <Link
                   href={item.href}
-                  className="flex items-center gap-4 rounded-2xl border border-[#e4e4ea] bg-white p-4 shadow-sm card-hover"
+                  className="flex items-center gap-4 rounded-2xl border border-white/25 glass-card p-4 card-hover"
                 >
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#f5f5f7] shadow-sm">
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-white/15 backdrop-blur-md">
                     {item.icon}
                   </div>
                   <div className="min-w-0 flex-1">
                     <p className="font-black text-[#1c1c28]">{item.title}</p>
-                    <p className="mt-0.5 text-xs font-bold text-[#9b9bab]">{item.desc}</p>
+                    <p className="mt-0.5 text-xs font-bold text-[#7a7a90]">{item.desc}</p>
                   </div>
                   <ChevronRight />
                 </Link>
@@ -279,7 +279,7 @@ export default function MypagePage() {
           <button
             type="button"
             onClick={handleLogout}
-            className="mt-6 flex w-full items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-[#e4e4ea] bg-white/60 py-3.5 text-sm font-bold text-[#5c5c6f] transition-all duration-300 hover:border-[#9b9bab] hover:bg-[#f5f5f7]"
+            className="mt-6 flex w-full items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-white/25 bg-white/15 backdrop-blur-md py-3.5 text-sm font-bold text-[#4a4a5c] transition-all duration-300 hover:border-white/40 hover:bg-white/25"
           >
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
@@ -289,7 +289,7 @@ export default function MypagePage() {
             ログアウト
           </button>
 
-          <p className="mt-8 text-center text-xs font-bold text-[#9b9bab]">
+          <p className="mt-8 text-center text-xs font-bold text-[#7a7a90]">
             <Link href="/terms" className="text-[#3daae0] link-underline">
               利用規約
             </Link>

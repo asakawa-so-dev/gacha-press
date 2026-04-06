@@ -46,6 +46,20 @@ export type ProductStats = {
   purchased_count: number;
 };
 
+export type RelatedProduct = {
+  product_id: number;
+  name: string;
+  image_url: string;
+  price: number;
+  overlap_count: number;
+};
+
+export type ProductTrendDay = {
+  day: string;
+  purchase_count: number;
+  interest_count: number;
+};
+
 export type Article = {
   id: string;
   title: string;

@@ -47,11 +47,11 @@ export default function OnboardingModal({ userId, onComplete }: Props) {
   return (
     <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center">
       <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
-      <div className="relative w-full max-w-md mx-4 mb-0 sm:mb-0 rounded-t-3xl sm:rounded-3xl bg-white shadow-2xl overflow-hidden animate-slide-up-modal">
+      <div className="relative w-full max-w-md mx-4 mb-0 sm:mb-0 rounded-t-3xl sm:rounded-3xl glass-strong border border-white/25 shadow-2xl overflow-hidden animate-slide-up-modal">
         {/* Progress bar */}
         <div className="flex gap-2 px-6 pt-5">
           <div className="h-1 flex-1 rounded-full bg-[#3daae0]" />
-          <div className={`h-1 flex-1 rounded-full transition-colors duration-500 ${step === 2 ? "bg-[#3daae0]" : "bg-[#e4e4ea]"}`} />
+          <div className={`h-1 flex-1 rounded-full transition-colors duration-500 ${step === 2 ? "bg-[#3daae0]" : "bg-white/25"}`} />
         </div>
 
         <div className="px-6 pt-5 pb-8">
@@ -62,7 +62,7 @@ export default function OnboardingModal({ userId, onComplete }: Props) {
                   <span className="text-2xl">🎯</span>
                 </div>
                 <h2 className="text-lg font-bold text-[#1c1c28]">性別を教えてください</h2>
-                <p className="mt-1 text-sm text-[#9b9bab]">あなたにピッタリのガチャをおすすめします</p>
+                <p className="mt-1 text-sm text-[#7a7a90]">あなたにピッタリのガチャをおすすめします</p>
               </div>
               <div className="grid grid-cols-3 gap-3">
                 {GENDER_OPTIONS.map((opt) => (
@@ -73,7 +73,7 @@ export default function OnboardingModal({ userId, onComplete }: Props) {
                     className={`flex flex-col items-center gap-2 rounded-2xl border-2 p-4 transition-all duration-300 active:scale-[0.97] ${
                       gender === opt.value
                         ? "border-[#3daae0] bg-[#3daae0]/5 shadow-sm"
-                        : "border-[#e4e4ea] hover:border-[#9b9bab]"
+                        : "border-white/25 hover:border-white/40"
                     }`}
                   >
                     <span className="text-2xl">{opt.icon}</span>
@@ -99,7 +99,7 @@ export default function OnboardingModal({ userId, onComplete }: Props) {
                   <span className="text-2xl">🎂</span>
                 </div>
                 <h2 className="text-lg font-bold text-[#1c1c28]">年代を教えてください</h2>
-                <p className="mt-1 text-sm text-[#9b9bab]">同年代のトレンドがわかります</p>
+                <p className="mt-1 text-sm text-[#7a7a90]">同年代のトレンドがわかります</p>
               </div>
               <div className="grid grid-cols-3 gap-3">
                 {AGE_OPTIONS.map((opt) => (
@@ -110,7 +110,7 @@ export default function OnboardingModal({ userId, onComplete }: Props) {
                     className={`rounded-2xl border-2 px-3 py-3.5 text-center transition-all duration-300 active:scale-[0.97] ${
                       ageGroup === opt.value
                         ? "border-[#ec4899] bg-[#ec4899]/5 shadow-sm"
-                        : "border-[#e4e4ea] hover:border-[#9b9bab]"
+                        : "border-white/25 hover:border-white/40"
                     }`}
                   >
                     <span className={`text-sm font-bold transition-colors duration-300 ${ageGroup === opt.value ? "text-[#ec4899]" : "text-[#1c1c28]"}`}>
@@ -123,7 +123,7 @@ export default function OnboardingModal({ userId, onComplete }: Props) {
                 <button
                   type="button"
                   onClick={() => setStep(1)}
-                  className="rounded-xl border-2 border-[#e4e4ea] px-5 py-3.5 font-bold text-[#5c5c6f] transition-all duration-300 hover:bg-[#f5f5f7]"
+                  className="rounded-xl border-2 border-white/25 px-5 py-3.5 font-bold text-[#4a4a5c] transition-all duration-300 hover:bg-white/15 backdrop-blur-md"
                 >
                   もどる
                 </button>

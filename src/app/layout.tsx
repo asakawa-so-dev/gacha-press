@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { M_PLUS_Rounded_1c } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -12,21 +13,31 @@ const mplusRounded = M_PLUS_Rounded_1c({
   variable: "--font-zen",
 });
 
+const trendSansOne = localFont({
+  src: "../fonts/TrendSansOne.otf",
+  variable: "--font-logo",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
-  title: "marupaka - ガチャ発売カレンダー",
+  title: "marupaca",
   description:
-    "marupaka（まるぱか）は最新のガチャガチャの発売情報をお届けするガチャ活メディアです。発売予定カレンダー、ランキング、気になるリストでガチャ活を楽しもう。",
+    "marupaca（まるぱか）は最新のガチャガチャの発売情報をお届けするガチャ活メディアです。発売予定カレンダー、ランキング、気になるリストでガチャ活を楽しもう。",
+  icons: {
+    icon: [{ url: "/images/logo.svg", type: "image/svg+xml" }],
+    apple: "/images/logo.svg",
+  },
   openGraph: {
-    title: "marupaka - ガチャ発売カレンダー",
+    title: "marupaca",
     description:
-      "marupaka（まるぱか）は最新のガチャガチャの発売情報をお届けするガチャ活メディアです。",
+      "marupaca（まるぱか）は最新のガチャガチャの発売情報をお届けするガチャ活メディアです。",
     images: ["/images/ogp.png"],
   },
   twitter: {
     card: "summary_large_image",
-    title: "marupaka - ガチャ発売カレンダー",
+    title: "marupaca",
     description:
-      "marupaka（まるぱか）は最新のガチャガチャの発売情報をお届けするガチャ活メディアです。",
+      "marupaca（まるぱか）は最新のガチャガチャの発売情報をお届けするガチャ活メディアです。",
     images: ["/images/ogp.png"],
   },
 };
@@ -37,11 +48,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ja" className={mplusRounded.variable}>
+    <html lang="ja" className={`${mplusRounded.variable} ${trendSansOne.variable}`}>
       <body className="font-zen min-h-screen flex flex-col">
+        <div className="mesh-bg" aria-hidden="true">
+          <div className="mesh-orb-1" />
+          <div className="mesh-orb-2" />
+        </div>
         <InterestProvider>
           <Header />
-          <main className="flex-1 pt-14">{children}</main>
+          <main className="flex-1 pt-20">{children}</main>
           <Footer />
           <BottomNav />
         </InterestProvider>

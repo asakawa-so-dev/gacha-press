@@ -13,9 +13,9 @@ export default function ProductCard({ product }: ProductCardProps) {
   return (
     <Link
       href={`/detail/${product.id}`}
-      className="block bg-white rounded-xl shadow-sm border border-[#e4e4ea] overflow-hidden card-hover"
+      className="block rounded-2xl overflow-hidden card-hover glass-card"
     >
-      <div className="relative aspect-square bg-[#f5f5f7]">
+      <div className="relative aspect-square bg-white/10">
         <ProductImage
           src={product.image_url}
           alt={product.name}
@@ -25,7 +25,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           showSourceBadge={false}
         />
         {product.is_new && (
-          <span className="absolute top-2 left-2 px-2 py-0.5 bg-[#3daae0] text-white text-[10px] font-bold rounded-md">
+          <span className="absolute top-2 left-2 px-2 py-0.5 bg-[#3daae0]/90 backdrop-blur-sm text-white text-[10px] font-bold rounded-md">
             NEW
           </span>
         )}
