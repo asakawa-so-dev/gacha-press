@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import ScrollReveal from "@/components/ScrollReveal";
+import SnsLinks from "@/components/SnsLinks";
 import ProductImage from "@/components/ProductImage";
 import type { Product, ProductStats } from "@/lib/types";
 import { APPROVED_MAKERS } from "@/lib/constants";
@@ -580,7 +581,10 @@ export default function RankingPage() {
     <div className="min-h-screen">
       <div className="mx-auto max-w-2xl px-4 py-6">
         <ScrollReveal>
-          <h1 className="section-header">/RANKING</h1>
+          <div className="flex items-center justify-between">
+            <h1 className="section-header">/RANKING</h1>
+            <SnsLinks />
+          </div>
           <p className="section-header-sub">ランキング</p>
         </ScrollReveal>
 
