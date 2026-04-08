@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import ProductList from "@/components/ProductList";
 import ScrollReveal from "@/components/ScrollReveal";
+import SnsLinks from "@/components/SnsLinks";
 import type { Product } from "@/lib/types";
 import { APPROVED_MAKERS } from "@/lib/constants";
 
@@ -46,9 +47,12 @@ export default async function HomePage() {
     <div className="min-h-screen">
       <div className="px-4 py-6 sm:px-6 lg:px-8">
         <ScrollReveal>
-          <h1 className="section-header sm:text-4xl">
-            /DISCOVER
-          </h1>
+          <div className="flex items-center justify-between">
+            <h1 className="section-header sm:text-4xl">
+              /DISCOVER
+            </h1>
+            <SnsLinks />
+          </div>
           <p className="section-header-sub">ガチャを探す</p>
         </ScrollReveal>
 

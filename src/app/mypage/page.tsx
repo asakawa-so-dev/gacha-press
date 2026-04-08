@@ -7,6 +7,7 @@ import { createClient } from "@/lib/supabase/client";
 import AuthForm from "@/components/AuthForm";
 import OnboardingModal from "@/components/OnboardingModal";
 import ScrollReveal from "@/components/ScrollReveal";
+import SnsLinks from "@/components/SnsLinks";
 import type { User } from "@supabase/supabase-js";
 
 const ANON_KEY = "anon_interests";
@@ -156,8 +157,11 @@ export default function MypagePage() {
       <div className="min-h-screen">
         <div className="mx-auto max-w-md px-4 py-8">
           <ScrollReveal>
-            <h1 className="section-header text-center">/MYPAGE</h1>
-            <p className="section-header-sub text-center">マイページ</p>
+            <div className="flex items-center justify-between">
+              <h1 className="section-header">/MYPAGE</h1>
+              <SnsLinks />
+            </div>
+            <p className="section-header-sub">マイページ</p>
           </ScrollReveal>
           <ScrollReveal delay={150}>
             <div className="mt-6">
