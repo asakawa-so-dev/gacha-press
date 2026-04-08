@@ -646,6 +646,46 @@ body {
 
 /* ── Smooth link underline animation ───────────────────── */
 
+/* ── Rank Card Decorations ─────────────────────────────── */
+
+@keyframes shine-sweep {
+  0%   { transform: translateX(-100%); }
+  50%  { transform: translateX(100%); }
+  100% { transform: translateX(100%); }
+}
+
+.rank-shine-sweep {
+  background: linear-gradient(
+    105deg,
+    transparent 20%,
+    rgba(255, 255, 255, 0.12) 40%,
+    rgba(255, 255, 255, 0.22) 50%,
+    rgba(255, 255, 255, 0.12) 60%,
+    transparent 80%
+  );
+  animation: shine-sweep 4s ease-in-out infinite;
+}
+
+@keyframes legendary-glow {
+  0%, 100% {
+    box-shadow:
+      0 8px 32px -8px rgba(167, 139, 250, 0.4),
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.3);
+  }
+  50% {
+    box-shadow:
+      0 12px 48px -8px rgba(236, 72, 153, 0.5),
+      0 0 24px rgba(167, 139, 250, 0.25),
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.4);
+  }
+}
+
+.rank-legendary {
+  animation: legendary-glow 3s ease-in-out infinite;
+}
+
+/* ── Smooth link underline animation ───────────────────── */
+
 .link-underline {
   position: relative;
 }

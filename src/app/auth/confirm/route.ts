@@ -3,20 +3,25 @@ import { createClient } from "@/lib/supabase/server";
 import type { EmailOtpType } from "@supabase/supabase-js";
 
 export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
-  const token_hash = searchParams.get("token_hash");
-  const type = searchParams.get("type") as EmailOtpType | null;
+  const requestUrl = new URL(request.url);
+  const token_hash = requestUrl.searchParams.get("token_hash");
+  const type = requestUrl.searchParams.get("type") as EmailOtpType | null;
+  const next = requestUrl.searchParams.get("next") ?? "/mypage";
+
+  const redirectTo = new URL(next, requestUrl.origin);
 
   if (!token_hash || !type) {
-    return NextResponse.redirect(new URL("/mypage?error=missing_params", request.url));
+    redirectTo.searchParams.set("error", "missing_params");
+    return NextResponse.redirect(redirectTo);
   }
 
   const supabase = await createClient();
   const { error } = await supabase.auth.verifyOtp({ token_hash, type });
 
   if (error) {
-    return NextResponse.redirect(new URL("/mypage?error=auth", request.url));
+    redirectTo.searchParams.set("error", "auth");
+    return NextResponse.redirect(redirectTo);
   }
 
-  return NextResponse.redirect(new URL("/mypage", request.url));
+  return NextResponse.redirect(redirectTo);
 }

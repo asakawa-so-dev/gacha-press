@@ -27,6 +27,15 @@ const GENDER_COLORS: Record<string, string> = {
   "未設定": "#e4e4ea",
 };
 
+const GENDER_DISPLAY: Record<string, string> = {
+  "男": "男性",
+  "男性": "男性",
+  "女": "女性",
+  "女性": "女性",
+  "その他": "その他",
+  "未設定": "未設定",
+};
+
 function MalePictogram({ size = 16, color = "currentColor" }: { size?: number; color?: string }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -72,10 +81,11 @@ const AGE_COLORS: Record<string, string> = {
   "40代": "#a78bfa",
   "50代": "#f5c800",
   "60代〜": "#f58520",
+  "60代以上": "#f58520",
   "未設定": "#e4e4ea",
 };
 
-const AGE_ORDER = ["10代", "20代", "30代", "40代", "50代", "60代〜", "未設定"];
+const AGE_ORDER = ["10代", "20代", "30代", "40代", "50代", "60代以上", "60代〜", "未設定"];
 
 type Props = {
   productId: number;
@@ -153,7 +163,7 @@ function GenderBar({ genderData }: { genderData: { gender: string; count: number
         {segments.map((s) => (
           <div key={s.gender} className="flex items-center gap-1.5">
             <GenderIcon gender={s.gender} size={14} color={s.color} />
-            <span className="text-xs font-bold" style={{ color: s.color }}>{s.gender}</span>
+            <span className="text-xs font-bold" style={{ color: s.color }}>{GENDER_DISPLAY[s.gender] ?? s.gender}</span>
             <span className="text-xs text-[var(--color-ink-muted)]">{s.pct}%</span>
             <span className="text-[10px] text-[var(--color-ink-muted)]">({s.count}人)</span>
           </div>

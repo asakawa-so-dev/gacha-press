@@ -197,6 +197,13 @@ export default function AuthForm() {
               ? "ログイン"
               : "アカウントを作成"}
           </button>
+          {tab === "login" && (
+            <div className="text-center">
+              <Link href="/auth/reset-password" className="text-sm font-bold text-[#3daae0] link-underline">
+                パスワードを忘れた方はこちら
+              </Link>
+            </div>
+          )}
           <p className="text-center text-xs text-[#7a7a90]">
             {tab === "login"
               ? "アカウントがない場合は「新規登録」タブから作成してください"

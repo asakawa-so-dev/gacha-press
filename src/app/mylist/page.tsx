@@ -825,8 +825,8 @@ export default function MylistPage() {
           {(
             [
               { key: "all" as FilterTab, label: `すべて (${totalCount})` },
-              { key: "not_played" as FilterTab, label: `まだ (${totalCount - playedCount})` },
-              { key: "played" as FilterTab, label: `回した (${playedCount})` },
+              { key: "not_played" as FilterTab, label: `きになる (${totalCount - playedCount})` },
+              { key: "played" as FilterTab, label: `まわした (${playedCount})` },
             ] as const
           ).map((tab) => (
             <button

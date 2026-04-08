@@ -29,8 +29,8 @@ const TIME_PERIODS: { value: TimePeriod; label: string }[] = [
 
 const GENDER_FILTERS = [
   { value: null, label: "すべて" },
-  { value: "男", label: "男" },
-  { value: "女", label: "女" },
+  { value: "男性", label: "男性" },
+  { value: "女性", label: "女性" },
   { value: "その他", label: "その他" },
 ] as const;
 
@@ -41,7 +41,7 @@ const AGE_FILTERS = [
   { value: "30代", label: "30代" },
   { value: "40代", label: "40代" },
   { value: "50代", label: "50代" },
-  { value: "60代〜", label: "60代〜" },
+  { value: "60代以上", label: "60代以上" },
 ] as const;
 
 function HeartIcon({ className, size = 14 }: { className?: string; size?: number }) {

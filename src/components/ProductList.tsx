@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo, useEffect, useRef, useCallback } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import ProductCard from "@/components/ProductCard";
 import type { Product } from "@/lib/types";
 
@@ -97,15 +98,38 @@ function StaggerGrid({ children }: { children: React.ReactNode }) {
 }
 
 export default function ProductList({ products }: ProductListProps) {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedGenre, setSelectedGenre] = useState<string | null>(null);
-  const [selectedMaker, setSelectedMaker] = useState<string | null>(null);
-  const [selectedPrice, setSelectedPrice] = useState<number | null>(null);
-  const [selectedMonth, setSelectedMonth] = useState<string | null>(null);
-  const [sortBy, setSortBy] = useState<(typeof SORT_OPTIONS)[number]["value"]>(
-    "month-desc"
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const [searchQuery, setSearchQuery] = useState(searchParams.get("q") ?? "");
+  const [selectedGenre, setSelectedGenre] = useState<string | null>(searchParams.get("genre"));
+  const [selectedMaker, setSelectedMaker] = useState<string | null>(searchParams.get("maker"));
+  const [selectedPrice, setSelectedPrice] = useState<number | null>(
+    searchParams.get("price") ? Number(searchParams.get("price")) : null
+  );
+  const [selectedMonth, setSelectedMonth] = useState<string | null>(searchParams.get("month"));
+  type SortValue = (typeof SORT_OPTIONS)[number]["value"];
+  const [sortBy, setSortBy] = useState<SortValue>(
+    (searchParams.get("sort") as SortValue) || "month-desc"
   );
   const [openFilter, setOpenFilter] = useState<FilterKey | null>(null);
+
+  const isInitialMount = useRef(true);
+  useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
+    const params = new URLSearchParams();
+    if (searchQuery.trim()) params.set("q", searchQuery.trim());
+    if (selectedGenre) params.set("genre", selectedGenre);
+    if (selectedMaker) params.set("maker", selectedMaker);
+    if (selectedPrice != null) params.set("price", String(selectedPrice));
+    if (selectedMonth) params.set("month", selectedMonth);
+    if (sortBy !== "month-desc") params.set("sort", sortBy);
+    const qs = params.toString();
+    router.replace(qs ? `?${qs}` : "/", { scroll: false });
+  }, [searchQuery, selectedGenre, selectedMaker, selectedPrice, selectedMonth, sortBy, router]);
 
   const makers = useMemo(
     () => [...new Set(products.map((p) => p.maker))].sort(),

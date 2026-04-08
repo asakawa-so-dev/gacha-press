@@ -4,8 +4,8 @@ import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 
 const GENDER_OPTIONS = [
-  { value: "男", label: "男", icon: "👨" },
-  { value: "女", label: "女", icon: "👩" },
+  { value: "男性", label: "男性", icon: "👨" },
+  { value: "女性", label: "女性", icon: "👩" },
   { value: "その他", label: "その他", icon: "🧑" },
 ] as const;
 
@@ -15,7 +15,7 @@ const AGE_OPTIONS = [
   { value: "30代", label: "30代" },
   { value: "40代", label: "40代" },
   { value: "50代", label: "50代" },
-  { value: "60代〜", label: "60代〜" },
+  { value: "60代以上", label: "60代以上" },
 ] as const;
 
 type Props = {

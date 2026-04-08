@@ -53,8 +53,17 @@ export default function BottomNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 bottom-nav glass-strong" style={{ borderTop: '1px solid rgba(255,255,255,0.3)' }}>
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent" />
+    <nav
+      className="fixed bottom-0 left-0 right-0 z-50 bottom-nav"
+      style={{
+        background: "rgba(255,255,255,0.92)",
+        backdropFilter: "blur(20px) saturate(180%)",
+        WebkitBackdropFilter: "blur(20px) saturate(180%)",
+        borderTop: "1px solid rgba(255,255,255,0.55)",
+        boxShadow: "0 -4px 24px -4px rgba(0,0,0,0.08)",
+      }}
+    >
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/50 to-transparent" />
       <div className="flex items-center justify-around h-14">
         {navItems.map((item) => {
           const isActive =
