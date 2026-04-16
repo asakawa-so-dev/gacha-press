@@ -234,7 +234,7 @@ export default function ProductList({ products }: ProductListProps) {
           placeholder="商品名・メーカー・ジャンルで検索"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full pl-10 pr-10 py-3 rounded-xl glass text-[#1c1c28] placeholder:text-[#7a7a90] focus:outline-none focus:ring-2 focus:ring-[#3daae0]/40 transition-shadow"
+          className="w-full pl-10 pr-10 py-3 rounded-xl glass text-[#1c1c28] placeholder:text-[#7a7a90] focus:outline-none focus:ring-2 focus:ring-[#7EBEA5]/40 transition-shadow"
         />
         {searchQuery && (
           <button
@@ -259,9 +259,9 @@ export default function ProductList({ products }: ProductListProps) {
               onClick={() => setOpenFilter(isOpen ? null : f.key)}
               className={`flex-shrink-0 flex items-center gap-1.5 rounded-full px-3.5 py-2 text-sm font-bold transition-all duration-200 active:scale-95 ${
                 active
-                  ? "bg-[#3daae0] text-white shadow-sm"
+                  ? "bg-[#7EBEA5] text-white shadow-sm"
                   : isOpen
-                    ? "bg-[#3daae0]/10 text-[#3daae0] border border-[#3daae0]/30"
+                    ? "bg-[#7EBEA5]/10 text-[#7EBEA5] border border-[#7EBEA5]/30"
                     : "glass-subtle text-[#4a4a5c] hover:bg-white/20"
               }`}
             >
@@ -294,7 +294,7 @@ export default function ProductList({ products }: ProductListProps) {
               setSelectedMaker(null);
               setOpenFilter(null);
             }}
-            className="flex-shrink-0 flex items-center gap-1 rounded-full px-3 py-2 text-xs font-bold text-[#ec4899] bg-[#ec4899]/10 border border-[#ec4899]/20 transition-all active:scale-95"
+            className="flex-shrink-0 flex items-center gap-1 rounded-full px-3 py-2 text-xs font-bold text-[#b46075] bg-[#b46075]/10 border border-[#b46075]/20 transition-all active:scale-95"
           >
             リセット
           </button>
@@ -386,7 +386,7 @@ function FilterChip({
       onClick={onClick}
       className={`px-3.5 py-2 rounded-full text-sm font-bold transition-all duration-200 active:scale-95 ${
         active
-          ? "bg-[#3daae0]/80 backdrop-blur-sm text-white shadow-sm"
+          ? "bg-[#7EBEA5]/80 backdrop-blur-sm text-white shadow-sm"
           : "glass-subtle text-[#4a4a5c] hover:bg-white/20"
       }`}
     >
