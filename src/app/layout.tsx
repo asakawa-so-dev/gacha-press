@@ -22,7 +22,7 @@ const trendSansOne = localFont({
 export const metadata: Metadata = {
   title: "marupaca",
   description:
-    "marupaca（まるぱか）は最新のガチャガチャの発売情報をお届けするガチャ活メディアです。発売予定カレンダー、ランキング、気になるリストでガチャ活を楽しもう。",
+    "好きに、胸を張れ。カプセルトイと生活の融合。marupacaは選球眼で選んだカプセルトイだけをキュレーションするメディアです。",
   icons: {
     icon: [{ url: "/images/logo.svg", type: "image/svg+xml" }],
     apple: "/images/logo.svg",
@@ -30,14 +30,14 @@ export const metadata: Metadata = {
   openGraph: {
     title: "marupaca",
     description:
-      "marupaca（まるぱか）は最新のガチャガチャの発売情報をお届けするガチャ活メディアです。",
+      "好きに、胸を張れ。カプセルトイのキュレーションメディア marupaca。",
     images: ["/images/ogp.png"],
   },
   twitter: {
     card: "summary_large_image",
     title: "marupaca",
     description:
-      "marupaca（まるぱか）は最新のガチャガチャの発売情報をお届けするガチャ活メディアです。",
+      "好きに、胸を張れ。カプセルトイのキュレーションメディア marupaca。",
     images: ["/images/ogp.png"],
   },
 };
