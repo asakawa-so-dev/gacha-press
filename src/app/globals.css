@@ -3,10 +3,12 @@
 @theme {
   --font-zen: "M PLUS Rounded 1c", sans-serif;
 
-  --color-brand: #3daae0;
-  --color-brand-dark: #2888c0;
-  --color-brand-dim: #3daae0/15;
-  --color-accent: #ec4899;
+  /* 青磁色 (seiji) — discovery & intelligence */
+  --color-brand: #7EBEA5;
+  --color-brand-dark: #5a9b8a;
+  --color-brand-dim: #7EBEA5/15;
+  /* dusty rose — secondary accent */
+  --color-accent: #b46075;
 
   --color-bg: #f2f4fa;
   --color-bg-elevated: rgba(255, 255, 255, 0.15);
@@ -92,10 +94,10 @@ body {
   z-index: -1;
   overflow: hidden;
   background:
-    radial-gradient(ellipse 80% 60% at 10% 20%, rgba(61, 170, 224, 0.18) 0%, transparent 60%),
-    radial-gradient(ellipse 70% 50% at 90% 80%, rgba(167, 139, 250, 0.16) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 50% at 50% 50%, rgba(236, 72, 153, 0.1) 0%, transparent 60%),
-    linear-gradient(160deg, #f0f4ff 0%, #faf8ff 35%, #fff5f9 65%, #f0faf6 100%);
+    radial-gradient(ellipse 80% 60% at 10% 20%, rgba(126, 190, 165, 0.18) 0%, transparent 60%),
+    radial-gradient(ellipse 70% 50% at 90% 80%, rgba(167, 139, 250, 0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 50% 50%, rgba(180, 96, 117, 0.08) 0%, transparent 60%),
+    linear-gradient(160deg, #f5f9f7 0%, #fafbfa 35%, #fdf8f9 65%, #f2f8f6 100%);
 }
 
 .mesh-bg::before,
@@ -111,7 +113,7 @@ body {
 .mesh-bg::before {
   width: 550px;
   height: 550px;
-  background: radial-gradient(circle, rgba(61, 170, 224, 0.22) 0%, rgba(99, 192, 255, 0.08) 50%, transparent 70%);
+  background: radial-gradient(circle, rgba(126, 190, 165, 0.22) 0%, rgba(160, 210, 190, 0.08) 50%, transparent 70%);
   top: -15%;
   right: -8%;
   animation: orb-drift-bg1 12s ease-in-out infinite;
@@ -159,7 +161,7 @@ body {
 .mesh-orb-1 {
   width: 420px;
   height: 420px;
-  background: radial-gradient(circle, rgba(236, 72, 153, 0.18) 0%, rgba(251, 146, 191, 0.05) 50%, transparent 70%);
+  background: radial-gradient(circle, rgba(180, 96, 117, 0.15) 0%, rgba(210, 140, 155, 0.05) 50%, transparent 70%);
   top: 30%;
   left: 20%;
   animation: orb-drift-1 8s ease-in-out infinite;
@@ -186,7 +188,7 @@ body {
 .mesh-orb-4 {
   width: 500px;
   height: 500px;
-  background: radial-gradient(circle, rgba(56, 189, 248, 0.2) 0%, rgba(96, 165, 250, 0.06) 50%, transparent 70%);
+  background: radial-gradient(circle, rgba(126, 190, 165, 0.2) 0%, rgba(160, 210, 190, 0.06) 50%, transparent 70%);
   top: 5%;
   left: -5%;
   animation: orb-drift-4 11s ease-in-out infinite;

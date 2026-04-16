@@ -75,7 +75,7 @@ export default function BottomNav() {
               key={item.href}
               href={item.href}
               className={`flex flex-col items-center justify-center gap-1 flex-1 py-2 transition-all duration-300 ${
-                isActive ? "text-[#3daae0] scale-105 drop-shadow-[0_0_8px_rgba(61,170,224,0.3)]" : "text-[#7a7a90] hover:text-[#4a4a5c]"
+                isActive ? "text-[#7EBEA5] scale-105 drop-shadow-[0_0_8px_rgba(126,190,165,0.3)]" : "text-[#7a7a90] hover:text-[#4a4a5c]"
               }`}
             >
               <span className="w-6 h-6 flex items-center justify-center [&>svg]:w-5 [&>svg]:h-5">
