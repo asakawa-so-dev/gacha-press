@@ -1,20 +1,25 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Noto_Sans_JP, Noto_Serif_JP } from "next/font/google";
+import { LikesProvider } from "@/lib/likes-store";
+import { PlayedProvider } from "@/lib/played-store";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const notoSansJP = Noto_Sans_JP({
+  variable: "--font-sans-jp",
   subsets: ["latin"],
+  weight: ["300", "400", "500", "700", "900"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const notoSerifJP = Noto_Serif_JP({
+  variable: "--font-serif-jp",
   subsets: ["latin"],
+  weight: ["400", "500", "700", "900"],
 });
 
 export const metadata: Metadata = {
-  title: "Website Clone",
-  description: "Pixel-perfect website clone",
+  title: "marupaca｜カプセルトイのキュレーションメディア",
+  description:
+    "好きに、胸を張れ。カプセルトイと生活の融合。大人のためのガチャキュレーションメディア。",
 };
 
 export default function RootLayout({
@@ -24,10 +29,14 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      lang="ja"
+      className={`${notoSansJP.variable} ${notoSerifJP.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col bg-background text-foreground">
+        <LikesProvider>
+          <PlayedProvider>{children}</PlayedProvider>
+        </LikesProvider>
+      </body>
     </html>
   );
 }

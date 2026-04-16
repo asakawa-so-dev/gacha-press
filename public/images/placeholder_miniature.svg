@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <linearGradient id="miniGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#8B7355"/>
+      <stop offset="100%" style="stop-color:#D4A574"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" rx="12" fill="url(#miniGrad)"/>
+  <rect x="60" y="70" width="80" height="60" rx="4" fill="rgba(255,255,255,0.5)"/>
+  <rect x="70" y="90" width="30" height="25" rx="2" fill="rgba(255,255,255,0.6)"/>
+  <rect x="105" y="90" width="30" height="25" rx="2" fill="rgba(255,255,255,0.6)"/>
+  <circle cx="100" cy="50" r="20" fill="rgba(255,255,255,0.3)"/>
+  <text x="100" y="195" font-family="sans-serif" font-size="14" fill="rgba(255,255,255,0.9)" text-anchor="middle">ﬂÀ¡Â¢</text>
+</svg>

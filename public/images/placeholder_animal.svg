@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <linearGradient id="animalGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6B8E23"/>
+      <stop offset="100%" style="stop-color:#98D982"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" rx="12" fill="url(#animalGrad)"/>
+  <ellipse cx="100" cy="95" rx="45" ry="35" fill="rgba(255,255,255,0.4)"/>
+  <circle cx="85" cy="85" r="8" fill="rgba(60,40,20,0.6)"/>
+  <circle cx="115" cy="85" r="8" fill="rgba(60,40,20,0.6)"/>
+  <path d="M70 110 Q100 130 130 110" stroke="rgba(60,40,20,0.5)" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <ellipse cx="100" cy="160" rx="25" ry="15" fill="rgba(255,255,255,0.3)"/>
+  <text x="100" y="195" font-family="sans-serif" font-size="14" fill="rgba(255,255,255,0.9)" text-anchor="middle">Õi</text>
+</svg>
