@@ -9,18 +9,18 @@ function TrustBanner() {
   return (
     <div className="relative overflow-hidden rounded-2xl glass px-4 py-3">
       <div className="flex items-start gap-3">
-        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-emerald-500/15 backdrop-blur-sm">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#059669" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg" style={{ background: "rgba(126,190,165,0.12)" }}>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7EBEA5" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
             <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
             <path d="m9 12 2 2 4-4" />
           </svg>
         </div>
         <div className="min-w-0 flex-1">
-          <p className="text-sm font-bold text-emerald-800">
+          <p className="text-sm font-bold text-[#122621]">
             メーカー公認の商品画像を掲載
           </p>
-          <p className="mt-0.5 text-xs text-emerald-700/70 leading-relaxed">
-            marupacaはメーカーから掲載許諾を得た商品のみを掲載しています。安心してガチャ情報をお楽しみください。
+          <p className="mt-0.5 text-xs text-[#7a8c88] leading-relaxed">
+            marupacaはメーカーから掲載許諾を得た商品のみを掲載しています。
           </p>
         </div>
       </div>
@@ -46,29 +46,14 @@ export default async function HomePage() {
   return (
     <div className="min-h-screen">
       <div className="px-4 py-6 sm:px-6 lg:px-8">
-        {/* Brand statement */}
         <ScrollReveal>
-          <div className="mb-6 rounded-2xl glass px-5 py-5">
-            <p className="text-[10px] font-bold tracking-[0.3em] uppercase" style={{ color: "#7EBEA5" }}>
-              Capsule Toy Curation Media
-            </p>
-            <p className="mt-2 text-2xl font-black tracking-tight text-[#1c1c28] leading-snug">
-              好きに、胸を張れ。
-            </p>
-            <p className="mt-1.5 text-xs text-[#7a7a90] leading-relaxed">
-              選球眼で選んだ、カプセルトイだけ。
-            </p>
-          </div>
-        </ScrollReveal>
-
-        <ScrollReveal delay={50}>
           <div className="flex items-center justify-between">
-            <h1 className="section-header sm:text-4xl">
-              /DISCOVER
+            <h1 className="section-header">
+              キュレーション
             </h1>
             <SnsLinks />
           </div>
-          <p className="section-header-sub">ガチャを探す</p>
+          <p className="section-header-sub">Capsule Toy Curation</p>
         </ScrollReveal>
 
         <ScrollReveal delay={100}>

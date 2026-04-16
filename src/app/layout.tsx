@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { M_PLUS_Rounded_1c } from "next/font/google";
+import { M_PLUS_Rounded_1c, Noto_Serif_JP } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 import Header from "@/components/Header";
@@ -11,6 +11,12 @@ const mplusRounded = M_PLUS_Rounded_1c({
   subsets: ["latin"],
   weight: ["400", "500", "700", "800"],
   variable: "--font-zen",
+});
+
+const notoSerifJP = Noto_Serif_JP({
+  subsets: ["latin"],
+  weight: ["400", "500", "700"],
+  variable: "--font-serif-jp",
 });
 
 const trendSansOne = localFont({
@@ -48,7 +54,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ja" className={`${mplusRounded.variable} ${trendSansOne.variable}`}>
+    <html lang="ja" className={`${mplusRounded.variable} ${trendSansOne.variable} ${notoSerifJP.variable}`}>
       <body className="font-zen min-h-screen flex flex-col">
         <div className="mesh-bg" aria-hidden="true">
           <div className="mesh-orb-1" />
