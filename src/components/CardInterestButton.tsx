@@ -20,10 +20,10 @@ export default function CardInterestButton({
         e.stopPropagation();
         toggle(productId);
       }}
-      className={`absolute top-2 right-2 z-10 flex h-8 w-8 items-center justify-center rounded-full shadow-sm transition-all active:scale-90 ${
+      className={`absolute top-2 right-2 z-10 flex h-8 w-8 items-center justify-center rounded-full transition-all active:scale-90 ${
         liked
-          ? "bg-[#ec4899] text-white shadow-[#ec4899]/25"
-          : "bg-white/80 backdrop-blur-sm text-[#9b9bab] hover:text-[#ec4899]"
+          ? "bg-[var(--color-accent)] text-white"
+          : "bg-white/90 text-[var(--color-ink-muted)] hover:text-[var(--color-accent)] border border-[var(--color-border)]"
       }`}
       aria-label={liked ? "気になるを取り消す" : "気になる"}
     >

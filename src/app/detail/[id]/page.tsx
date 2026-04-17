@@ -93,20 +93,19 @@ export default async function ProductDetailPage({ params }: Props) {
   return (
     <div className="min-h-screen">
       <div className="mx-auto max-w-5xl px-4 py-4">
-        <nav className="mb-4 flex items-center gap-2 text-sm text-[#7a7a90]">
-          <Link href="/" className="link-underline hover:text-[#3daae0] transition-colors">
+        <nav className="mb-4 flex items-center gap-2 text-sm text-[var(--color-ink-muted)]">
+          <Link href="/" className="link-underline hover:text-[var(--color-brand)] transition-colors">
             さがす
           </Link>
           <span>/</span>
-          <span className="text-[#1c1c28]">商品詳細</span>
+          <span className="text-[var(--color-ink)]">商品詳細</span>
         </nav>
 
         <div className="flex flex-col lg:flex-row lg:gap-6 lg:items-start">
-          {/* Left: Product */}
           <div className="w-full lg:w-[55%] lg:shrink-0">
             <ScrollReveal variant="scale">
-              <article className="rounded-2xl overflow-hidden glass-card">
-                <div className="relative aspect-square bg-white/10">
+              <article className="rounded-lg overflow-hidden bg-white border border-[var(--color-border)]">
+                <div className="relative aspect-square bg-[var(--color-surface-alt)]">
                   <ProductImage
                     src={product.image_url}
                     alt={product.name}
@@ -116,13 +115,13 @@ export default async function ProductDetailPage({ params }: Props) {
                     priority
                   />
                   {product.is_new && (
-                    <span className="absolute left-3 top-3 rounded-md bg-[#3daae0]/80 backdrop-blur-sm px-2 py-1 text-xs font-bold text-white">
+                    <span className="absolute left-3 top-3 rounded bg-[var(--color-brand)] px-2 py-1 text-xs font-medium text-white">
                       NEW
                     </span>
                   )}
                 </div>
                 {product.image_url?.startsWith("http") && (
-                  <div className="flex items-center gap-1.5 border-t border-white/15 bg-white/5 px-4 py-2 text-xs text-[#7a7a90]">
+                  <div className="flex items-center gap-1.5 border-t border-[var(--color-border)] px-4 py-2 text-xs text-[var(--color-ink-muted)]">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="h-3 w-3 shrink-0">
                       <path d="M8.914 6.025a.75.75 0 0 1 1.06 0 3.5 3.5 0 0 1 0 4.95l-2 2a3.5 3.5 0 0 1-5.396-4.402.75.75 0 0 1 1.251.827 2 2 0 0 0 3.085 2.514l2-2a2 2 0 0 0 0-2.828.75.75 0 0 1 0-1.06Z" />
                       <path d="M7.086 9.975a.75.75 0 0 1-1.06 0 3.5 3.5 0 0 1 0-4.95l2-2a3.5 3.5 0 0 1 5.396 4.402.75.75 0 0 1-1.251-.827 2 2 0 0 0-3.085-2.514l-2 2a2 2 0 0 0 0 2.828.75.75 0 0 1 0 1.06Z" />
@@ -132,7 +131,7 @@ export default async function ProductDetailPage({ params }: Props) {
                       href={product.image_url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="truncate text-[#3daae0] hover:underline"
+                      className="truncate text-[var(--color-brand)] hover:underline"
                     >
                       {(() => { try { return new URL(product.image_url).hostname.replace(/^www\./, ""); } catch { return product.image_url; } })()}
                     </a>
@@ -140,28 +139,28 @@ export default async function ProductDetailPage({ params }: Props) {
                 )}
 
                 <div className="p-4">
-                  <h1 className="text-xl font-bold text-[#1c1c28]">{product.name}</h1>
-                  <p className="mt-2 text-2xl font-bold text-[#3daae0]">
+                  <h1 className="text-lg font-medium text-[var(--color-ink)]">{product.name}</h1>
+                  <p className="mt-2 text-xl font-medium text-[var(--color-brand)]">
                     ¥{product.price.toLocaleString()}
                   </p>
-                  <p className="mt-1 text-sm text-[#7a7a90]">
+                  <p className="mt-1 text-sm text-[var(--color-ink-muted)]">
                     {formatMonth(product.release_month)}発売
                   </p>
 
                   <div className="mt-3 flex flex-wrap gap-2">
-                    <span className="rounded-full glass-subtle px-3 py-1 text-xs font-medium text-[#4a4a5c]">
+                    <span className="rounded-full bg-[var(--color-surface-alt)] px-3 py-1 text-xs font-medium text-[var(--color-ink-secondary)]">
                       {product.genre}
                     </span>
-                    <span className="rounded-full glass-subtle px-3 py-1 text-xs font-medium text-[#4a4a5c]">
+                    <span className="rounded-full bg-[var(--color-surface-alt)] px-3 py-1 text-xs font-medium text-[var(--color-ink-secondary)]">
                       {product.maker}
                     </span>
-                    <span className="rounded-full glass-subtle px-3 py-1 text-xs font-medium text-[#4a4a5c]">
+                    <span className="rounded-full bg-[var(--color-surface-alt)] px-3 py-1 text-xs font-medium text-[var(--color-ink-secondary)]">
                       ラインナップ {product.lineup}種
                     </span>
                   </div>
 
                   {product.description && (
-                    <p className="mt-4 text-sm text-[#4a4a5c] leading-relaxed whitespace-pre-wrap">
+                    <p className="mt-4 text-sm text-[var(--color-ink-secondary)] leading-relaxed whitespace-pre-wrap">
                       {product.description}
                     </p>
                   )}
@@ -180,7 +179,6 @@ export default async function ProductDetailPage({ params }: Props) {
             </ScrollReveal>
           </div>
 
-          {/* Right: Demographics Report */}
           <div className="w-full lg:w-[45%] lg:sticky lg:top-18">
             <ScrollReveal delay={200}>
               <ProductDemographics

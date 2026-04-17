@@ -32,7 +32,7 @@ async function mergeAnonInterests(supabase: any, userId: string) {
 
 function HeartNavIcon() {
   return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[#ec4899]">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-[var(--color-accent)]">
       <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
     </svg>
   );
@@ -40,7 +40,7 @@ function HeartNavIcon() {
 
 function SearchNavIcon() {
   return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[#3daae0]">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-[var(--color-brand)]">
       <circle cx="11" cy="11" r="8" />
       <path d="m21 21-4.35-4.35" />
     </svg>
@@ -49,7 +49,7 @@ function SearchNavIcon() {
 
 function TrophyNavIcon() {
   return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[#f5c800]">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-[#92C8AE]">
       <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6" />
       <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18" />
       <path d="M4 22h16" />
@@ -62,7 +62,7 @@ function TrophyNavIcon() {
 
 function ChevronRight() {
   return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-[#7a7a90]">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[var(--color-ink-muted)]">
       <path d="m9 18 6-6-6-6" />
     </svg>
   );
@@ -143,10 +143,10 @@ export default function MypagePage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex min-h-[50vh] items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <div className="flex flex-col items-center gap-3">
-          <div className="h-10 w-10 animate-spin rounded-full border-[3px] border-[#3daae0] border-t-transparent" />
-          <p className="text-sm font-bold text-[#7a7a90]">読み込み中...</p>
+          <div className="h-8 w-8 animate-spin rounded-full border-2 border-[var(--color-brand)] border-t-transparent" />
+          <p className="text-sm text-[var(--color-ink-muted)]">読み込み中...</p>
         </div>
       </div>
     );
@@ -158,7 +158,7 @@ export default function MypagePage() {
         <div className="mx-auto max-w-md px-4 py-8">
           <ScrollReveal>
             <div className="flex items-center justify-between">
-              <h1 className="section-header">/MYPAGE</h1>
+              <h1 className="section-header">MYPAGE</h1>
               <SnsLinks />
             </div>
             <p className="section-header-sub">マイページ</p>
@@ -202,7 +202,7 @@ export default function MypagePage() {
   ] as const;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#e8f4fc]/50 via-transparent to-[#fce7f3]/25 pb-8">
+    <div className="min-h-screen pb-8">
       {showOnboarding && (
         <OnboardingModal
           userId={user.id}
@@ -210,40 +210,34 @@ export default function MypagePage() {
         />
       )}
       <div className="mx-auto max-w-lg px-4 pt-4 pb-6">
-        {/* Profile hero */}
+        {/* Profile card */}
         <ScrollReveal variant="scale">
-          <div className="relative overflow-hidden rounded-3xl border border-white/60 bg-gradient-to-br from-[#3daae0] via-[#5bc0eb] to-[#a78bfa] p-6 text-white shadow-lg shadow-[#3daae0]/20">
-            <div className="pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full bg-white/10" />
-            <div className="pointer-events-none absolute -bottom-6 left-1/4 h-24 w-24 rounded-full bg-white/10" />
-            <div className="relative flex items-start gap-4">
-              <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-white/95 text-2xl font-black text-[#3daae0] shadow-md">
+          <div className="rounded-lg border border-[var(--color-border)] bg-white p-6">
+            <div className="flex items-start gap-4">
+              <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-[var(--color-surface-alt)] text-xl font-medium text-[var(--color-brand)]">
                 {initial}
               </div>
               <div className="min-w-0 flex-1 pt-0.5">
-                <p className="text-xs font-bold uppercase tracking-wider text-white/80">マイページ</p>
-                <h1 className="mt-0.5 truncate text-xl font-black leading-tight">{displayName}</h1>
-                <p className="mt-1 truncate text-sm text-white/90">{email}</p>
-                <p className="mt-2 inline-flex items-center gap-1 rounded-full bg-white/20 px-2.5 py-0.5 text-[11px] font-bold backdrop-blur-sm">
-                  <span className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-300" />
-                  ログイン中
-                </p>
+                <p className="text-xs font-medium uppercase tracking-wider text-[var(--color-ink-muted)]">マイページ</p>
+                <h1 className="mt-0.5 truncate text-lg font-medium leading-tight text-[var(--color-ink)]">{displayName}</h1>
+                <p className="mt-1 truncate text-sm text-[var(--color-ink-muted)]">{email}</p>
               </div>
             </div>
 
             {/* Stats */}
-            <div className="relative mt-5 grid grid-cols-2 gap-3">
-              <div className="rounded-2xl bg-white/15 px-4 py-3 backdrop-blur-sm">
-                <p className="text-[11px] font-bold uppercase tracking-wide text-white/75">気になる</p>
-                <p className="mt-1 text-2xl font-black tabular-nums">
+            <div className="mt-5 grid grid-cols-2 gap-3">
+              <div className="rounded-lg bg-[var(--color-surface-alt)] px-4 py-3">
+                <p className="text-[11px] font-medium uppercase tracking-wide text-[var(--color-ink-muted)]">気になる</p>
+                <p className="mt-1 text-2xl font-medium tabular-nums text-[var(--color-ink)]">
                   {interestCount === null ? "—" : interestCount}
-                  <span className="ml-0.5 text-sm font-bold text-white/80">件</span>
+                  <span className="ml-0.5 text-sm text-[var(--color-ink-muted)]">件</span>
                 </p>
               </div>
-              <div className="rounded-2xl bg-white/15 px-4 py-3 backdrop-blur-sm">
-                <p className="text-[11px] font-bold uppercase tracking-wide text-white/75">まわした</p>
-                <p className="mt-1 text-2xl font-black tabular-nums">
+              <div className="rounded-lg bg-[var(--color-surface-alt)] px-4 py-3">
+                <p className="text-[11px] font-medium uppercase tracking-wide text-[var(--color-ink-muted)]">まわした</p>
+                <p className="mt-1 text-2xl font-medium tabular-nums text-[var(--color-ink)]">
                   {playedCount === null ? "—" : playedCount}
-                  <span className="ml-0.5 text-sm font-bold text-white/80">回</span>
+                  <span className="ml-0.5 text-sm text-[var(--color-ink-muted)]">回</span>
                 </p>
               </div>
             </div>
@@ -251,10 +245,10 @@ export default function MypagePage() {
         </ScrollReveal>
 
         <ScrollReveal delay={200}>
-          <p className="mt-5 px-1 text-xs font-bold uppercase tracking-wider text-[#7a7a90]">
+          <p className="mt-5 px-1 text-xs font-medium uppercase tracking-wider text-[var(--color-ink-muted)]">
             メニュー
           </p>
-          <nav className="mt-2 space-y-3">
+          <nav className="mt-2 space-y-2">
             {navItems.map((item, i) => (
               <div
                 key={item.href}
@@ -263,14 +257,14 @@ export default function MypagePage() {
               >
                 <Link
                   href={item.href}
-                  className="flex items-center gap-4 rounded-2xl border border-white/25 glass-card p-4 card-hover"
+                  className="flex items-center gap-4 rounded-lg border border-[var(--color-border)] bg-white p-4 card-hover"
                 >
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-white/15 backdrop-blur-md">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[var(--color-surface-alt)]">
                     {item.icon}
                   </div>
                   <div className="min-w-0 flex-1">
-                    <p className="font-black text-[#1c1c28]">{item.title}</p>
-                    <p className="mt-0.5 text-xs font-bold text-[#7a7a90]">{item.desc}</p>
+                    <p className="font-medium text-[var(--color-ink)]">{item.title}</p>
+                    <p className="mt-0.5 text-xs text-[var(--color-ink-muted)]">{item.desc}</p>
                   </div>
                   <ChevronRight />
                 </Link>
@@ -283,9 +277,9 @@ export default function MypagePage() {
           <button
             type="button"
             onClick={handleLogout}
-            className="mt-6 flex w-full items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-white/25 bg-white/15 backdrop-blur-md py-3.5 text-sm font-bold text-[#4a4a5c] transition-all duration-300 hover:border-white/40 hover:bg-white/25"
+            className="mt-6 flex w-full items-center justify-center gap-2 rounded-lg border border-[var(--color-border)] bg-white py-3.5 text-sm font-medium text-[var(--color-ink-secondary)] transition-all hover:bg-[var(--color-surface-alt)]"
           >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
               <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
               <polyline points="16 17 21 12 16 7" />
               <line x1="21" x2="9" y1="12" y2="12" />
@@ -293,12 +287,12 @@ export default function MypagePage() {
             ログアウト
           </button>
 
-          <p className="mt-8 text-center text-xs font-bold text-[#7a7a90]">
-            <Link href="/terms" className="text-[#3daae0] link-underline">
+          <p className="mt-8 text-center text-xs text-[var(--color-ink-muted)]">
+            <Link href="/terms" className="text-[var(--color-brand)] link-underline">
               利用規約
             </Link>
             {" · "}
-            <Link href="/privacy" className="text-[#3daae0] link-underline">
+            <Link href="/privacy" className="text-[var(--color-brand)] link-underline">
               プライバシーポリシー
             </Link>
           </p>

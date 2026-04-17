@@ -13,9 +13,9 @@ export default function ProductCard({ product }: ProductCardProps) {
   return (
     <Link
       href={`/detail/${product.id}`}
-      className="block rounded-2xl overflow-hidden card-hover glass-card"
+      className="block rounded-lg overflow-hidden card-hover glass-card"
     >
-      <div className="relative aspect-square bg-white/10">
+      <div className="relative aspect-square bg-[var(--color-surface-alt)]">
         <ProductImage
           src={product.image_url}
           alt={product.name}
@@ -25,17 +25,17 @@ export default function ProductCard({ product }: ProductCardProps) {
           showSourceBadge={false}
         />
         {product.is_new && (
-          <span className="absolute top-2 left-2 px-2 py-0.5 bg-[#3daae0]/90 backdrop-blur-sm text-white text-[10px] font-bold rounded-md">
+          <span className="absolute top-2 left-2 px-2 py-0.5 bg-[var(--color-brand)] text-white text-[10px] font-medium rounded">
             NEW
           </span>
         )}
         <CardInterestButton productId={product.id} />
       </div>
       <div className="p-3">
-        <h3 className="text-sm font-bold text-[#1c1c28] line-clamp-2 leading-snug">
+        <h3 className="text-sm font-normal text-[var(--color-ink)] line-clamp-2 leading-snug">
           {product.name}
         </h3>
-        <p className="mt-1.5 text-sm font-bold text-[#1c1c28]">
+        <p className="mt-1.5 text-sm font-medium text-[var(--color-ink)]">
           ¥{product.price.toLocaleString()}
         </p>
       </div>

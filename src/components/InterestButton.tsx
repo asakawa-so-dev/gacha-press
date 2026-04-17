@@ -26,7 +26,7 @@ export default function InterestButton({
     if (!ready) return;
     if (!liked) {
       setIsAnimating(true);
-      setTimeout(() => setIsAnimating(false), 350);
+      setTimeout(() => setIsAnimating(false), 300);
     }
     toggle(productId);
   };
@@ -35,10 +35,10 @@ export default function InterestButton({
     <button
       type="button"
       onClick={handleClick}
-      className={`flex items-center gap-2 rounded-full px-4 py-2.5 font-medium transition-all ${
+      className={`flex items-center gap-2 rounded-full px-4 py-2.5 font-medium transition-all border ${
         liked
-          ? "bg-[#ec4899]/15 text-[#ec4899]"
-          : "bg-white/15 backdrop-blur-md text-[#4a4a5c] hover:bg-white/25"
+          ? "bg-[var(--color-accent)]/10 text-[var(--color-accent)] border-[var(--color-accent)]/20"
+          : "bg-white text-[var(--color-ink-secondary)] border-[var(--color-border)] hover:border-[#BDD8CA]"
       } ${isAnimating ? "heart-active" : ""}`}
       aria-label={liked ? "気になるを取り消す" : "気になる"}
     >
@@ -56,7 +56,7 @@ export default function InterestButton({
         <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
       </svg>
       <span>気になる</span>
-      <span className="text-sm opacity-80">({count})</span>
+      <span className="text-sm opacity-70">({count})</span>
     </button>
   );
 }

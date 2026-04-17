@@ -56,10 +56,10 @@ export default function PurchasedButton({
       type="button"
       onClick={handleClick}
       disabled={purchased || isLoading}
-      className={`flex items-center gap-2 rounded-full px-4 py-2.5 font-medium transition-all ${
+      className={`flex items-center gap-2 rounded-full px-4 py-2.5 font-medium transition-all border ${
         purchased
-          ? "bg-[#3daae0]/15 backdrop-blur-md text-[#3daae0] cursor-default"
-          : "bg-[#3daae0] text-white hover:bg-[#2888c0] disabled:opacity-50"
+          ? "bg-[var(--color-brand)]/10 text-[var(--color-brand)] border-[var(--color-brand)]/20 cursor-default"
+          : "bg-[var(--color-brand)] text-white border-[var(--color-brand)] hover:opacity-90 disabled:opacity-50"
       }`}
       aria-label={purchased ? "買った済み" : "買った"}
     >
@@ -77,7 +77,7 @@ export default function PurchasedButton({
         <polyline points="20 6 9 17 4 12" />
       </svg>
       <span>✓ 買った</span>
-      <span className="text-sm opacity-80">({count})</span>
+      <span className="text-sm opacity-70">({count})</span>
     </button>
   );
 }

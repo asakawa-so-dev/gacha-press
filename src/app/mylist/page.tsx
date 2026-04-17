@@ -10,17 +10,13 @@ import { getAnonPlayedMap, persistAnonPlayedMap } from "@/lib/interests";
 import type { Product } from "@/lib/types";
 import { APPROVED_MAKERS } from "@/lib/constants";
 
-/* ═══════════════════════════════════════
-   Gacha Rank System
-   ═══════════════════════════════════════ */
-
 const RANKS = [
-  { min: 0, label: "カプセルルーキー", emoji: "🥚", color: "#9b9bab" },
-  { min: 1, label: "ガチャビギナー", emoji: "🎰", color: "#3daae0" },
-  { min: 5, label: "ガチャファン", emoji: "⭐", color: "#f5c800" },
-  { min: 15, label: "ガチャマスター", emoji: "🏆", color: "#f58520" },
-  { min: 30, label: "ガチャキング", emoji: "👑", color: "#ec4899" },
-  { min: 50, label: "ガチャレジェンド", emoji: "🌟", color: "#a78bfa" },
+  { min: 0, label: "カプセルルーキー", emoji: "🥚", color: "#8BA89B" },
+  { min: 1, label: "ガチャビギナー", emoji: "🎰", color: "#7EBEA5" },
+  { min: 5, label: "ガチャファン", emoji: "⭐", color: "#5A9A82" },
+  { min: 15, label: "ガチャマスター", emoji: "🏆", color: "#B46075" },
+  { min: 30, label: "ガチャキング", emoji: "👑", color: "#6BAA90" },
+  { min: 50, label: "ガチャレジェンド", emoji: "🌟", color: "#7EBEA5" },
 ];
 
 function getRank(playedCount: number) {
@@ -36,10 +32,6 @@ function getNextRank(playedCount: number) {
   }
   return null;
 }
-
-/* ═══════════════════════════════════════
-   Animated Onboarding (shown once)
-   ═══════════════════════════════════════ */
 
 const ONBOARDING_KEY = "mylist_onboarding_done";
 
@@ -65,13 +57,12 @@ function TapAnimation() {
 
   return (
     <div className="flex flex-col items-center gap-3">
-      {/* Mock card */}
-      <div className="w-48 rounded-xl border border-white/25 glass-card overflow-hidden transition-all duration-500" style={{ borderColor: phase >= 3 ? "#34d399" : "rgba(255,255,255,0.25)" }}>
-        <div className="h-20 bg-white/10 flex items-center justify-center relative">
+      <div className="w-48 rounded-lg border border-[var(--color-border)] bg-white overflow-hidden transition-all duration-500" style={{ borderColor: phase >= 3 ? "#059669" : "var(--color-border)" }}>
+        <div className="h-20 bg-[var(--color-surface-alt)] flex items-center justify-center relative">
           <span className="text-3xl">🎰</span>
           {phase >= 3 && (
             <div className="absolute inset-0 flex items-center justify-center animate-[scale-in_0.3s_ease-out]">
-              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#34d399] shadow-md">
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#059669]">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                   <polyline points="20 6 9 17 4 12" />
                 </svg>
@@ -80,17 +71,16 @@ function TapAnimation() {
           )}
         </div>
         <div className="p-2">
-          <div className="h-2.5 w-3/4 rounded bg-white/25" />
-          <div className="mt-1 h-2 w-1/2 rounded bg-[#f0f0f4]" />
+          <div className="h-2.5 w-3/4 rounded bg-[var(--color-surface-alt)]" />
+          <div className="mt-1 h-2 w-1/2 rounded bg-[var(--color-border)]" />
         </div>
-        {/* Animated button */}
         <div className="px-2 pb-2">
           <div
-            className={`flex items-center justify-center rounded-lg py-2 text-xs font-medium transition-all duration-500 ${
+            className={`flex items-center justify-center rounded-md py-2 text-xs font-medium transition-all duration-500 ${
               phase >= 2
-                ? "bg-[#34d399]/15 text-[#059669]"
-                : "bg-white/15 backdrop-blur-md text-[#6b6b7b]"
-            } ${phase === 1 ? "scale-95 bg-white/25" : ""}`}
+                ? "bg-[#059669]/10 text-[#059669]"
+                : "bg-[var(--color-surface-alt)] text-[var(--color-ink-muted)]"
+            } ${phase === 1 ? "scale-95" : ""}`}
           >
             {phase >= 2 ? (
               <span className="flex items-center gap-1">
@@ -105,7 +95,6 @@ function TapAnimation() {
           </div>
         </div>
       </div>
-      {/* Finger tap indicator */}
       <div className={`transition-all duration-300 ${phase === 1 ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2"}`}>
         <span className="text-lg">👆</span>
       </div>
@@ -125,7 +114,6 @@ function RankUpAnimation() {
 
   return (
     <div className="flex flex-col items-center gap-3">
-      {/* Rank badge - animated */}
       <div className="relative h-20 flex items-center justify-center">
         {RANKS.map((r, i) => (
           <div
@@ -140,13 +128,11 @@ function RankUpAnimation() {
           </div>
         ))}
       </div>
-
-      {/* Rank label */}
       <div className="h-8 flex items-center">
         {RANKS.map((r, i) => (
           <span
             key={r.label}
-            className="absolute left-1/2 -translate-x-1/2 inline-flex items-center gap-1 rounded-full px-4 py-1.5 text-xs font-bold text-white whitespace-nowrap transition-all duration-500"
+            className="absolute left-1/2 -translate-x-1/2 inline-flex items-center gap-1 rounded-full px-4 py-1.5 text-xs font-medium text-white whitespace-nowrap transition-all duration-500"
             style={{
               backgroundColor: r.color,
               opacity: i === activeIdx ? 1 : 0,
@@ -157,9 +143,7 @@ function RankUpAnimation() {
           </span>
         ))}
       </div>
-
-      {/* Progress bar */}
-      <div className="w-40 h-2 rounded-full bg-white/25 overflow-hidden">
+      <div className="w-40 h-1.5 rounded-full bg-[var(--color-border)] overflow-hidden">
         <div
           className="h-full rounded-full transition-all duration-700 ease-out"
           style={{
@@ -211,12 +195,11 @@ function MylistOnboarding() {
   const isLast = slide === ONBOARDING_SLIDES.length - 1;
 
   return (
-    <div className="mb-5 rounded-2xl border border-[#ec4899]/20 glass-card relative overflow-hidden bg-gradient-to-br from-[#fce7f3]/35 via-white/15 to-[#ecfdf5]/35">
-      {/* Close button */}
+    <div className="mb-5 rounded-lg border border-[var(--color-border)] bg-white relative overflow-hidden">
       <button
         type="button"
         onClick={dismiss}
-        className="absolute top-3 right-3 z-10 flex h-7 w-7 items-center justify-center rounded-full bg-white/15 backdrop-blur-md text-[var(--color-ink-muted)] hover:bg-white/25 hover:text-[var(--color-ink)] transition-colors"
+        className="absolute top-3 right-3 z-10 flex h-7 w-7 items-center justify-center rounded-full bg-[var(--color-surface-alt)] text-[var(--color-ink-muted)] hover:text-[var(--color-ink)] transition-colors"
         aria-label="スキップ"
       >
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
@@ -224,20 +207,17 @@ function MylistOnboarding() {
         </svg>
       </button>
 
-      {/* Animation area */}
       <div className="pt-6 pb-2 flex justify-center min-h-[180px] items-center">
         <div key={slide} className="carousel-fade-in">
           {s.animation === "tap" ? <TapAnimation /> : <RankUpAnimation />}
         </div>
       </div>
 
-      {/* Text */}
       <div key={`text-${slide}`} className="px-5 text-center carousel-fade-in">
-        <h3 className="text-base font-bold text-[var(--color-ink)]">{s.title}</h3>
+        <h3 className="text-base font-medium text-[var(--color-ink)]">{s.title}</h3>
         <p className="mt-1.5 text-sm text-[var(--color-ink-secondary)] whitespace-pre-line leading-relaxed">{s.desc}</p>
       </div>
 
-      {/* Dots + CTA */}
       <div className="px-5 pb-5 pt-4">
         <div className="flex items-center justify-center gap-2 mb-3">
           {ONBOARDING_SLIDES.map((_, i) => (
@@ -245,8 +225,8 @@ function MylistOnboarding() {
               key={i}
               type="button"
               onClick={() => setSlide(i)}
-              className={`h-2 rounded-full transition-all duration-300 ${
-                i === slide ? "w-6 bg-[#ec4899]" : "w-2 bg-white/25"
+              className={`h-1.5 rounded-full transition-all duration-300 ${
+                i === slide ? "w-6 bg-[var(--color-brand)]" : "w-2 bg-[var(--color-border)]"
               }`}
               aria-label={`スライド ${i + 1}`}
             />
@@ -255,7 +235,7 @@ function MylistOnboarding() {
         <button
           type="button"
           onClick={next}
-          className="w-full rounded-xl bg-[#ec4899] py-3 text-sm font-medium text-white transition-colors hover:bg-[#db2777] active:scale-[0.98]"
+          className="w-full rounded-lg bg-[var(--color-brand)] py-3 text-sm font-medium text-white transition-colors hover:opacity-90"
         >
           {isLast ? "OK、使ってみる！" : "次へ →"}
         </button>
@@ -263,10 +243,6 @@ function MylistOnboarding() {
     </div>
   );
 }
-
-/* ═══════════════════════════════════════
-   Confetti Component
-   ═══════════════════════════════════════ */
 
 function ConfettiBurst({ active }: { active: boolean }) {
   if (!active) return null;
@@ -279,10 +255,6 @@ function ConfettiBurst({ active }: { active: boolean }) {
   );
 }
 
-/* ═══════════════════════════════════════
-   Progress Ring
-   ═══════════════════════════════════════ */
-
 function ProgressRing({
   played,
   total,
@@ -291,7 +263,7 @@ function ProgressRing({
   total: number;
 }) {
   const size = 72;
-  const stroke = 6;
+  const stroke = 5;
   const radius = (size - stroke) / 2;
   const circumference = 2 * Math.PI * radius;
   const progress = total > 0 ? played / total : 0;
@@ -305,7 +277,7 @@ function ProgressRing({
           cy={size / 2}
           r={radius}
           fill="none"
-          stroke="rgba(255,255,255,0.25)"
+          stroke="var(--color-border)"
           strokeWidth={stroke}
         />
         <circle
@@ -313,7 +285,7 @@ function ProgressRing({
           cy={size / 2}
           r={radius}
           fill="none"
-          stroke={progress >= 1 ? "#34d399" : "#ec4899"}
+          stroke={progress >= 1 ? "#059669" : "var(--color-accent)"}
           strokeWidth={stroke}
           strokeLinecap="round"
           strokeDasharray={circumference}
@@ -327,16 +299,12 @@ function ProgressRing({
           }
         />
       </svg>
-      <span className="absolute text-sm font-bold text-[var(--color-ink)]">
+      <span className="absolute text-sm font-medium text-[var(--color-ink)]">
         {played}/{total}
       </span>
     </div>
   );
 }
-
-/* ═══════════════════════════════════════
-   Mylist Card with played toggle + date
-   ═══════════════════════════════════════ */
 
 function formatPlayedDate(dateStr: string): string {
   const d = new Date(dateStr + "T00:00:00");
@@ -367,32 +335,32 @@ function MylistCard({
 
   return (
     <div
-      className={`relative rounded-xl border glass-card overflow-hidden transition-all duration-300 ${
+      className={`relative rounded-lg border bg-white overflow-hidden transition-all ${
         isPlayed
-          ? "border-[#34d399]/50 bg-gradient-to-b from-[#ecfdf5]/40 to-transparent"
-          : "border-white/25"
+          ? "border-[#059669]/40"
+          : "border-[var(--color-border)]"
       }`}
     >
       <Link href={`/detail/${product.id}`}>
-        <div className="relative aspect-square bg-white/10">
+        <div className="relative aspect-square bg-[var(--color-surface-alt)]">
           {product.image_url ? (
             <Image
               src={product.image_url}
               alt={product.name}
               fill
               sizes="(max-width: 768px) 50vw, 25vw"
-              className={`object-contain p-1 transition-all duration-300 ${
-                isPlayed ? "opacity-60" : ""
+              className={`object-contain p-1 transition-all ${
+                isPlayed ? "opacity-50" : ""
               }`}
             />
           ) : (
             <div className="absolute inset-0 product-image-placeholder flex items-center justify-center">
-              <span className="text-[#7a7a90] text-sm">No Image</span>
+              <span className="text-[var(--color-ink-muted)] text-sm">No Image</span>
             </div>
           )}
           {isPlayed && (
             <div className="absolute inset-0 flex items-center justify-center">
-              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#34d399] shadow-lg">
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#059669]">
                 <svg
                   width="24"
                   height="24"
@@ -411,29 +379,28 @@ function MylistCard({
         </div>
         <div className="p-3">
           <h3
-            className={`text-sm font-medium line-clamp-2 leading-snug ${
+            className={`text-sm font-normal line-clamp-2 leading-snug ${
               isPlayed
                 ? "text-[var(--color-ink-muted)] line-through decoration-1"
-                : "text-[#1c1c28]"
+                : "text-[var(--color-ink)]"
             }`}
           >
             {product.name}
           </h3>
-          <p className="mt-1 text-sm font-bold text-[#1c1c28]">
+          <p className="mt-1 text-sm font-medium text-[var(--color-ink)]">
             ¥{product.price.toLocaleString()}
           </p>
         </div>
       </Link>
 
-      {/* Toggle button */}
       <div className="relative px-3 pb-3">
         <button
           type="button"
           onClick={handlePlay}
-          className={`relative w-full rounded-lg py-2.5 text-sm font-medium transition-all active:scale-95 ${
+          className={`relative w-full rounded-md py-2.5 text-sm font-medium transition-all active:scale-95 ${
             isPlayed
-              ? "bg-[#34d399]/15 text-[#059669]"
-              : "bg-white/15 backdrop-blur-md text-[var(--color-ink-secondary)] hover:bg-white/25"
+              ? "bg-[#059669]/10 text-[#059669]"
+              : "bg-[var(--color-surface-alt)] text-[var(--color-ink-secondary)] hover:bg-[var(--color-border)]"
           }`}
         >
           <ConfettiBurst active={confetti} />
@@ -462,34 +429,30 @@ function MylistCard({
   );
 }
 
-/* ═══════════════════════════════════════
-   Onboarding Carousel (not-logged-in)
-   ═══════════════════════════════════════ */
-
 function FrustratedPersonIllustration() {
   return (
     <svg viewBox="0 0 140 120" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-32 h-24">
-      <rect x="8" y="40" width="28" height="36" rx="4" fill="#f5f5f7" stroke="#e4e4ea" strokeWidth="1.5" />
-      <ellipse cx="22" cy="40" rx="13" ry="11" fill="white" stroke="#e4e4ea" strokeWidth="1.5" />
-      <circle cx="18" cy="37" r="3" fill="#ec4899" opacity="0.5" />
-      <circle cx="26" cy="36" r="2.5" fill="#3daae0" opacity="0.5" />
-      <rect x="104" y="40" width="28" height="36" rx="4" fill="#f5f5f7" stroke="#e4e4ea" strokeWidth="1.5" />
-      <ellipse cx="118" cy="40" rx="13" ry="11" fill="white" stroke="#e4e4ea" strokeWidth="1.5" />
-      <circle cx="114" cy="37" r="3" fill="#f5c800" opacity="0.5" />
-      <circle cx="122" cy="36" r="2.5" fill="#a78bfa" opacity="0.5" />
-      <circle cx="70" cy="52" r="10" fill="#fce7f3" stroke="#ec4899" strokeWidth="1.5" />
-      <circle cx="66" cy="51" r="1.5" fill="#5c5c6f" />
-      <circle cx="74" cy="51" r="1.5" fill="#5c5c6f" />
-      <path d="M66 56 Q70 54 74 56" stroke="#5c5c6f" strokeWidth="1.5" fill="none" strokeLinecap="round" />
-      <path d="M60 62 Q70 70 80 62" fill="#fce7f3" stroke="#ec4899" strokeWidth="1.5" />
-      <g className="animate-float"><text x="50" y="38" fontSize="16" fill="#ec4899" fontWeight="bold" opacity="0.8">?</text></g>
-      <g className="animate-float-delay-1"><text x="82" y="34" fontSize="14" fill="#ec4899" fontWeight="bold" opacity="0.6">?</text></g>
-      <g className="animate-float-delay-2"><text x="62" y="28" fontSize="12" fill="#ec4899" fontWeight="bold" opacity="0.4">?</text></g>
+      <rect x="8" y="40" width="28" height="36" rx="4" fill="#EEF4F0" stroke="#D5E8DE" strokeWidth="1.5" />
+      <ellipse cx="22" cy="40" rx="13" ry="11" fill="white" stroke="#D5E8DE" strokeWidth="1.5" />
+      <circle cx="18" cy="37" r="3" fill="#B46075" opacity="0.5" />
+      <circle cx="26" cy="36" r="2.5" fill="#7EBEA5" opacity="0.5" />
+      <rect x="104" y="40" width="28" height="36" rx="4" fill="#EEF4F0" stroke="#D5E8DE" strokeWidth="1.5" />
+      <ellipse cx="118" cy="40" rx="13" ry="11" fill="white" stroke="#D5E8DE" strokeWidth="1.5" />
+      <circle cx="114" cy="37" r="3" fill="#A8D5C2" opacity="0.5" />
+      <circle cx="122" cy="36" r="2.5" fill="#6BAA90" opacity="0.5" />
+      <circle cx="70" cy="52" r="10" fill="#EEF4F0" stroke="#B46075" strokeWidth="1.5" />
+      <circle cx="66" cy="51" r="1.5" fill="#7EBEA5" />
+      <circle cx="74" cy="51" r="1.5" fill="#7EBEA5" />
+      <path d="M66 56 Q70 54 74 56" stroke="#7EBEA5" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+      <path d="M60 62 Q70 70 80 62" fill="#EEF4F0" stroke="#B46075" strokeWidth="1.5" />
+      <g className="animate-float"><text x="50" y="38" fontSize="16" fill="#B46075" fontWeight="bold" opacity="0.8">?</text></g>
+      <g className="animate-float-delay-1"><text x="82" y="34" fontSize="14" fill="#B46075" fontWeight="bold" opacity="0.6">?</text></g>
+      <g className="animate-float-delay-2"><text x="62" y="28" fontSize="12" fill="#B46075" fontWeight="bold" opacity="0.4">?</text></g>
       <g transform="translate(88, 20)">
-        <rect x="0" y="0" width="40" height="22" rx="11" fill="white" stroke="#e4e4ea" strokeWidth="1.5" />
-        <circle cx="0" cy="24" r="3" fill="white" stroke="#e4e4ea" strokeWidth="1" />
-        <circle cx="-4" cy="28" r="1.5" fill="white" stroke="#e4e4ea" strokeWidth="1" />
-        <text x="6" y="15" fontSize="10" fill="#7a7a90" fontFamily="sans-serif">どれ…?</text>
+        <rect x="0" y="0" width="40" height="22" rx="11" fill="white" stroke="#D5E8DE" strokeWidth="1.5" />
+        <circle cx="0" cy="24" r="3" fill="white" stroke="#D5E8DE" strokeWidth="1" />
+        <circle cx="-4" cy="28" r="1.5" fill="white" stroke="#D5E8DE" strokeWidth="1" />
+        <text x="6" y="15" fontSize="10" fill="#8BA89B" fontFamily="sans-serif">どれ…?</text>
       </g>
     </svg>
   );
@@ -498,12 +461,12 @@ function FrustratedPersonIllustration() {
 function ChecklistIllustration() {
   return (
     <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-24 h-24">
-      <rect x="32" y="14" width="56" height="92" rx="10" fill="white" stroke="#e4e4ea" strokeWidth="2" />
-      <rect x="36" y="22" width="48" height="76" rx="2" fill="#f5f5f7" />
-      <rect x="50" y="16" width="20" height="4" rx="2" fill="#e4e4ea" />
-      <g><rect x="42" y="32" width="36" height="16" rx="4" fill="white" /><circle cx="50" cy="40" r="4" fill="#ec4899" /><polyline points="48,40 50,42 53,38" stroke="white" strokeWidth="1.5" fill="none" strokeLinecap="round" /><rect x="58" y="37" width="16" height="3" rx="1.5" fill="#e4e4ea" /></g>
-      <g><rect x="42" y="52" width="36" height="16" rx="4" fill="white" /><circle cx="50" cy="60" r="4" fill="#ec4899" /><polyline points="48,60 50,62 53,58" stroke="white" strokeWidth="1.5" fill="none" strokeLinecap="round" /><rect x="58" y="57" width="16" height="3" rx="1.5" fill="#e4e4ea" /></g>
-      <g><rect x="42" y="72" width="36" height="16" rx="4" fill="white" /><circle cx="50" cy="80" r="4" fill="#3daae0" opacity="0.3" /><rect x="58" y="77" width="16" height="3" rx="1.5" fill="#e4e4ea" /></g>
+      <rect x="32" y="14" width="56" height="92" rx="10" fill="white" stroke="#D5E8DE" strokeWidth="2" />
+      <rect x="36" y="22" width="48" height="76" rx="2" fill="#EEF4F0" />
+      <rect x="50" y="16" width="20" height="4" rx="2" fill="#D5E8DE" />
+      <g><rect x="42" y="32" width="36" height="16" rx="4" fill="white" /><circle cx="50" cy="40" r="4" fill="#B46075" /><polyline points="48,40 50,42 53,38" stroke="white" strokeWidth="1.5" fill="none" strokeLinecap="round" /><rect x="58" y="37" width="16" height="3" rx="1.5" fill="#D5E8DE" /></g>
+      <g><rect x="42" y="52" width="36" height="16" rx="4" fill="white" /><circle cx="50" cy="60" r="4" fill="#B46075" /><polyline points="48,60 50,62 53,58" stroke="white" strokeWidth="1.5" fill="none" strokeLinecap="round" /><rect x="58" y="57" width="16" height="3" rx="1.5" fill="#D5E8DE" /></g>
+      <g><rect x="42" y="72" width="36" height="16" rx="4" fill="white" /><circle cx="50" cy="80" r="4" fill="#7EBEA5" opacity="0.3" /><rect x="58" y="77" width="16" height="3" rx="1.5" fill="#D5E8DE" /></g>
     </svg>
   );
 }
@@ -511,16 +474,16 @@ function ChecklistIllustration() {
 function SyncIllustration() {
   return (
     <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-24 h-24">
-      <path d="M30 68a18 18 0 0 1 2-35.5A24 24 0 0 1 78 36a14 14 0 0 1 8 25.5" fill="white" stroke="#e4e4ea" strokeWidth="2" />
-      <g transform="translate(48, 38) scale(0.7)"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" fill="#ec4899" /></g>
-      <g stroke="#3daae0" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M30 68a18 18 0 0 1 2-35.5A24 24 0 0 1 78 36a14 14 0 0 1 8 25.5" fill="white" stroke="#D5E8DE" strokeWidth="2" />
+      <g transform="translate(48, 38) scale(0.7)"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" fill="#B46075" /></g>
+      <g stroke="#7EBEA5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <path d="M40 80 a20 20 0 0 1 40 0"><animate attributeName="stroke-dashoffset" values="40;0" dur="2s" repeatCount="indefinite" /></path>
-        <polygon points="80,76 82,82 76,82" fill="#3daae0" />
+        <polygon points="80,76 82,82 76,82" fill="#7EBEA5" />
         <path d="M80 92 a20 20 0 0 1 -40 0"><animate attributeName="stroke-dashoffset" values="40;0" dur="2s" repeatCount="indefinite" /></path>
-        <polygon points="40,96 38,90 44,90" fill="#3daae0" />
+        <polygon points="40,96 38,90 44,90" fill="#7EBEA5" />
       </g>
-      <rect x="22" y="82" width="14" height="20" rx="2" fill="white" stroke="#e4e4ea" strokeWidth="1.5" />
-      <rect x="84" y="78" width="18" height="12" rx="2" fill="white" stroke="#e4e4ea" strokeWidth="1.5" />
+      <rect x="22" y="82" width="14" height="20" rx="2" fill="white" stroke="#D5E8DE" strokeWidth="1.5" />
+      <rect x="84" y="78" width="18" height="12" rx="2" fill="white" stroke="#D5E8DE" strokeWidth="1.5" />
     </svg>
   );
 }
@@ -565,30 +528,22 @@ function OnboardingCarousel() {
 
   const slide = SLIDES[current];
   return (
-    <div className="relative overflow-hidden rounded-2xl glass-card border border-white/25 p-6 bg-gradient-to-b from-[#fce7f3]/35 to-transparent" onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
+    <div className="relative overflow-hidden rounded-lg bg-white border border-[var(--color-border)] p-6" onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
       <div key={current} className="flex flex-col items-center text-center carousel-fade-in">
         <div className="mb-4">{slide.illustration}</div>
-        <h3 className="text-base font-bold text-[var(--color-ink)] whitespace-pre-line leading-relaxed">{slide.title}</h3>
+        <h3 className="text-base font-medium text-[var(--color-ink)] whitespace-pre-line leading-relaxed">{slide.title}</h3>
         <p className="mt-2 text-sm text-[var(--color-ink-secondary)]">{slide.desc}</p>
       </div>
       <div className="mt-5 flex items-center justify-center gap-2">
         {SLIDES.map((_, i) => (
-          <button key={i} type="button" onClick={() => setCurrent(i)} className={`h-2 rounded-full transition-all duration-300 ${i === current ? "w-6 bg-[#ec4899]" : "w-2 bg-white/25"}`} aria-label={`スライド ${i + 1}`} />
+          <button key={i} type="button" onClick={() => setCurrent(i)} className={`h-1.5 rounded-full transition-all duration-300 ${i === current ? "w-6 bg-[var(--color-brand)]" : "w-2 bg-[var(--color-border)]"}`} aria-label={`スライド ${i + 1}`} />
         ))}
       </div>
     </div>
   );
 }
 
-/* ═══════════════════════════════════════
-   Filter tabs type
-   ═══════════════════════════════════════ */
-
 type FilterTab = "all" | "not_played" | "played";
-
-/* ═══════════════════════════════════════
-   Page
-   ═══════════════════════════════════════ */
 
 export default function MylistPage() {
   const { isLoggedIn, ready } = useInterests();
@@ -653,7 +608,7 @@ export default function MylistPage() {
           setPlayedMap(pm);
         }
       } catch {
-        /* Supabase fetch failed — show empty state */
+        /* Supabase fetch failed */
       } finally {
         setLoading(false);
       }
@@ -708,25 +663,24 @@ export default function MylistPage() {
   if (!ready || loading) {
     return (
       <div className="mx-auto max-w-6xl px-4 py-8">
-        <h1 className="mb-6 text-2xl font-bold text-[var(--color-ink)]">気になるリスト</h1>
+        <h1 className="mb-6 text-lg font-medium text-[var(--color-ink)]">気になるリスト</h1>
         <div className="flex min-h-[200px] items-center justify-center">
-          <div className="h-8 w-8 animate-spin rounded-full border-2 border-[#3daae0] border-t-transparent" />
+          <div className="h-8 w-8 animate-spin rounded-full border-2 border-[var(--color-brand)] border-t-transparent" />
         </div>
       </div>
     );
   }
 
-  /* ── Not logged in ── */
   if (!isLoggedIn) {
     return (
       <div className="min-h-screen">
         <div className="mx-auto max-w-6xl px-4 py-6">
-          <h1 className="mb-6 text-2xl font-bold text-[var(--color-ink)]">気になるリスト</h1>
+          <h1 className="mb-6 text-lg font-medium text-[var(--color-ink)]">気になるリスト</h1>
           <OnboardingCarousel />
-          <div className="mt-6 rounded-2xl border border-white/25 glass-card p-6 text-center">
+          <div className="mt-6 rounded-lg border border-[var(--color-border)] bg-white p-6 text-center">
             <p className="text-sm font-medium text-[var(--color-ink)]">「あれ回したかったのに…」をゼロにしよう</p>
             <p className="mt-1 text-xs text-[var(--color-ink-muted)]">気になるガチャをリストに保存。お店でサッと確認できます</p>
-            <Link href="/mypage" className="mt-4 inline-flex items-center justify-center rounded-full bg-[#ec4899] px-8 py-3 font-medium text-white shadow-sm transition-colors hover:bg-[#db2777]">無料で気になるリストを使う</Link>
+            <Link href="/mypage" className="mt-4 inline-flex items-center justify-center rounded-full bg-[var(--color-brand)] px-8 py-3 font-medium text-white transition-colors hover:opacity-90">無料で気になるリストを使う</Link>
             <p className="mt-3 text-xs text-[var(--color-ink-muted)]">30秒で登録完了。メールアドレスだけでOK</p>
           </div>
           <div className="relative mt-8">
@@ -737,82 +691,74 @@ export default function MylistPage() {
                 </div>
               ) : (
                 <div className="grid grid-cols-2 gap-4">
-                  {Array.from({ length: 4 }).map((_, i) => (<div key={i} className="rounded-xl border border-white/25 glass-card overflow-hidden"><div className="aspect-square bg-white/10" /><div className="p-3 space-y-2"><div className="h-4 rounded bg-white/25 w-3/4" /><div className="h-3 rounded bg-white/15 w-1/2" /></div></div>))}
+                  {Array.from({ length: 4 }).map((_, i) => (<div key={i} className="rounded-lg border border-[var(--color-border)] bg-white overflow-hidden"><div className="aspect-square bg-[var(--color-surface-alt)]" /><div className="p-3 space-y-2"><div className="h-4 rounded bg-[var(--color-surface-alt)] w-3/4" /><div className="h-3 rounded bg-[var(--color-border)] w-1/2" /></div></div>))}
                 </div>
               )}
             </div>
-            <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/20 to-transparent" />
+            <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[var(--color-bg)] to-transparent" />
           </div>
         </div>
       </div>
     );
   }
 
-  /* ── Logged in: Empty ── */
   if (products.length === 0) {
     return (
       <div className="min-h-screen">
         <div className="mx-auto max-w-6xl px-4 py-6">
-          <h1 className="mb-6 text-2xl font-bold text-[var(--color-ink)]">気になるリスト</h1>
-          <div className="flex min-h-[280px] flex-col items-center justify-center rounded-2xl border border-white/25 glass-card p-8 text-center">
+          <h1 className="mb-6 text-lg font-medium text-[var(--color-ink)]">気になるリスト</h1>
+          <div className="flex min-h-[280px] flex-col items-center justify-center rounded-lg border border-[var(--color-border)] bg-white p-8 text-center">
             <span className="mb-4 text-5xl">🎯</span>
             <p className="font-medium text-[var(--color-ink)]">まだ気になるガチャがありません</p>
             <p className="mt-2 text-sm text-[var(--color-ink-muted)]">さがすやランキングでハートをタップして追加しよう</p>
-            <Link href="/" className="mt-5 inline-flex items-center justify-center rounded-full bg-[#3daae0] px-6 py-2.5 text-sm font-medium text-white transition-colors hover:bg-[#2888c0]">ガチャをさがす</Link>
+            <Link href="/" className="mt-5 inline-flex items-center justify-center rounded-full bg-[var(--color-brand)] px-6 py-2.5 text-sm font-medium text-white transition-colors hover:opacity-90">ガチャをさがす</Link>
           </div>
         </div>
       </div>
     );
   }
 
-  /* ── Logged in: With items ── */
   return (
     <div className="min-h-screen">
       <div className="mx-auto max-w-6xl px-4 py-6">
-        <h1 className="mb-4 text-2xl font-bold text-[var(--color-ink)]">気になるリスト</h1>
+        <h1 className="mb-4 text-lg font-medium text-[var(--color-ink)]">気になるリスト</h1>
 
-        {/* ── Onboarding guide (shown once) ── */}
         <MylistOnboarding />
 
-        {/* ── Stats / Progress card ── */}
-        <div className="mb-5 rounded-2xl border border-white/25 glass-card p-4">
+        <div className="mb-5 rounded-lg border border-[var(--color-border)] bg-white p-4">
           <div className="flex items-center gap-4">
             <ProgressRing played={playedCount} total={totalCount} />
             <div className="flex-1 min-w-0">
-              {/* Rank badge */}
               <div className="flex items-center gap-2">
                 <span
-                  className="inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-bold text-white"
+                  className="inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-medium text-white"
                   style={{ backgroundColor: rank.color }}
                 >
                   <span>{rank.emoji}</span>
                   {rank.label}
                 </span>
               </div>
-              {/* Progress text */}
               <p className="mt-1.5 text-sm font-medium text-[var(--color-ink)]">
                 {playedCount === totalCount ? (
                   <span className="text-[#059669]">全制覇おめでとう！🎉</span>
                 ) : (
                   <>
-                    <span className="text-[#ec4899] font-bold">{playedCount}</span>
+                    <span className="text-[var(--color-accent)]">{playedCount}</span>
                     <span className="text-[var(--color-ink-muted)]"> / {totalCount} 回した</span>
                   </>
                 )}
               </p>
-              {/* Next rank hint */}
               {nextRank && (
                 <p className="mt-0.5 text-xs text-[var(--color-ink-muted)]">
                   あと{nextRank.min - playedCount}回で {nextRank.emoji} {nextRank.label}
                 </p>
               )}
-              {/* Progress bar */}
-              <div className="mt-2 h-2 rounded-full bg-white/25 overflow-hidden">
+              <div className="mt-2 h-1.5 rounded-full bg-[var(--color-border)] overflow-hidden">
                 <div
                   className="h-full rounded-full transition-all duration-500 ease-out"
                   style={{
                     width: `${totalCount > 0 ? (playedCount / totalCount) * 100 : 0}%`,
-                    backgroundColor: playedCount === totalCount ? "#34d399" : "#ec4899",
+                    backgroundColor: playedCount === totalCount ? "#059669" : "var(--color-accent)",
                   }}
                 />
               </div>
@@ -820,8 +766,7 @@ export default function MylistPage() {
           </div>
         </div>
 
-        {/* ── Filter tabs ── */}
-        <div className="mb-4 flex rounded-xl glass-card border border-white/25 p-1">
+        <div className="mb-4 flex rounded-lg bg-[var(--color-surface-alt)] p-1">
           {(
             [
               { key: "all" as FilterTab, label: `すべて (${totalCount})` },
@@ -833,13 +778,9 @@ export default function MylistPage() {
               key={tab.key}
               type="button"
               onClick={() => setFilter(tab.key)}
-              className={`flex-1 rounded-lg py-2 text-xs sm:text-sm font-medium transition-all ${
+              className={`flex-1 rounded-md py-2 text-xs sm:text-sm font-medium transition-all ${
                 filter === tab.key
-                  ? tab.key === "played"
-                    ? "bg-[#34d399]/10 text-[#059669] shadow-sm"
-                    : tab.key === "not_played"
-                      ? "bg-[#ec4899]/10 text-[#ec4899] shadow-sm"
-                      : "bg-[#3daae0]/10 text-[#3daae0] shadow-sm"
+                  ? "bg-white text-[var(--color-ink)] shadow-sm"
                   : "text-[var(--color-ink-muted)]"
               }`}
             >
@@ -848,9 +789,8 @@ export default function MylistPage() {
           ))}
         </div>
 
-        {/* ── Product grid ── */}
         {filtered.length === 0 ? (
-          <div className="flex min-h-[160px] flex-col items-center justify-center rounded-2xl glass-card border border-white/25 p-6 text-center">
+          <div className="flex min-h-[160px] flex-col items-center justify-center rounded-lg bg-white border border-[var(--color-border)] p-6 text-center">
             <p className="text-sm text-[var(--color-ink-muted)]">
               {filter === "played"
                 ? "まだ回したガチャがありません。回したら「まわした！」をタップ！"
@@ -871,18 +811,17 @@ export default function MylistPage() {
         )}
       </div>
 
-      {/* ── Completion celebration modal ── */}
       {showComplete && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/30"
           onClick={() => setShowComplete(false)}
         >
           <div
-            className="mx-4 max-w-sm rounded-2xl glass-strong border border-white/25 p-8 text-center celebrate-pulse"
+            className="mx-4 max-w-sm rounded-lg bg-white border border-[var(--color-border)] p-8 text-center celebrate-pulse"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="text-6xl mb-4">🎊</div>
-            <h2 className="text-xl font-bold text-[var(--color-ink)]">
+            <h2 className="text-xl font-medium text-[var(--color-ink)]">
               全制覇おめでとう！
             </h2>
             <p className="mt-2 text-sm text-[var(--color-ink-secondary)]">
@@ -894,13 +833,13 @@ export default function MylistPage() {
               <button
                 type="button"
                 onClick={() => setShowComplete(false)}
-                className="flex-1 rounded-full bg-white/15 backdrop-blur-md py-2.5 text-sm font-medium text-[var(--color-ink-secondary)]"
+                className="flex-1 rounded-full border border-[var(--color-border)] py-2.5 text-sm font-medium text-[var(--color-ink-secondary)]"
               >
                 閉じる
               </button>
               <Link
                 href="/"
-                className="flex-1 rounded-full bg-[#3daae0] py-2.5 text-sm font-medium text-white text-center"
+                className="flex-1 rounded-full bg-[var(--color-brand)] py-2.5 text-sm font-medium text-white text-center"
                 onClick={() => setShowComplete(false)}
               >
                 ガチャをさがす

@@ -60,34 +60,25 @@ function CheckIcon({ className, size = 14 }: { className?: string; size?: number
   );
 }
 
-function CrownIcon({ className }: { className?: string }) {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" className={className}>
-      <path d="M2.5 18.5l2-11 5.5 4 2-7 2 7 5.5-4 2 11z" />
-      <rect x="4" y="19" width="16" height="2" rx="1" />
-    </svg>
-  );
-}
-
 function TrendBadge({ trend, delta, size = "sm" }: { trend?: string; delta?: number; size?: "sm" | "lg" }) {
   if (!trend || trend === "same") return null;
 
   if (trend === "new") {
     return (
-      <span className={`inline-flex items-center rounded-full bg-gradient-to-r from-[#a78bfa] to-[#818cf8] font-black text-white ${size === "lg" ? "px-2 py-0.5 text-[10px]" : "px-1.5 py-0.5 text-[8px]"}`}>
+      <span className={`inline-flex items-center rounded-full bg-[var(--color-brand)] font-medium text-white ${size === "lg" ? "px-2 py-0.5 text-[10px]" : "px-1.5 py-0.5 text-[8px]"}`}>
         初登場
       </span>
     );
   }
 
   const isUp = trend === "up";
-  const color = isUp ? "#34d399" : "#f87171";
-  const bg = isUp ? "#34d39915" : "#f8717115";
+  const color = isUp ? "#059669" : "#8BA89B";
+  const bg = isUp ? "#05966910" : "#8BA89B10";
   const arrow = isUp ? "↑" : "↓";
 
   return (
     <span
-      className={`inline-flex items-center gap-0.5 rounded-full font-black ${size === "lg" ? "px-2 py-0.5 text-[10px]" : "px-1.5 py-0.5 text-[8px]"}`}
+      className={`inline-flex items-center gap-0.5 rounded-full font-medium ${size === "lg" ? "px-2 py-0.5 text-[10px]" : "px-1.5 py-0.5 text-[8px]"}`}
       style={{ color, backgroundColor: bg }}
     >
       {arrow}{delta ?? ""}
@@ -119,12 +110,12 @@ function CountUp({ value, duration = 800 }: { value: number; duration?: number }
 function HeatBar({ ratio, color, delay }: { ratio: number; color: string; delay: number }) {
   const pct = Math.max(Math.round(ratio * 100), 2);
   return (
-    <div className="relative h-1.5 w-full rounded-full bg-[#f0f0f4] overflow-hidden">
+    <div className="relative h-1.5 w-full rounded-full bg-[var(--color-surface-alt)] overflow-hidden">
       <div
         className="absolute inset-y-0 left-0 rounded-full heat-bar-fill"
         style={{
           width: `${pct}%`,
-          background: `linear-gradient(90deg, ${color}88, ${color})`,
+          background: color,
           animationDelay: `${delay}ms`,
         }}
       />
@@ -135,7 +126,7 @@ function HeatBar({ ratio, color, delay }: { ratio: number; color: string; delay:
 function FilterSection({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div className="mt-3">
-      <p className="mb-1.5 ml-1 text-[10px] font-bold text-[#7a7a90] uppercase tracking-wider">{label}</p>
+      <p className="mb-1.5 ml-1 text-[10px] font-medium text-[var(--color-ink-muted)] uppercase tracking-wider">{label}</p>
       <div className="flex gap-2 overflow-x-auto pb-1 -mx-4 px-4">
         {children}
       </div>
@@ -157,10 +148,10 @@ function FilterPill({
     <button
       type="button"
       onClick={onClick}
-      className={`shrink-0 rounded-full px-3 py-1.5 text-xs font-medium transition-all duration-200 ${
+      className={`shrink-0 rounded-full px-3 py-1.5 text-xs font-medium transition-all ${
         active
-          ? "bg-[#3daae0] text-white shadow-sm"
-          : "glass-subtle text-[#4a4a5c] hover:bg-white/20"
+          ? "bg-[var(--color-brand)] text-white"
+          : "bg-white border border-[var(--color-border)] text-[var(--color-ink-secondary)] hover:border-[#BDD8CA]"
       }`}
     >
       {children}
@@ -175,8 +166,7 @@ const PODIUM_CONFIG = [
     imgSize: "h-20 w-20",
     mt: "mt-6",
     badge: "h-7 w-7 text-xs",
-    gradient: "from-gray-200 via-gray-100 to-white",
-    borderColor: "border-gray-300",
+    borderColor: "border-[var(--color-border)]",
     label: "2nd",
     rank: 2,
   },
@@ -186,8 +176,7 @@ const PODIUM_CONFIG = [
     imgSize: "h-28 w-28",
     mt: "mt-0",
     badge: "h-9 w-9 text-sm",
-    gradient: "from-amber-100 via-amber-50 to-white",
-    borderColor: "border-amber-300",
+    borderColor: "border-[var(--color-brand)]",
     label: "1st",
     rank: 1,
   },
@@ -197,24 +186,23 @@ const PODIUM_CONFIG = [
     imgSize: "h-20 w-20",
     mt: "mt-8",
     badge: "h-7 w-7 text-xs",
-    gradient: "from-orange-100 via-orange-50 to-white",
-    borderColor: "border-orange-300",
+    borderColor: "border-[var(--color-border)]",
     label: "3rd",
     rank: 3,
   },
 ];
 
 const BADGE_COLORS: Record<number, string> = {
-  1: "bg-gradient-to-br from-amber-400 to-amber-600 text-white shadow-lg shadow-amber-400/30",
-  2: "bg-gradient-to-br from-gray-300 to-gray-500 text-white shadow-md",
-  3: "bg-gradient-to-br from-orange-400 to-orange-600 text-white shadow-md shadow-orange-400/20",
+  1: "bg-[var(--color-brand)] text-white",
+  2: "bg-[var(--color-ink-muted)] text-white",
+  3: "bg-[var(--color-accent)] text-white",
 };
 
 function Podium({ items, tab }: { items: RankingItem[]; tab: RankingTab }) {
   const top3 = items.slice(0, 3);
   if (top3.length === 0) return null;
 
-  const accentColor = tab === "interest" ? "#ec4899" : "#3daae0";
+  const accentColor = tab === "interest" ? "var(--color-accent)" : "var(--color-brand)";
   const podiumOrder = [top3[1], top3[0], top3[2]].filter(Boolean);
   const configs = top3.length === 1
     ? [PODIUM_CONFIG[1]]
@@ -237,20 +225,14 @@ function Podium({ items, tab }: { items: RankingItem[]; tab: RankingTab }) {
             className={`${cfg.size} ${cfg.order} ${cfg.mt} podium-card group`}
             style={{ animationDelay: `${rank === 1 ? 0 : rank === 2 ? 150 : 300}ms` }}
           >
-            <div className={`relative rounded-2xl border-2 ${cfg.borderColor} bg-gradient-to-b ${cfg.gradient} p-3 pb-4 text-center transition-all duration-300 group-hover:scale-[1.03] group-hover:shadow-lg`}>
-              {isFirst && (
-                <div className="absolute -top-4 left-1/2 -translate-x-1/2">
-                  <CrownIcon className="text-amber-400 drop-shadow-md" />
-                </div>
-              )}
-
-              <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-10" style={{ marginTop: isFirst ? "12px" : "0" }}>
-                <span className={`flex items-center justify-center rounded-full font-black ${cfg.badge} ${BADGE_COLORS[rank]}`}>
+            <div className={`relative rounded-lg border ${cfg.borderColor} bg-white p-3 pb-4 text-center transition-all duration-200 group-hover:border-[var(--color-brand)]`}>
+              <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-10">
+                <span className={`flex items-center justify-center rounded-full font-medium ${cfg.badge} ${BADGE_COLORS[rank]}`}>
                   {rank}
                 </span>
               </div>
 
-              <div className={`mx-auto ${cfg.imgSize} relative mt-3 overflow-hidden rounded-xl bg-white/15 backdrop-blur-md shadow-sm`}>
+              <div className={`mx-auto ${cfg.imgSize} relative mt-3 overflow-hidden rounded-lg bg-[var(--color-surface-alt)]`}>
                 <ProductImage
                   src={item.product.image_url}
                   alt={item.product.name}
@@ -261,17 +243,17 @@ function Podium({ items, tab }: { items: RankingItem[]; tab: RankingTab }) {
                 />
               </div>
 
-              <p className={`mt-2 font-bold text-[#1c1c28] line-clamp-2 leading-tight ${isFirst ? "text-sm" : "text-xs"}`}>
+              <p className={`mt-2 font-medium text-[var(--color-ink)] line-clamp-2 leading-tight ${isFirst ? "text-sm" : "text-xs"}`}>
                 {item.product.name}
               </p>
-              <p className="mt-0.5 text-[10px] text-[#7a7a90]">
+              <p className="mt-0.5 text-[10px] text-[var(--color-ink-muted)]">
                 ¥{item.product.price.toLocaleString()}
               </p>
 
               <div className="mt-2 flex items-center justify-center gap-1.5">
                 <div
-                  className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 ${isFirst ? "text-sm" : "text-xs"} font-black`}
-                  style={{ color: accentColor, backgroundColor: `${accentColor}15` }}
+                  className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 ${isFirst ? "text-sm" : "text-xs"} font-medium`}
+                  style={{ color: accentColor, backgroundColor: `color-mix(in srgb, ${accentColor} 10%, transparent)` }}
                 >
                   {tab === "interest" ? <HeartIcon size={isFirst ? 14 : 11} /> : <CheckIcon size={isFirst ? 14 : 11} />}
                   <CountUp value={item.count} />
@@ -287,7 +269,7 @@ function Podium({ items, tab }: { items: RankingItem[]; tab: RankingTab }) {
 }
 
 function RankingList({ items, tab, maxCount }: { items: RankingItem[]; tab: RankingTab; maxCount: number }) {
-  const accentColor = tab === "interest" ? "#ec4899" : "#3daae0";
+  const accentColor = tab === "interest" ? "#B46075" : "#7EBEA5";
 
   return (
     <ol className="mt-4 space-y-2">
@@ -304,16 +286,16 @@ function RankingList({ items, tab, maxCount }: { items: RankingItem[]; tab: Rank
           >
             <Link
               href={`/detail/${item.product.id}`}
-              className="flex items-center gap-3 rounded-xl glass-card p-3 transition-all duration-300 hover:bg-white/30 hover:shadow-md hover:-translate-y-0.5 group"
+              className="flex items-center gap-3 rounded-lg bg-white border border-[var(--color-border)] p-3 transition-all duration-200 hover:border-[var(--color-brand)] group"
             >
               <div className="flex flex-col items-center gap-0.5 shrink-0">
-                <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/10 text-xs font-bold text-[#4a4a5c]">
+                <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--color-surface-alt)] text-xs font-medium text-[var(--color-ink-secondary)]">
                   {rank}
                 </span>
                 <TrendBadge trend={item.trend} delta={item.trendDelta} />
               </div>
 
-              <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-lg bg-white/10">
+              <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-lg bg-[var(--color-surface-alt)]">
                 <ProductImage
                   src={item.product.image_url}
                   alt={item.product.name}
@@ -326,16 +308,16 @@ function RankingList({ items, tab, maxCount }: { items: RankingItem[]; tab: Rank
 
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-1.5">
-                  <p className="truncate text-sm font-bold text-[#1c1c28] group-hover:text-[#3daae0] transition-colors">
+                  <p className="truncate text-sm font-medium text-[var(--color-ink)] group-hover:text-[var(--color-brand)] transition-colors">
                     {item.product.name}
                   </p>
                   {isNew && (
-                    <span className="shrink-0 rounded bg-[#3daae0] px-1.5 py-0.5 text-[9px] font-bold text-white leading-none">
+                    <span className="shrink-0 rounded bg-[var(--color-brand)] px-1.5 py-0.5 text-[9px] font-medium text-white leading-none">
                       NEW
                     </span>
                   )}
                 </div>
-                <p className="text-[11px] text-[#7a7a90] mt-0.5">
+                <p className="text-[11px] text-[var(--color-ink-muted)] mt-0.5">
                   {item.product.maker} · ¥{item.product.price.toLocaleString()}
                 </p>
                 <div className="mt-1.5">
@@ -345,13 +327,13 @@ function RankingList({ items, tab, maxCount }: { items: RankingItem[]; tab: Rank
 
               <div className="shrink-0 text-right">
                 <div
-                  className="flex items-center gap-1 text-sm font-black tabular-nums"
+                  className="flex items-center gap-1 text-sm font-medium tabular-nums"
                   style={{ color: accentColor }}
                 >
                   {tab === "interest" ? <HeartIcon size={12} /> : <CheckIcon size={12} />}
                   <CountUp value={item.count} duration={600} />
                 </div>
-                <p className="text-[9px] text-[#7a7a90] mt-0.5">
+                <p className="text-[9px] text-[var(--color-ink-muted)] mt-0.5">
                   {item.count ? `${Math.round(ratio * 100)}%` : "-"}
                 </p>
               </div>
@@ -582,7 +564,7 @@ export default function RankingPage() {
       <div className="mx-auto max-w-2xl px-4 py-6">
         <ScrollReveal>
           <div className="flex items-center justify-between">
-            <h1 className="section-header">/RANKING</h1>
+            <h1 className="section-header">RANKING</h1>
             <SnsLinks />
           </div>
           <p className="section-header-sub">ランキング</p>
@@ -590,14 +572,14 @@ export default function RankingPage() {
 
         {/* Tab switcher */}
         <ScrollReveal delay={100}>
-          <div className="mt-5 flex rounded-xl glass p-1">
+          <div className="mt-5 flex rounded-lg bg-[var(--color-surface-alt)] p-1">
             <button
               type="button"
               onClick={() => setTab("interest")}
-              className={`flex flex-1 items-center justify-center gap-1.5 rounded-lg py-2.5 text-sm font-medium transition-all duration-300 ${
+              className={`flex flex-1 items-center justify-center gap-1.5 rounded-md py-2.5 text-sm font-medium transition-all ${
                 tab === "interest"
-                  ? "bg-[#ec4899]/10 text-[#ec4899] shadow-sm"
-                  : "text-[#7a7a90] hover:text-[#4a4a5c]"
+                  ? "bg-white text-[var(--color-accent)] shadow-sm"
+                  : "text-[var(--color-ink-muted)] hover:text-[var(--color-ink-secondary)]"
               }`}
             >
               <HeartIcon />
@@ -606,10 +588,10 @@ export default function RankingPage() {
             <button
               type="button"
               onClick={() => setTab("purchased")}
-              className={`flex flex-1 items-center justify-center gap-1.5 rounded-lg py-2.5 text-sm font-medium transition-all duration-300 ${
+              className={`flex flex-1 items-center justify-center gap-1.5 rounded-md py-2.5 text-sm font-medium transition-all ${
                 tab === "purchased"
-                  ? "bg-[#3daae0]/10 text-[#3daae0] shadow-sm"
-                  : "text-[#7a7a90] hover:text-[#4a4a5c]"
+                  ? "bg-white text-[var(--color-brand)] shadow-sm"
+                  : "text-[var(--color-ink-muted)] hover:text-[var(--color-ink-secondary)]"
               }`}
             >
               <CheckIcon />
@@ -625,10 +607,10 @@ export default function RankingPage() {
               key={tp.value}
               type="button"
               onClick={() => setPeriod(tp.value)}
-              className={`shrink-0 rounded-full px-4 py-2 text-sm font-medium transition-all duration-200 ${
+              className={`shrink-0 rounded-full px-4 py-2 text-sm font-medium transition-all ${
                 period === tp.value
-                  ? "bg-[#1c1c28] text-white"
-                  : "glass-subtle text-[#4a4a5c] hover:bg-white/20"
+                  ? "bg-[var(--color-ink)] text-white"
+                  : "bg-white border border-[var(--color-border)] text-[var(--color-ink-secondary)] hover:border-[#BDD8CA]"
               }`}
             >
               {tp.label}
@@ -638,11 +620,11 @@ export default function RankingPage() {
 
         {/* Genre */}
         <FilterSection label="ジャンル">
-          <FilterPill active={genre === null} onClick={() => setGenre(null)} color="#3daae0">
+          <FilterPill active={genre === null} onClick={() => setGenre(null)}>
             すべて
           </FilterPill>
           {genres.map((g) => (
-            <FilterPill key={g} active={genre === g} onClick={() => setGenre(g)} color="#3daae0">
+            <FilterPill key={g} active={genre === g} onClick={() => setGenre(g)}>
               {g}
             </FilterPill>
           ))}
@@ -655,7 +637,6 @@ export default function RankingPage() {
               key={f.value ?? "all"}
               active={genderFilter === f.value}
               onClick={() => setGenderFilter(f.value)}
-              color="#ec4899"
             >
               {f.label}
             </FilterPill>
@@ -669,7 +650,6 @@ export default function RankingPage() {
               key={f.value ?? "all"}
               active={ageFilter === f.value}
               onClick={() => setAgeFilter(f.value)}
-              color="#a78bfa"
             >
               {f.label}
             </FilterPill>
@@ -681,19 +661,19 @@ export default function RankingPage() {
           {loading ? (
             <div className="flex min-h-[300px] items-center justify-center">
               <div className="flex flex-col items-center gap-3">
-                <div className="h-10 w-10 animate-spin rounded-full border-3 border-[#3daae0] border-t-transparent" />
-                <p className="text-xs text-[#7a7a90] font-medium">ランキング集計中...</p>
+                <div className="h-8 w-8 animate-spin rounded-full border-2 border-[var(--color-brand)] border-t-transparent" />
+                <p className="text-xs text-[var(--color-ink-muted)]">ランキング集計中...</p>
               </div>
             </div>
           ) : items.length === 0 ? (
-            <div className="flex min-h-[250px] flex-col items-center justify-center rounded-2xl glass-card p-8 text-center">
-              <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-white/10">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#7a7a90" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+            <div className="flex min-h-[250px] flex-col items-center justify-center rounded-lg bg-white border border-[var(--color-border)] p-8 text-center">
+              <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-[var(--color-surface-alt)]">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--color-ink-muted)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
               </div>
-              <p className="font-bold text-[#1c1c28]">データがありません</p>
-              <p className="mt-1 text-sm text-[#7a7a90]">
+              <p className="font-medium text-[var(--color-ink)]">データがありません</p>
+              <p className="mt-1 text-sm text-[var(--color-ink-muted)]">
                 {hasDemographicFilter
                   ? "この条件に一致するデータがまだありません"
                   : period === "all"
@@ -708,7 +688,7 @@ export default function RankingPage() {
                     setGenderFilter(null);
                     setAgeFilter(null);
                   }}
-                  className="mt-4 rounded-full bg-[#3daae0] px-5 py-2 text-sm font-bold text-white transition-all hover:bg-[#2888c0]"
+                  className="mt-4 rounded-full bg-[var(--color-brand)] px-5 py-2 text-sm font-medium text-white transition-colors hover:opacity-90"
                 >
                   フィルターをリセット
                 </button>
@@ -722,9 +702,9 @@ export default function RankingPage() {
               {/* Separator */}
               {rest.length > 0 && (
                 <div className="mt-6 flex items-center gap-3">
-                  <div className="h-px flex-1 bg-[#e4e4ea]" />
-                  <span className="text-[10px] font-bold text-[#7a7a90] uppercase tracking-widest">4位以下</span>
-                  <div className="h-px flex-1 bg-[#e4e4ea]" />
+                  <div className="h-px flex-1 bg-[var(--color-border)]" />
+                  <span className="text-[10px] font-medium text-[var(--color-ink-muted)] uppercase tracking-widest">4位以下</span>
+                  <div className="h-px flex-1 bg-[var(--color-border)]" />
                 </div>
               )}
 

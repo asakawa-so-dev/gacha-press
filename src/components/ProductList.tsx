@@ -34,11 +34,11 @@ const SORT_OPTIONS = [
 
 type FilterKey = "genre" | "month" | "price" | "maker";
 
-const FILTER_DEFS: { key: FilterKey; icon: string; label: string }[] = [
-  { key: "genre", icon: "🏷", label: "ジャンル" },
-  { key: "month", icon: "📅", label: "発売月" },
-  { key: "price", icon: "💰", label: "価格" },
-  { key: "maker", icon: "🏭", label: "メーカー" },
+const FILTER_DEFS: { key: FilterKey; label: string }[] = [
+  { key: "genre", label: "ジャンル" },
+  { key: "month", label: "発売月" },
+  { key: "price", label: "価格" },
+  { key: "maker", label: "メーカー" },
 ];
 
 type ProductListProps = {
@@ -200,7 +200,7 @@ export default function ProductList({ products }: ProductListProps) {
       {/* Search */}
       <div className="relative">
         <span className="absolute left-3 top-1/2 -translate-y-1/2">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 text-[#9b9bab]">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 text-[var(--color-ink-muted)]">
             <circle cx="11" cy="11" r="8" />
             <path d="m21 21-4.3-4.3" />
           </svg>
@@ -210,13 +210,13 @@ export default function ProductList({ products }: ProductListProps) {
           placeholder="商品名・メーカー・ジャンルで検索"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full pl-10 pr-10 py-3 rounded-xl glass text-[#1c1c28] placeholder:text-[#7a7a90] focus:outline-none focus:ring-2 focus:ring-[#3daae0]/40 transition-shadow"
+          className="w-full pl-10 pr-10 py-3 rounded-lg bg-white border border-[var(--color-border)] text-[var(--color-ink)] placeholder:text-[var(--color-ink-muted)] focus:outline-none focus:border-[var(--color-brand)] transition-colors"
         />
         {searchQuery && (
           <button
             type="button"
             onClick={() => setSearchQuery("")}
-            className="absolute right-3 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-[#e4e4ea] text-[#5c5c6f] hover:bg-[#9b9bab] hover:text-white flex items-center justify-center text-xs font-bold transition-colors"
+            className="absolute right-3 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-[var(--color-surface-alt)] text-[var(--color-ink-muted)] hover:bg-[var(--color-border)] hover:text-[var(--color-ink)] flex items-center justify-center text-xs transition-colors"
           >
             ×
           </button>
@@ -233,15 +233,14 @@ export default function ProductList({ products }: ProductListProps) {
               key={f.key}
               type="button"
               onClick={() => setOpenFilter(isOpen ? null : f.key)}
-              className={`flex-shrink-0 flex items-center gap-1.5 rounded-full px-3.5 py-2 text-sm font-bold transition-all duration-200 active:scale-95 ${
+              className={`flex-shrink-0 flex items-center gap-1.5 rounded-full px-3.5 py-2 text-sm font-medium transition-all ${
                 active
-                  ? "bg-[#3daae0] text-white shadow-sm"
+                  ? "bg-[var(--color-brand)] text-white"
                   : isOpen
-                    ? "bg-[#3daae0]/10 text-[#3daae0] border border-[#3daae0]/30"
-                    : "glass-subtle text-[#4a4a5c] hover:bg-white/20"
+                    ? "bg-[var(--color-surface-alt)] text-[var(--color-brand)] border border-[var(--color-brand)]"
+                    : "bg-white border border-[var(--color-border)] text-[var(--color-ink-secondary)] hover:border-[#BDD8CA]"
               }`}
             >
-              <span className="text-base leading-none">{f.icon}</span>
               <span>{active || f.label}</span>
               {active && (
                 <span
@@ -252,7 +251,7 @@ export default function ProductList({ products }: ProductListProps) {
                 </span>
               )}
               {!active && (
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className={`transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className={`transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}>
                   <path d="m6 9 6 6 6-6" />
                 </svg>
               )}
@@ -270,7 +269,7 @@ export default function ProductList({ products }: ProductListProps) {
               setSelectedMaker(null);
               setOpenFilter(null);
             }}
-            className="flex-shrink-0 flex items-center gap-1 rounded-full px-3 py-2 text-xs font-bold text-[#ec4899] bg-[#ec4899]/10 border border-[#ec4899]/20 transition-all active:scale-95"
+            className="flex-shrink-0 flex items-center gap-1 rounded-full px-3 py-2 text-xs font-medium text-[var(--color-accent)] bg-[var(--color-accent)]/5 border border-[var(--color-accent)]/20 transition-all"
           >
             リセット
           </button>
@@ -279,7 +278,7 @@ export default function ProductList({ products }: ProductListProps) {
 
       {/* Expandable filter options */}
       {openFilter && (
-        <div className="mt-2 rounded-xl glass p-3 animate-[fade-up-in_0.2s_ease]">
+        <div className="mt-2 rounded-lg bg-white border border-[var(--color-border)] p-3 animate-[fade-up-in_0.2s_ease]">
           <div className="flex flex-wrap gap-2">
             {openFilter === "genre" &&
               GENRES.map((g) => (
@@ -323,13 +322,13 @@ export default function ProductList({ products }: ProductListProps) {
 
       {/* Count + Sort */}
       <div className="mt-3 flex items-center justify-between">
-        <p className="text-sm font-bold text-[#5c5c6f]">
+        <p className="text-sm text-[var(--color-ink-muted)]">
           {filteredProducts.length}件
         </p>
         <select
           value={sortBy}
           onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
-          className="rounded-lg glass-subtle px-2 py-1 text-xs text-[#4a4a5c] outline-none"
+          className="rounded-lg bg-white border border-[var(--color-border)] px-2 py-1 text-xs text-[var(--color-ink-secondary)] outline-none"
         >
           {SORT_OPTIONS.map((opt) => (
             <option key={opt.value} value={opt.value}>{opt.label}</option>
@@ -360,10 +359,10 @@ function FilterChip({
     <button
       type="button"
       onClick={onClick}
-      className={`px-3.5 py-2 rounded-full text-sm font-bold transition-all duration-200 active:scale-95 ${
+      className={`px-3.5 py-2 rounded-full text-sm font-medium transition-all ${
         active
-          ? "bg-[#3daae0]/80 backdrop-blur-sm text-white shadow-sm"
-          : "glass-subtle text-[#4a4a5c] hover:bg-white/20"
+          ? "bg-[var(--color-brand)] text-white"
+          : "bg-[var(--color-surface-alt)] text-[var(--color-ink-secondary)] hover:bg-[var(--color-border)]"
       }`}
     >
       {label}
